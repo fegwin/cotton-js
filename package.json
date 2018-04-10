@@ -2,13 +2,19 @@
   "name": "cotton-js",
   "version": "1.0.0",
   "description": "A canvas 2D object oriented rendering engine. (Get it? Cotton? Canvas? 🥋)",
-  "main": "index.js",
+  "main": "/dist/cotton.js",
   "repository": "https://github.com/fegwin/can-js",
   "author": "alakshman",
   "license": "MIT",
   "devDependencies": {
+    "babel-loader": "^7.1.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.10.0"
+    "eslint-plugin-import": "^2.10.0",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14"
+  },
+  "scripts": {
+    "webpack": "webpack"
   }
 }
