@@ -16,4 +16,5 @@ export default {
   Entity,
   Animator,
   Compositor,
+  test: () => true,
 };
