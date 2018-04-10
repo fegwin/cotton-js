@@ -15,6 +15,5 @@ export default {
   Layer,
   Entity,
   Animator,
-  Compositor,
-  test: () => true,
+  Compositor
 };
