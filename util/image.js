@@ -1,4 +1,4 @@
-export default function loadImage(url) {
+export function loadImage(url) {
   return new Promise((resolve) => {
     const img = new Image();
     img.addEventListener('load', () => {

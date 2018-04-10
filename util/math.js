@@ -1,4 +1,4 @@
-export default class BoundingBox {
+export class BoundingBox {
   constructor(pos, size) {
     this.pos = pos;
     this.size = size;
