@@ -2,7 +2,7 @@
   "name": "cotton-js",
   "version": "1.0.0",
   "description": "A canvas 2D object oriented rendering engine. (Get it? Cotton? Canvas? 🥋)",
-  "main": "/dist/cotton.js",
+  "main": "dist/cotton.js",
   "repository": "https://github.com/fegwin/can-js",
   "author": "alakshman",
   "license": "MIT",
