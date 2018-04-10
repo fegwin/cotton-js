@@ -2,7 +2,7 @@ import image from './image';
 import json from './json';
 import { BoundingBox, getRandomNumber, Matrix, Vec } from './math';
 
-export default {
+const toExport = {
   ...image,
   ...json,
   BoundingBox,
@@ -10,3 +10,5 @@ export default {
   Matrix,
   Vec,
 };
+
+export default toExport;
