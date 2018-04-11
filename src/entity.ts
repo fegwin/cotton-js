@@ -3,7 +3,7 @@ import Trait from "./Trait";
 
 export default class Entity {
   name: string;
-  traits: { [id: string]: Trait }[];
+  traits: { [id: string]: Trait };
 
   lifetime: number;
   size: Vec;
@@ -26,9 +26,8 @@ export default class Entity {
   }
 
   initialiseTraits(traits: Trait[]): void {
-    const traitsDic = this.traits;
     traits.forEach(trait => {
-      traitsDic[trait.getName()] = trait;
+      this.traits[trait.getName()] = trait;
     });
   }
 
@@ -43,7 +42,9 @@ export default class Entity {
   }
 
   update(deltaTime: number) {
-    this.traits.forEach(trait => trait.update(this, deltaTime));
+    for (var trait in this.traits) {
+      this.traits[trait].update(this, deltaTime);
+    }
     this.lifetime += deltaTime;
   }
 }

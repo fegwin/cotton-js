@@ -66,116 +66,116 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./build/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/animator.js":
+/***/ "./build/animator.js":
+/*!***************************!*\
+  !*** ./build/animator.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nclass Animator {\n    constructor(compositor, context, deltaTime = 1 / 60) {\n        this.accumulatedTime = 0;\n        this.lastTime = 0;\n        this.deltaTime = deltaTime;\n        this.compositor = compositor;\n        this.context = context;\n    }\n    enqueue() {\n        window.requestAnimationFrame(this.update);\n    }\n    update(time) {\n        this.accumulatedTime += (time - this.lastTime) / 1000;\n        if (this.accumulatedTime > 1) {\n            this.accumulatedTime = 1;\n        }\n        while (this.accumulatedTime > this.deltaTime) {\n            this.animate(this.deltaTime);\n            this.accumulatedTime -= this.deltaTime;\n        }\n        this.lastTime = time;\n        this.enqueue();\n    }\n    animate(deltaTime) {\n        this.compositor.update(deltaTime);\n        this.compositor.draw(this.context);\n    }\n    start() {\n        this.enqueue();\n    }\n}\nexports.default = Animator;\n//# sourceMappingURL=animator.js.map\n\n//# sourceURL=webpack:///./build/animator.js?");
+
+/***/ }),
+
+/***/ "./build/compositor.js":
+/*!*****************************!*\
+  !*** ./build/compositor.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nclass Compositor {\n    constructor(width, height, layers = []) {\n        this.layers = layers;\n        this.buffer = document.createElement(\"canvas\");\n        this.buffer.width = width;\n        this.buffer.height = height;\n        this.bufferContext = this.buffer.getContext(\"2d\");\n    }\n    addLayer(layer) {\n        this.layers.push(layer);\n    }\n    update(deltaTime) {\n        this.layers.forEach(layer => layer.update(deltaTime));\n    }\n    draw(context) {\n        this.layers.forEach(layer => layer.draw(this.bufferContext));\n        context.drawImage(this.buffer, 0, 0);\n    }\n}\nexports.default = Compositor;\n//# sourceMappingURL=Compositor.js.map\n\n//# sourceURL=webpack:///./build/compositor.js?");
+
+/***/ }),
+
+/***/ "./build/entity.js":
 /*!*************************!*\
-  !*** ./src/animator.js ***!
+  !*** ./build/entity.js ***!
   \*************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Animator; });\nclass Animator {\n  constructor(compositor, context, deltaTime = 1 / 60) {\n    this.accumulatedTime = 0;\n    this.lastTime = 0;\n    this.deltaTime = deltaTime;\n\n    this.compositor = compositor;\n    this.context = context;\n  }\n\n  enqueue() {\n    window.requestAnimationFrame(this.update);\n  }\n\n  update(time) {\n    this.accumulatedTime += (time - this.lastTime) / 1000;\n\n    if (this.accumulatedTime > 1) {\n      this.accumulatedTime = 1;\n    }\n\n    while (this.accumulatedTime > this.deltaTime) {\n      this.animate(this.deltaTime);\n      this.accumulatedTime -= this.deltaTime;\n    }\n\n    this.lastTime = time;\n\n    this.enqueue();\n  }\n\n  animate(deltaTime) {\n    this.compositor.update(deltaTime);\n    this.compositor.draw(this.context);\n  }\n\n  start() {\n    this.enqueue();\n  }\n}\n\n\n//# sourceURL=webpack:///./src/animator.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst math_1 = __webpack_require__(/*! ./util/math */ \"./build/util/math.js\");\nclass Entity {\n    constructor(traits = []) {\n        this.name = \"entity\";\n        this.pos = new math_1.Vec(0, 0);\n        this.vel = new math_1.Vec(0, 0);\n        this.size = new math_1.Vec(0, 0);\n        this.lifetime = 0;\n        this.calculateBounds();\n        this.initialiseTraits(traits);\n    }\n    initialiseTraits(traits) {\n        traits.forEach(trait => {\n            this.traits[trait.getName()] = trait;\n        });\n    }\n    calculateBounds() {\n        this.bounds = new math_1.BoundingBox(this.pos, this.size);\n    }\n    draw() {\n        throw new Error(`This needs to be implemented by the child class (${this.name})`);\n    }\n    update(deltaTime) {\n        for (var trait in this.traits) {\n            this.traits[trait].update(this, deltaTime);\n        }\n        this.lifetime += deltaTime;\n    }\n}\nexports.default = Entity;\n//# sourceMappingURL=Entity.js.map\n\n//# sourceURL=webpack:///./build/entity.js?");
 
 /***/ }),
 
-/***/ "./src/compositor.js":
-/*!***************************!*\
-  !*** ./src/compositor.js ***!
-  \***************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./build/index.js":
+/*!************************!*\
+  !*** ./build/index.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Compositor; });\nclass Compositor {\n  constructor(width, height, layers = []) {\n    this.layers = layers;\n    this.buffer = document.createElement('canvas');\n    this.buffer.width = width;\n    this.buffer.height = height;\n    this.bufferContext = this.buffer.getContext('2d');\n  }\n\n  addLayer(layer) {\n    this.layers.push(layer);\n  }\n\n  update(deltaTime) {\n    this.layers.forEach(layer => layer.update(deltaTime));\n  }\n\n  draw(context) {\n    this.layers.forEach(layer => layer.draw(this.bufferContext));\n    context.drawImage(this.buffer, 0, 0);\n  }\n}\n\n\n//# sourceURL=webpack:///./src/compositor.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst util_1 = __webpack_require__(/*! ./util */ \"./build/util/index.js\");\nconst layer_1 = __webpack_require__(/*! ./layer */ \"./build/layer.js\");\nconst entity_1 = __webpack_require__(/*! ./entity */ \"./build/entity.js\");\nconst animator_1 = __webpack_require__(/*! ./animator */ \"./build/animator.js\");\nconst compositor_1 = __webpack_require__(/*! ./compositor */ \"./build/compositor.js\");\nvar util_2 = __webpack_require__(/*! ./util */ \"./build/util/index.js\");\nexports.util = util_2.default;\nvar layer_2 = __webpack_require__(/*! ./layer */ \"./build/layer.js\");\nexports.Layer = layer_2.default;\nvar entity_2 = __webpack_require__(/*! ./entity */ \"./build/entity.js\");\nexports.Entity = entity_2.default;\nvar animator_2 = __webpack_require__(/*! ./animator */ \"./build/animator.js\");\nexports.Animator = animator_2.default;\nvar compositor_2 = __webpack_require__(/*! ./compositor */ \"./build/compositor.js\");\nexports.Compositor = compositor_2.default;\nexports.default = {\n    util: util_1.default,\n    Layer: layer_1.default,\n    Entity: entity_1.default,\n    Animator: animator_1.default,\n    Compositor: compositor_1.default\n};\n//# sourceMappingURL=index.js.map\n\n//# sourceURL=webpack:///./build/index.js?");
 
 /***/ }),
 
-/***/ "./src/entity.js":
-/*!***********************!*\
-  !*** ./src/entity.js ***!
-  \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./build/layer.js":
+/*!************************!*\
+  !*** ./build/layer.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Entity; });\n/* harmony import */ var _util_math__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/math */ \"./src/util/math.js\");\n\n\nclass Entity {\n  constructor(traits = []) {\n    this.name = 'entity';\n\n    this.traits = traits;\n    this.pos = new _util_math__WEBPACK_IMPORTED_MODULE_0__[\"Vec\"](0, 0);\n    this.vel = new _util_math__WEBPACK_IMPORTED_MODULE_0__[\"Vec\"](0, 0);\n    this.size = new _util_math__WEBPACK_IMPORTED_MODULE_0__[\"Vec\"](0, 0);\n    this.lifetime = 0;\n\n    this.calculateBounds();\n    this.initialiseTraits();\n  }\n\n  initialiseTraits() {\n    this.traits.forEach((trait) => {\n      this[trait.getName()] = trait;\n    });\n  }\n\n  calculateBounds() {\n    this.bounds = new _util_math__WEBPACK_IMPORTED_MODULE_0__[\"BoundingBox\"](this.pos, this.size);\n  }\n\n  draw() {\n    throw new Error(`This needs to be implemented by the child class (${this.name})`);\n  }\n\n  update(deltaTime) {\n    this.traits.forEach(trait => trait.update(this, deltaTime));\n    this.lifetime += deltaTime;\n  }\n}\n\n\n//# sourceURL=webpack:///./src/entity.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nclass Layer {\n    constructor(width, height, entities = []) {\n        this.entities = entities;\n        this.width = width;\n        this.height = height;\n        this.buffer = document.createElement(\"canvas\");\n        this.buffer.width = width;\n        this.buffer.height = height;\n        this.bufferContext = this.buffer.getContext(\"2d\");\n    }\n    update(deltaTime) {\n        this.entities.forEach(entity => entity.update(deltaTime));\n    }\n    draw(context) {\n        this.bufferContext.clearRect(0, 0, this.width, this.height);\n        this.entities.forEach(entity => entity.draw());\n        context.drawImage(this.buffer, 0, 0);\n    }\n}\nexports.default = Layer;\n//# sourceMappingURL=Layer.js.map\n\n//# sourceURL=webpack:///./build/layer.js?");
 
 /***/ }),
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/*! exports provided: util, Layer, Entity, Animator, Compositor, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./build/util/image.js":
+/*!*****************************!*\
+  !*** ./build/util/image.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ \"./src/util/index.js\");\n/* harmony import */ var _layer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layer */ \"./src/layer.js\");\n/* harmony import */ var _entity__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./entity */ \"./src/entity.js\");\n/* harmony import */ var _animator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./animator */ \"./src/animator.js\");\n/* harmony import */ var _compositor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./compositor */ \"./src/compositor.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"util\", function() { return _util__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Layer\", function() { return _layer__WEBPACK_IMPORTED_MODULE_1__[\"default\"]; });\n\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Entity\", function() { return _entity__WEBPACK_IMPORTED_MODULE_2__[\"default\"]; });\n\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Animator\", function() { return _animator__WEBPACK_IMPORTED_MODULE_3__[\"default\"]; });\n\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Compositor\", function() { return _compositor__WEBPACK_IMPORTED_MODULE_4__[\"default\"]; });\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\n  util: _util__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n  Layer: _layer__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  Entity: _entity__WEBPACK_IMPORTED_MODULE_2__[\"default\"],\n  Animator: _animator__WEBPACK_IMPORTED_MODULE_3__[\"default\"],\n  Compositor: _compositor__WEBPACK_IMPORTED_MODULE_4__[\"default\"],\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nclass CottonImage {\n    loadImage(url) {\n        return new Promise(resolve => {\n            const img = new Image();\n            img.addEventListener(\"load\", () => {\n                resolve(img);\n            });\n            img.src = url;\n        });\n    }\n}\nexports.default = CottonImage;\n//# sourceMappingURL=image.js.map\n\n//# sourceURL=webpack:///./build/util/image.js?");
 
 /***/ }),
 
-/***/ "./src/layer.js":
-/*!**********************!*\
-  !*** ./src/layer.js ***!
-  \**********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./build/util/index.js":
+/*!*****************************!*\
+  !*** ./build/util/index.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Layer; });\nclass Layer {\n  constructor(width, height, entities = []) {\n    this.entities = entities;\n    this.width = width;\n    this.height = height;\n\n    this.buffer = document.createElement('canvas');\n    this.buffer.width = width;\n    this.buffer.height = height;\n    this.bufferContext = this.buffer.getContext('2d');\n  }\n\n  update(deltaTime) {\n    this.entities.forEach(entity => entity.update(deltaTime));\n  }\n\n  draw(context) {\n    this.bufferContext.clearRect(0, 0, this.width, this.height);\n    this.entities.forEach(entity => entity.draw(this.bufferContext));\n    context.drawImage(this.buffer, 0, 0);\n  }\n}\n\n\n//# sourceURL=webpack:///./src/layer.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst image_1 = __webpack_require__(/*! ./image */ \"./build/util/image.js\");\nconst json_1 = __webpack_require__(/*! ./json */ \"./build/util/json.js\");\nconst math_1 = __webpack_require__(/*! ./math */ \"./build/util/math.js\");\nexports.default = Object.assign(image_1.default, json_1.default, {\n    BoundingBox: math_1.BoundingBox,\n    getRandomNumber: math_1.getRandomNumber,\n    Vec: math_1.Vec\n});\n//# sourceMappingURL=index.js.map\n\n//# sourceURL=webpack:///./build/util/index.js?");
 
 /***/ }),
 
-/***/ "./src/util/image.js":
-/*!***************************!*\
-  !*** ./src/util/image.js ***!
-  \***************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./build/util/json.js":
+/*!****************************!*\
+  !*** ./build/util/json.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\n  loadImage: function loadImage(url) {\n    return new Promise((resolve) => {\n      const img = new Image();\n      img.addEventListener('load', () => {\n        resolve(img);\n      });\n      img.src = url;\n    });\n  },\n});\n\n\n//# sourceURL=webpack:///./src/util/image.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nclass Json {\n    loadJson(url) {\n        return fetch(url).then(r => r.json());\n    }\n}\nexports.default = Json;\n//# sourceMappingURL=json.js.map\n\n//# sourceURL=webpack:///./build/util/json.js?");
 
 /***/ }),
 
-/***/ "./src/util/index.js":
-/*!***************************!*\
-  !*** ./src/util/index.js ***!
-  \***************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./build/util/math.js":
+/*!****************************!*\
+  !*** ./build/util/math.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _image__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./image */ \"./src/util/image.js\");\n/* harmony import */ var _json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./json */ \"./src/util/json.js\");\n/* harmony import */ var _math__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./math */ \"./src/util/math.js\");\n\n\n\n\nconst toExport = Object.assign(_image__WEBPACK_IMPORTED_MODULE_0__[\"default\"], _json__WEBPACK_IMPORTED_MODULE_1__[\"default\"], {\n  BoundingBox: _math__WEBPACK_IMPORTED_MODULE_2__[\"BoundingBox\"],\n  getRandomNumber: _math__WEBPACK_IMPORTED_MODULE_2__[\"getRandomNumber\"],\n  Matrix: _math__WEBPACK_IMPORTED_MODULE_2__[\"Matrix\"],\n  Vec: _math__WEBPACK_IMPORTED_MODULE_2__[\"Vec\"],\n});\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (toExport);\n\n\n//# sourceURL=webpack:///./src/util/index.js?");
-
-/***/ }),
-
-/***/ "./src/util/json.js":
-/*!**************************!*\
-  !*** ./src/util/json.js ***!
-  \**************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\n  loadJson: function loadJSON(url) {\n    return fetch(url)\n      .then(r => r.json());\n  },\n});\n\n\n//# sourceURL=webpack:///./src/util/json.js?");
-
-/***/ }),
-
-/***/ "./src/util/math.js":
-/*!**************************!*\
-  !*** ./src/util/math.js ***!
-  \**************************/
-/*! exports provided: BoundingBox, Matrix, Vec, getRandomNumber */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"BoundingBox\", function() { return BoundingBox; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Matrix\", function() { return Matrix; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Vec\", function() { return Vec; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getRandomNumber\", function() { return getRandomNumber; });\nclass BoundingBox {\n  constructor(pos, size) {\n    this.pos = pos;\n    this.size = size;\n  }\n\n  overlaps(box) {\n    return this.bottom > box.top\n      && this.top < box.bottom\n      && this.left < box.right\n      && this.right > box.left;\n  }\n\n  get bottom() {\n    return this.pos.y + this.size.y;\n  }\n\n  set bottom(y) {\n    this.pos.y = y - this.size.y;\n  }\n\n  get top() {\n    return this.pos.y;\n  }\n\n  set top(y) {\n    this.pos.y = y;\n  }\n\n  get left() {\n    return this.pos.x;\n  }\n\n  set left(x) {\n    this.pos.x = x;\n  }\n\n  get right() {\n    return this.pos.x + this.size.x;\n  }\n\n  set right(x) {\n    this.pos.x = x - this.size.x;\n  }\n}\n\nclass Matrix {\n  constructor() {\n    this.grid = [];\n  }\n\n  forEach(callback) {\n    this.grid.forEach((column, x) => {\n      column.forEach((value, y) => {\n        callback(value, x, y);\n      });\n    });\n  }\n\n  get(x, y) {\n    const col = this.grid[x];\n    if (col) {\n      return col[y];\n    }\n    return undefined;\n  }\n\n  set(x, y, value) {\n    if (!this.grid[x]) {\n      this.grid[x] = [];\n    }\n\n    this.grid[x][y] = value;\n  }\n}\n\nclass Vec {\n  constructor(x, y) {\n    this.set(x, y);\n  }\n\n  set(x, y) {\n    this.x = x;\n    this.y = y;\n  }\n}\n\nconst getRandomNumber = (min, max) => (Math.random() * (max - min)) + min;\n\n\n//# sourceURL=webpack:///./src/util/math.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nclass BoundingBox {\n    constructor(pos, size) {\n        this.pos = pos;\n        this.size = size;\n    }\n    overlaps(box) {\n        return (this.bottom > box.top &&\n            this.top < box.bottom &&\n            this.left < box.right &&\n            this.right > box.left);\n    }\n    get bottom() {\n        return this.pos.y + this.size.y;\n    }\n    set bottom(y) {\n        this.pos.y = y - this.size.y;\n    }\n    get top() {\n        return this.pos.y;\n    }\n    set top(y) {\n        this.pos.y = y;\n    }\n    get left() {\n        return this.pos.x;\n    }\n    set left(x) {\n        this.pos.x = x;\n    }\n    get right() {\n        return this.pos.x + this.size.x;\n    }\n    set right(x) {\n        this.pos.x = x - this.size.x;\n    }\n}\nexports.BoundingBox = BoundingBox;\nclass Vec {\n    constructor(x, y) {\n        this.set(x, y);\n    }\n    set(x, y) {\n        this.x = x;\n        this.y = y;\n    }\n}\nexports.Vec = Vec;\nexports.getRandomNumber = (min, max) => Math.random() * (max - min) + min;\n//# sourceMappingURL=math.js.map\n\n//# sourceURL=webpack:///./build/util/math.js?");
 
 /***/ })
 
