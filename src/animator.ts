@@ -1,5 +1,17 @@
+import Compositor from "./Compositor";
+
 export default class Animator {
-  constructor(compositor, context, deltaTime = 1 / 60) {
+  context: any;
+  compositor: Compositor;
+  deltaTime: number;
+  lastTime: number;
+  accumulatedTime: number;
+
+  constructor(
+    compositor: Compositor,
+    context: any,
+    deltaTime: number = 1 / 60
+  ) {
     this.accumulatedTime = 0;
     this.lastTime = 0;
     this.deltaTime = deltaTime;

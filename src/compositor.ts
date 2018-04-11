@@ -1,4 +1,8 @@
 export default class Compositor {
+  bufferContext: CanvasRenderingContext2D;
+  buffer: HTMLCanvasElement;
+  layers: any[];
+  
   constructor(width, height, layers = []) {
     this.layers = layers;
     this.buffer = document.createElement('canvas');

@@ -1,13 +1,25 @@
-import { BoundingBox, Vec } from './util/math';
+import { BoundingBox, Vec } from "./util/math";
+import Trait from "./Trait";
 
 export default class Entity {
+  name: string;
+  traits: Trait[];
+
+  lifetime: number;
+  size: Vec;
+  vel: Vec;
+  pos: Vec;
+
+  bounds: BoundingBox;
+
   constructor(traits = []) {
-    this.name = 'entity';
+    this.name = "entity";
 
     this.traits = traits;
     this.pos = new Vec(0, 0);
     this.vel = new Vec(0, 0);
     this.size = new Vec(0, 0);
+
     this.lifetime = 0;
 
     this.calculateBounds();
@@ -15,7 +27,7 @@ export default class Entity {
   }
 
   initialiseTraits() {
-    this.traits.forEach((trait) => {
+    this.traits.forEach(trait => {
       this[trait.getName()] = trait;
     });
   }
@@ -25,10 +37,12 @@ export default class Entity {
   }
 
   draw() {
-    throw new Error(`This needs to be implemented by the child class (${this.name})`);
+    throw new Error(
+      `This needs to be implemented by the child class (${this.name})`
+    );
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     this.traits.forEach(trait => trait.update(this, deltaTime));
     this.lifetime += deltaTime;
   }
