@@ -16,6 +16,6 @@
     "webpack-cli": "^2.0.14"
   },
   "scripts": {
-    "build": "rm -r build && rm -r dist && tsc && webpack"
+    "build": "rm -rf build && rm -rf dist && tsc && webpack"
   }
 }
