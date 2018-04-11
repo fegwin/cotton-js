@@ -7,7 +7,7 @@ export class BoundingBox {
     this.size = size;
   }
 
-  overlaps(box) {
+  overlaps(box: BoundingBox) {
     return (
       this.bottom > box.top &&
       this.top < box.bottom &&
@@ -62,4 +62,5 @@ export class Vec {
   }
 }
 
-export const getRandomNumber = (min, max) => Math.random() * (max - min) + min;
+export const getRandomNumber = (min: number, max: number) =>
+  Math.random() * (max - min) + min;

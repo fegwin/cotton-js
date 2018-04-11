@@ -7,7 +7,7 @@ export default class Layer {
   buffer: HTMLCanvasElement;
   bufferContext: CanvasRenderingContext2D;
 
-  constructor(width: number, height: number, entities = []) {
+  constructor(width: number, height: number, entities: Entity[] = []) {
     this.entities = entities;
     this.width = width;
     this.height = height;

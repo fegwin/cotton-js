@@ -3,7 +3,7 @@ import Trait from "./Trait";
 
 export default class Entity {
   name: string;
-  traits: Trait[];
+  traits: { [id: string]: Trait }[];
 
   lifetime: number;
   size: Vec;
@@ -12,10 +12,9 @@ export default class Entity {
 
   bounds: BoundingBox;
 
-  constructor(traits = []) {
+  constructor(traits: Trait[] = []) {
     this.name = "entity";
 
-    this.traits = traits;
     this.pos = new Vec(0, 0);
     this.vel = new Vec(0, 0);
     this.size = new Vec(0, 0);
@@ -23,12 +22,13 @@ export default class Entity {
     this.lifetime = 0;
 
     this.calculateBounds();
-    this.initialiseTraits();
+    this.initialiseTraits(traits);
   }
 
-  initialiseTraits() {
-    this.traits.forEach(trait => {
-      this[trait.getName()] = trait;
+  initialiseTraits(traits: Trait[]): void {
+    const traitsDic = this.traits;
+    traits.forEach(trait => {
+      traitsDic[trait.getName()] = trait;
     });
   }
 
