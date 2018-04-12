@@ -1,4 +1,4 @@
-import Compositor from "./Compositor";
+import Compositor from "./compositor";
 
 export default class Animator {
   context: any;

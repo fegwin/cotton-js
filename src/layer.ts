@@ -1,4 +1,4 @@
-import Entity from "./Entity";
+import Entity from "./entity";
 
 export default class Layer {
   entities: Entity[];

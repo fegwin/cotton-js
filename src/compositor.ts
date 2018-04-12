@@ -1,4 +1,4 @@
-import Layer from "./Layer";
+import Layer from './layer';
 
 export default class Compositor {
   bufferContext: CanvasRenderingContext2D;
@@ -7,10 +7,10 @@ export default class Compositor {
 
   constructor(width: number, height: number, layers: Layer[] = []) {
     this.layers = layers;
-    this.buffer = document.createElement("canvas");
+    this.buffer = document.createElement('canvas');
     this.buffer.width = width;
     this.buffer.height = height;
-    this.bufferContext = this.buffer.getContext("2d");
+    this.bufferContext = this.buffer.getContext('2d');
   }
 
   addLayer(layer: Layer) {

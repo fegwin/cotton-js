@@ -1,5 +1,5 @@
 import { BoundingBox, Vec } from "./util/math";
-import Trait from "./Trait";
+import Trait from "./trait";
 
 export default class Entity {
   name: string;
