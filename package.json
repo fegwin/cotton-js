@@ -1,5 +1,5 @@
 {
-  "name": "cotton-js",
+  "name": "@agierens/cotton-js",
   "version": "1.0.0",
   "description": "A canvas 2D object oriented rendering engine. (Get it? Cotton? Canvas? 🥋)",
   "main": "dist/cotton.js",
@@ -14,6 +14,7 @@
     "typescript": "^2.8.1"
   },
   "scripts": {
-    "dist": "rm -rf build && rm -rf dist && tsc"
+    "dist": "rm -rf build && rm -rf dist && tsc",
+    "prepublish": "npm run dist"
   }
 }
