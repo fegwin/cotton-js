@@ -1,13 +1,13 @@
 import Compositor from "./compositor";
 
 export default class Animator {
-  context: any;
-  compositor: Compositor;
-  deltaTime: number;
-  lastTime: number;
-  accumulatedTime: number;
+  private context: any;
+  private compositor: Compositor;
+  private deltaTime: number;
+  private lastTime: number;
+  private accumulatedTime: number;
 
-  constructor(
+  public constructor(
     compositor: Compositor,
     context: CanvasRenderingContext2D,
     deltaTime: number = 1 / 60
@@ -20,11 +20,11 @@ export default class Animator {
     this.context = context;
   }
 
-  enqueue() {
+  protected enqueue(): void {
     window.requestAnimationFrame(this.update);
   }
 
-  update(time: number) {
+  protected update(time: number): void {
     this.accumulatedTime += (time - this.lastTime) / 1000;
 
     if (this.accumulatedTime > 1) {
@@ -41,12 +41,12 @@ export default class Animator {
     this.enqueue();
   }
 
-  animate(deltaTime: number) {
+  protected animate(deltaTime: number): void {
     this.compositor.update(deltaTime);
     this.compositor.draw(this.context);
   }
 
-  start() {
+  public start(): void {
     this.enqueue();
   }
 }
