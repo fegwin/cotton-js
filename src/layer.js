@@ -1,4 +1,6 @@
-export default class Layer {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class Layer {
     constructor(width, height, entities = []) {
         this.entities = entities;
         this.width = width;
@@ -17,4 +19,5 @@ export default class Layer {
         context.drawImage(this.buffer, 0, 0);
     }
 }
+exports.default = Layer;
 //# sourceMappingURL=layer.js.map
