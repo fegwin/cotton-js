@@ -1,13 +1,13 @@
 import Entity from "./entity";
 
 export default class Layer {
-  entities: Entity[];
-  width: number;
-  height: number;
-  buffer: HTMLCanvasElement;
-  bufferContext: CanvasRenderingContext2D;
+  private entities: Entity[];
+  private width: number;
+  private height: number;
+  private buffer: HTMLCanvasElement;
+  private bufferContext: CanvasRenderingContext2D;
 
-  constructor(width: number, height: number, entities: Entity[] = []) {
+  public constructor(width: number, height: number, entities: Entity[] = []) {
     this.entities = entities;
     this.width = width;
     this.height = height;
@@ -18,13 +18,13 @@ export default class Layer {
     this.bufferContext = this.buffer.getContext("2d");
   }
 
-  update(deltaTime: number) {
+  public update(deltaTime: number): void {
     this.entities.forEach(entity => entity.update(deltaTime));
   }
 
-  draw(context: CanvasRenderingContext2D) {
+  public draw(context: CanvasRenderingContext2D): void {
     this.bufferContext.clearRect(0, 0, this.width, this.height);
-    this.entities.forEach(entity => entity.draw());
+    this.entities.forEach(entity => entity.draw(context));
     context.drawImage(this.buffer, 0, 0);
   }
 }
