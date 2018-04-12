@@ -3,5 +3,11 @@ import Layer from "./layer";
 import Entity from "./entity";
 import Animator from "./animator";
 import Compositor from "./compositor";
-export { util, Layer, Entity, Animator, Compositor };
+export default {
+    util,
+    Layer,
+    Entity,
+    Animator,
+    Compositor
+};
 //# sourceMappingURL=index.js.map

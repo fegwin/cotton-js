@@ -4,7 +4,7 @@ import Entity from "./entity";
 import Animator from "./animator";
 import Compositor from "./compositor";
 
-export {
+export default {
   util,
   Layer,
   Entity,
