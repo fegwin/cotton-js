@@ -31,6 +31,14 @@ export default class Entity {
     });
   }
 
+  addTrait(trait: Trait) {
+    this.traits[trait.getName()] = trait;
+  }
+
+  removeTrait(trait: Trait) {
+    delete this.traits[trait.getName()];
+  }
+
   calculateBounds() {
     this.bounds = new BoundingBox(this.pos, this.size);
   }
@@ -45,6 +53,7 @@ export default class Entity {
     for (var trait in this.traits) {
       this.traits[trait].update(this, deltaTime);
     }
+    
     this.lifetime += deltaTime;
   }
 }

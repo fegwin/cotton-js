@@ -48,6 +48,7 @@ export class BoundingBox {
     this.pos.x = x - this.size.x;
   }
 }
+
 export class Vec {
   x: number;
   y: number;
