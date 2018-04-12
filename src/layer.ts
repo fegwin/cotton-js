@@ -18,6 +18,16 @@ export default class Layer {
     this.bufferContext = this.buffer.getContext("2d");
   }
 
+  public addEntity(entity: Entity): void {
+    this.entities.push(entity);
+  }
+
+  public removeEntity(entity: Entity): void {
+    this.entities = this.entities.filter((e) => {
+      return e !== entity;
+    });
+  }
+
   public update(deltaTime: number): void {
     this.entities.forEach(entity => entity.update(deltaTime));
   }

@@ -17,6 +17,12 @@ export default class Compositor {
     this.layers.push(layer);
   }
 
+  public removeLayer(layer: Layer): void {
+    this.layers = this.layers.filter((l) => {
+      return l !== layer;
+    });
+  }
+
   public update(deltaTime: number): void {
     this.layers.forEach(layer => layer.update(deltaTime));
   }
