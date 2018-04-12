@@ -1,3 +1,3 @@
-const loader = require('./build');
+const loader = require('./dist');
 
 module.exports = loader;

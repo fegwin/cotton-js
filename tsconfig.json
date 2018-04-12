@@ -4,8 +4,8 @@
     "module": "none",
     "target": "es6",
     "noImplicitAny": true,
-    "outDir": "build",
-    "sourceMap": true,
+    "outDir": "dist",
+    "sourceMap": false,
     "removeComments": true,
   }
 }
