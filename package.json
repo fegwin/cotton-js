@@ -11,10 +11,13 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.10.0",
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.1",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14"
   },
   "scripts": {
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "build": "rm -rf build && rm -rf dist && tsc && webpack"
   }
 }
