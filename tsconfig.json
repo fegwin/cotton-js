@@ -5,7 +5,7 @@
     "target": "es6",
     "noImplicitAny": true,
     "outDir": "build",
-    "sourceMap": false,
+    "sourceMap": true,
     "removeComments": true,
   }
 }
