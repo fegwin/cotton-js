@@ -1,0 +1,2 @@
+;
+//# sourceMappingURL=Trait.js.map

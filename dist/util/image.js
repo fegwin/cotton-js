@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class CottonImage {
+export default class CottonImage {
     loadImage(url) {
         return new Promise(resolve => {
             const img = new Image();
@@ -11,5 +9,4 @@ class CottonImage {
         });
     }
 }
-exports.default = CottonImage;
 //# sourceMappingURL=image.js.map

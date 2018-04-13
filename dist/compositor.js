@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Compositor {
+export default class Compositor {
     constructor(width, height, layers = []) {
         this.layers = layers;
         this.buffer = document.createElement('canvas');
@@ -19,5 +17,4 @@ class Compositor {
         context.drawImage(this.buffer, 0, 0);
     }
 }
-exports.default = Compositor;
 //# sourceMappingURL=compositor.js.map

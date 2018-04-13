@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class BoundingBox {
+export class BoundingBox {
     constructor(pos, size) {
         this.pos = pos;
         this.size = size;
@@ -36,8 +34,7 @@ class BoundingBox {
         this.pos.x = x - this.size.x;
     }
 }
-exports.BoundingBox = BoundingBox;
-class Vec {
+export class Vec {
     constructor(x, y) {
         this.set(x, y);
     }
@@ -46,6 +43,5 @@ class Vec {
         this.y = y;
     }
 }
-exports.Vec = Vec;
-exports.getRandomNumber = (min, max) => Math.random() * (max - min) + min;
+export const getRandomNumber = (min, max) => Math.random() * (max - min) + min;
 //# sourceMappingURL=math.js.map

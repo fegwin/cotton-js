@@ -1,6 +1,6 @@
 {
   "name": "cotton-js",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A canvas 2D object oriented rendering engine. (Get it? Cotton? Canvas? 🥋)",
   "main": "dist/cotton.js",
   "repository": "https://github.com/fegwin/cotton-js",
@@ -12,12 +12,10 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.10.0",
     "ts-loader": "^4.2.0",
-    "typescript": "^2.8.1",
-    "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14"
+    "typescript": "^2.8.1"
   },
   "scripts": {
-    "webpack": "webpack",
-    "build": "rm -rf build && rm -rf dist && tsc && webpack"
+    "prepublish": "npm run dist",
+    "dist": "rm -rf dist && tsc"
   }
 }

@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const math_1 = require("./util/math");
-class Entity {
+import { BoundingBox, Vec } from "./util/math";
+export default class Entity {
     constructor(traits = []) {
         this.name = "entity";
-        this.pos = new math_1.Vec(0, 0);
-        this.vel = new math_1.Vec(0, 0);
-        this.size = new math_1.Vec(0, 0);
+        this.pos = new Vec(0, 0);
+        this.vel = new Vec(0, 0);
+        this.size = new Vec(0, 0);
         this.lifetime = 0;
         this.calculateBounds();
         this.initialiseTraits(traits);
@@ -17,7 +15,7 @@ class Entity {
         });
     }
     calculateBounds() {
-        this.bounds = new math_1.BoundingBox(this.pos, this.size);
+        this.bounds = new BoundingBox(this.pos, this.size);
     }
     draw() {
         throw new Error(`This needs to be implemented by the child class (${this.name})`);
@@ -29,5 +27,4 @@ class Entity {
         this.lifetime += deltaTime;
     }
 }
-exports.default = Entity;
 //# sourceMappingURL=entity.js.map
