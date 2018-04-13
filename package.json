@@ -1,6 +1,6 @@
 {
   "name": "cotton-js",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A canvas 2D object oriented rendering engine. (Get it? Cotton? Canvas? 🥋)",
   "main": "dist/cotton.js",
   "repository": "https://github.com/fegwin/cotton-js",
@@ -16,6 +16,6 @@
   },
   "scripts": {
     "prepublish": "npm run dist",
-    "dist": "rm -rf build && rm -rf dist && tsc"
+    "dist": "rm -rf dist && tsc"
   }
 }

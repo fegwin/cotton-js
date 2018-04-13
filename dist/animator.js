@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Animator {
+export default class Animator {
     constructor(compositor, context, deltaTime = 1 / 60) {
         this.accumulatedTime = 0;
         this.lastTime = 0;
@@ -31,5 +29,4 @@ class Animator {
         this.enqueue();
     }
 }
-exports.default = Animator;
 //# sourceMappingURL=animator.js.map
