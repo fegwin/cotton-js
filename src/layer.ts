@@ -1,6 +1,6 @@
-import Entity from "./entity";
+import { Entity } from './entity';
 
-export default class Layer {
+export class Layer {
   entities: Entity[];
   width: number;
   height: number;
@@ -12,10 +12,10 @@ export default class Layer {
     this.width = width;
     this.height = height;
 
-    this.buffer = document.createElement("canvas");
+    this.buffer = document.createElement('canvas');
     this.buffer.width = width;
     this.buffer.height = height;
-    this.bufferContext = this.buffer.getContext("2d");
+    this.bufferContext = this.buffer.getContext('2d');
   }
 
   update(deltaTime: number) {

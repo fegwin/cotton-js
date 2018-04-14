@@ -1,7 +1,7 @@
-import { BoundingBox, Vec } from "./util/math";
-import Trait from "./trait";
+import { BoundingBox, Vec } from './util/math';
+import { Trait } from './trait';
 
-export default class Entity {
+export class Entity {
   name: string;
   traits: { [id: string]: Trait };
 
@@ -13,7 +13,7 @@ export default class Entity {
   bounds: BoundingBox;
 
   constructor(traits: Trait[] = []) {
-    this.name = "entity";
+    this.name = 'entity';
 
     this.pos = new Vec(0, 0);
     this.vel = new Vec(0, 0);
@@ -36,9 +36,7 @@ export default class Entity {
   }
 
   draw() {
-    throw new Error(
-      `This needs to be implemented by the child class (${this.name})`
-    );
+    throw new Error(`This needs to be implemented by the child class (${this.name})`);
   }
 
   update(deltaTime: number) {

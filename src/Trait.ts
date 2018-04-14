@@ -1,6 +1,6 @@
-import Entity from "./entity";
+import { Entity } from './entity';
 
-export default interface Trait {
+export interface Trait {
   update(entity: Entity, deltaTime: number): void;
   getName(): string;
-};
+}

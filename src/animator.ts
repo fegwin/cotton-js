@@ -1,6 +1,6 @@
-import Compositor from "./compositor";
+import { Compositor } from './compositor';
 
-export default class Animator {
+export class Animator {
   context: any;
   compositor: Compositor;
   deltaTime: number;
@@ -10,7 +10,7 @@ export default class Animator {
   constructor(
     compositor: Compositor,
     context: CanvasRenderingContext2D,
-    deltaTime: number = 1 / 60
+    deltaTime: number = 1 / 60,
   ) {
     this.accumulatedTime = 0;
     this.lastTime = 0;

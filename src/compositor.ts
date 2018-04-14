@@ -1,6 +1,6 @@
-import Layer from './layer';
+import { Layer } from './layer';
 
-export default class Compositor {
+export class Compositor {
   bufferContext: CanvasRenderingContext2D;
   buffer: HTMLCanvasElement;
   layers: Layer[];

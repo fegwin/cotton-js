@@ -1,3 +1,3 @@
-import cotton from './dist';
+import * as cotton from './dist';
 
 module.exports = cotton;

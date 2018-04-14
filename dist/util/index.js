@@ -1,11 +1,13 @@
-import image from "./image";
-import json from "./json";
-import { BoundingBox, getRandomNumber, Vec } from "./math";
-export default {
-    image,
-    json,
-    BoundingBox,
-    getRandomNumber,
-    Vec,
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var image_1 = require("./image");
+var json_1 = require("./json");
+var math_1 = require("./math");
+exports.util = {
+    CottonImage: image_1.CottonImage,
+    Json: json_1.Json,
+    BoundingBox: math_1.BoundingBox,
+    getRandomNumber: math_1.getRandomNumber,
+    Vec: math_1.Vec,
 };
 //# sourceMappingURL=index.js.map

@@ -1,15 +1,18 @@
-export default class Animator {
-    constructor(compositor, context, deltaTime = 1 / 60) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Animator = (function () {
+    function Animator(compositor, context, deltaTime) {
+        if (deltaTime === void 0) { deltaTime = 1 / 60; }
         this.accumulatedTime = 0;
         this.lastTime = 0;
         this.deltaTime = deltaTime;
         this.compositor = compositor;
         this.context = context;
     }
-    enqueue() {
+    Animator.prototype.enqueue = function () {
         window.requestAnimationFrame(this.update);
-    }
-    update(time) {
+    };
+    Animator.prototype.update = function (time) {
         this.accumulatedTime += (time - this.lastTime) / 1000;
         if (this.accumulatedTime > 1) {
             this.accumulatedTime = 1;
@@ -20,13 +23,15 @@ export default class Animator {
         }
         this.lastTime = time;
         this.enqueue();
-    }
-    animate(deltaTime) {
+    };
+    Animator.prototype.animate = function (deltaTime) {
         this.compositor.update(deltaTime);
         this.compositor.draw(this.context);
-    }
-    start() {
+    };
+    Animator.prototype.start = function () {
         this.enqueue();
-    }
-}
+    };
+    return Animator;
+}());
+exports.Animator = Animator;
 //# sourceMappingURL=animator.js.map

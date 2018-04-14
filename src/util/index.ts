@@ -1,10 +1,10 @@
-import image from "./image";
-import json from "./json";
-import { BoundingBox, getRandomNumber, Vec } from "./math";
+import { CottonImage } from './image';
+import { Json } from './json';
+import { BoundingBox, getRandomNumber, Vec } from './math';
 
-export default {
-  image,
-  json,
+export const util = {
+  CottonImage,
+  Json,
   BoundingBox,
   getRandomNumber,
   Vec,

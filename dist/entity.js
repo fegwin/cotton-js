@@ -1,30 +1,36 @@
-import { BoundingBox, Vec } from "./util/math";
-export default class Entity {
-    constructor(traits = []) {
-        this.name = "entity";
-        this.pos = new Vec(0, 0);
-        this.vel = new Vec(0, 0);
-        this.size = new Vec(0, 0);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var math_1 = require("./util/math");
+var Entity = (function () {
+    function Entity(traits) {
+        if (traits === void 0) { traits = []; }
+        this.name = 'entity';
+        this.pos = new math_1.Vec(0, 0);
+        this.vel = new math_1.Vec(0, 0);
+        this.size = new math_1.Vec(0, 0);
         this.lifetime = 0;
         this.calculateBounds();
         this.initialiseTraits(traits);
     }
-    initialiseTraits(traits) {
-        traits.forEach(trait => {
-            this.traits[trait.getName()] = trait;
+    Entity.prototype.initialiseTraits = function (traits) {
+        var _this = this;
+        traits.forEach(function (trait) {
+            _this.traits[trait.getName()] = trait;
         });
-    }
-    calculateBounds() {
-        this.bounds = new BoundingBox(this.pos, this.size);
-    }
-    draw() {
-        throw new Error(`This needs to be implemented by the child class (${this.name})`);
-    }
-    update(deltaTime) {
+    };
+    Entity.prototype.calculateBounds = function () {
+        this.bounds = new math_1.BoundingBox(this.pos, this.size);
+    };
+    Entity.prototype.draw = function () {
+        throw new Error("This needs to be implemented by the child class (" + this.name + ")");
+    };
+    Entity.prototype.update = function (deltaTime) {
         for (var trait in this.traits) {
             this.traits[trait].update(this, deltaTime);
         }
         this.lifetime += deltaTime;
-    }
-}
+    };
+    return Entity;
+}());
+exports.Entity = Entity;
 //# sourceMappingURL=entity.js.map

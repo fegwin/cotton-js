@@ -1,4 +1,6 @@
-export default class CottonImage {
+import { Promise } from 'es6-promise';
+
+export class CottonImage {
   loadImage(url: string): Promise<HTMLImageElement> {
     return new Promise(resolve => {
       const img = new Image();
