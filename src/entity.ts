@@ -11,10 +11,11 @@ export abstract class Entity {
   private pos: Vec;
 
   private bounds: BoundingBox;
-  private buffer: HTMLCanvasElement;
-  private bufferContext: CanvasRenderingContext2D;
 
-  constructor(pos: Vec, vel: Vec, size: Vec, traits: Trait[] = []) {
+  private bufferContext: CanvasRenderingContext2D;
+  private buffer: HTMLCanvasElement;
+
+  public constructor(pos: Vec, vel: Vec, size: Vec, traits: Trait[] = []) {
     this.name = 'entity';
 
     this.pos = pos;
@@ -29,23 +30,34 @@ export abstract class Entity {
     this.buffer = document.createElement('canvas');
     this.buffer.width = this.size.x;
     this.buffer.height = this.size.y;
+
     this.bufferContext = this.buffer.getContext('2d');
   }
 
-  initialiseTraits(traits: Trait[]): void {
+  private initialiseTraits(traits: Trait[]): void {
     traits.forEach(trait => {
       this.traits[trait.getName()] = trait;
     });
   }
 
-  calculateBounds() {
+  private calculateBounds() {
     this.bounds = new BoundingBox(this.pos, this.size);
   }
 
-  abstract drawToBuffer: void;
+  // not too sure about this.
+  // kinda sucks that you need a setup method,
+  // but its to avoid having to call initial render in every
+  // derived class's constructor.
+  public setup() {
+    this.initialRender(this.bufferContext);
+  }
 
-  public draw(context: CanvasRenderingContext2D): void {
-    context.drawImage(this.buffer, this.pos.x, this.pos.y);
+  protected abstract initialRender(bufferContext: CanvasRenderingContext2D): void;
+  protected updateRender(bufferContext: CanvasRenderingContext2D): void {}
+
+  public drawTo(bufferContext: CanvasRenderingContext2D): void {
+    this.updateRender(this.bufferContext);
+    bufferContext.drawImage(this.buffer, this.pos.x, this.pos.y);
   }
 
   update(deltaTime: number): void {

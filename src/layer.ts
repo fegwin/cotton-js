@@ -19,7 +19,12 @@ export class Layer {
   }
 
   public addEntity(entity: Entity): void {
-    this.entities.push(entity);
+    this.addEntities([entity]);
+  }
+
+  public addEntities(entities: Entity[]): void {
+    entities.forEach(entity => entity.setup());
+    this.entities = this.entities.concat(entities);
   }
 
   public removeEntity(entity: Entity): void {
@@ -32,9 +37,9 @@ export class Layer {
     this.entities.forEach(entity => entity.update(deltaTime));
   }
 
-  public draw(context: CanvasRenderingContext2D): void {
+  public drawOnTo(bufferContext: CanvasRenderingContext2D): void {
     this.bufferContext.clearRect(0, 0, this.width, this.height);
-    this.entities.forEach(entity => entity.draw(context));
-    context.drawImage(this.buffer, 0, 0);
+    this.entities.forEach(entity => entity.drawTo(this.bufferContext));
+    bufferContext.drawImage(this.buffer, 0, 0);
   }
 }

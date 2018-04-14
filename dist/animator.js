@@ -28,7 +28,7 @@ var Animator = (function () {
     };
     Animator.prototype.animate = function (deltaTime) {
         this.compositor.update(deltaTime);
-        this.compositor.draw(this.context);
+        this.compositor.drawOnTo(this.context);
     };
     Animator.prototype.start = function () {
         this.enqueue();

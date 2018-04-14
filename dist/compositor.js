@@ -15,10 +15,10 @@ var Compositor = (function () {
     Compositor.prototype.update = function (deltaTime) {
         this.layers.forEach(function (layer) { return layer.update(deltaTime); });
     };
-    Compositor.prototype.draw = function (context) {
+    Compositor.prototype.drawOnTo = function (bufferContext) {
         var _this = this;
-        this.layers.forEach(function (layer) { return layer.draw(_this.bufferContext); });
-        context.drawImage(this.buffer, 0, 0);
+        this.layers.forEach(function (layer) { return layer.drawOnTo(_this.bufferContext); });
+        bufferContext.drawImage(this.buffer, 0, 0);
     };
     return Compositor;
 }());

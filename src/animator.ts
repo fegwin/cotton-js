@@ -46,7 +46,7 @@ export class Animator {
 
   protected animate(deltaTime: number): void {
     this.compositor.update(deltaTime);
-    this.compositor.draw(this.context);
+    this.compositor.drawOnTo(this.context);
   }
 
   protected start(): void {

@@ -21,8 +21,9 @@ export class Compositor {
     this.layers.forEach(layer => layer.update(deltaTime));
   }
 
-  public draw(context: CanvasRenderingContext2D): void {
-    this.layers.forEach(layer => layer.draw(this.bufferContext));
-    context.drawImage(this.buffer, 0, 0);
+  public drawOnTo(bufferContext: CanvasRenderingContext2D): void {
+    this.layers.forEach(layer => layer.drawOnTo(this.bufferContext));
+
+    bufferContext.drawImage(this.buffer, 0, 0);
   }
 }

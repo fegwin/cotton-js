@@ -12,7 +12,11 @@ var Layer = (function () {
         this.bufferContext = this.buffer.getContext('2d');
     }
     Layer.prototype.addEntity = function (entity) {
-        this.entities.push(entity);
+        this.addEntities([entity]);
+    };
+    Layer.prototype.addEntities = function (entities) {
+        entities.forEach(function (entity) { return entity.setup(); });
+        this.entities = this.entities.concat(entities);
     };
     Layer.prototype.removeEntity = function (entity) {
         this.entities = this.entities.filter(function (e) {
@@ -22,10 +26,11 @@ var Layer = (function () {
     Layer.prototype.update = function (deltaTime) {
         this.entities.forEach(function (entity) { return entity.update(deltaTime); });
     };
-    Layer.prototype.draw = function (context) {
+    Layer.prototype.drawOnTo = function (bufferContext) {
+        var _this = this;
         this.bufferContext.clearRect(0, 0, this.width, this.height);
-        this.entities.forEach(function (entity) { return entity.draw(context); });
-        context.drawImage(this.buffer, 0, 0);
+        this.entities.forEach(function (entity) { return entity.drawTo(_this.bufferContext); });
+        bufferContext.drawImage(this.buffer, 0, 0);
     };
     return Layer;
 }());

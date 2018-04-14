@@ -25,8 +25,13 @@ var Entity = (function () {
     Entity.prototype.calculateBounds = function () {
         this.bounds = new math_1.BoundingBox(this.pos, this.size);
     };
-    Entity.prototype.draw = function (context) {
-        context.drawImage(this.buffer, this.pos.x, this.pos.y);
+    Entity.prototype.setup = function () {
+        this.initialRender(this.bufferContext);
+    };
+    Entity.prototype.updateRender = function (bufferContext) { };
+    Entity.prototype.drawTo = function (bufferContext) {
+        this.updateRender(this.bufferContext);
+        bufferContext.drawImage(this.buffer, this.pos.x, this.pos.y);
     };
     Entity.prototype.update = function (deltaTime) {
         for (var trait in this.traits) {
