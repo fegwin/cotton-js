@@ -1,9 +1,14 @@
 import { Entity } from './entity';
+import { BoundingBox, Vec } from './util/math';
 
 export class Layer {
-  private entities: Entity[];
   private width: number;
   private height: number;
+
+  public bounds: BoundingBox;
+
+  private entities: Entity[];
+
   private buffer: HTMLCanvasElement;
   private bufferContext: CanvasRenderingContext2D;
 
@@ -12,10 +17,16 @@ export class Layer {
     this.width = width;
     this.height = height;
 
+    this.calculateBounds();
+
     this.buffer = document.createElement('canvas');
     this.buffer.width = width;
     this.buffer.height = height;
     this.bufferContext = this.buffer.getContext('2d');
+  }
+
+  private calculateBounds() {
+    this.bounds = new BoundingBox(new Vec(0, 0), new Vec(this.width, this.height));
   }
 
   public addEntity(entity: Entity): void {
@@ -34,12 +45,20 @@ export class Layer {
   }
 
   public update(deltaTime: number): void {
-    this.entities.forEach(entity => entity.update(deltaTime));
+    for (var i = 0; i < this.entities.length; i++) {
+      this.entities[i].update(deltaTime);
+    }
   }
 
   public drawOnTo(bufferContext: CanvasRenderingContext2D): void {
     this.bufferContext.clearRect(0, 0, this.width, this.height);
-    this.entities.forEach(entity => entity.drawTo(this.bufferContext));
+
+    for (var i = 0; i < this.entities.length; i++) {
+      var entity = this.entities[i];
+      // Only draw the entity if it is visible.
+      if (BoundingBox.overlaps(this.bounds, entity.bounds)) entity.drawTo(this.bufferContext);
+    }
+
     bufferContext.drawImage(this.buffer, 0, 0);
   }
 }

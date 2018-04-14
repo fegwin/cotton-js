@@ -26,12 +26,18 @@ var Entity = (function () {
         this.bounds = new math_1.BoundingBox(this.pos, this.size);
     };
     Entity.prototype.setup = function () {
+        var debug = false;
         this.initialRender(this.bufferContext);
+        if (debug) {
+            this.bufferContext.strokeStyle = 'green';
+            this.bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
+            this.bufferContext.stroke();
+        }
     };
     Entity.prototype.updateRender = function (bufferContext) { };
     Entity.prototype.drawTo = function (bufferContext) {
         this.updateRender(this.bufferContext);
-        bufferContext.drawImage(this.buffer, this.pos.x, this.pos.y);
+        bufferContext.drawImage(this.buffer, this.pos.x << 0, this.pos.y << 0);
     };
     Entity.prototype.update = function (deltaTime) {
         for (var trait in this.traits) {

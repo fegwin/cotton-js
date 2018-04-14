@@ -18,11 +18,15 @@ export class Compositor {
   }
 
   public update(deltaTime: number): void {
-    this.layers.forEach(layer => layer.update(deltaTime));
+    for (var i = 0; i < this.layers.length; i++) {
+      this.layers[i].update(deltaTime);
+    }
   }
 
   public drawOnTo(bufferContext: CanvasRenderingContext2D): void {
-    this.layers.forEach(layer => layer.drawOnTo(this.bufferContext));
+    for (var i = 0; i < this.layers.length; i++) {
+      this.layers[i].drawOnTo(this.bufferContext);
+    }
 
     bufferContext.drawImage(this.buffer, 0, 0);
   }

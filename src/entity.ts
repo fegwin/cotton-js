@@ -10,7 +10,7 @@ export abstract class Entity {
   private vel: Vec;
   private pos: Vec;
 
-  private bounds: BoundingBox;
+  public bounds: BoundingBox;
 
   private bufferContext: CanvasRenderingContext2D;
   private buffer: HTMLCanvasElement;
@@ -49,7 +49,17 @@ export abstract class Entity {
   // but its to avoid having to call initial render in every
   // derived class's constructor.
   public setup() {
+    // gives you a nice little box around your entity
+    // to see whats going on.
+    var debug = false;
+
     this.initialRender(this.bufferContext);
+
+    if (debug) {
+      this.bufferContext.strokeStyle = 'green';
+      this.bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
+      this.bufferContext.stroke();
+    }
   }
 
   protected abstract initialRender(bufferContext: CanvasRenderingContext2D): void;
@@ -57,7 +67,10 @@ export abstract class Entity {
 
   public drawTo(bufferContext: CanvasRenderingContext2D): void {
     this.updateRender(this.bufferContext);
-    bufferContext.drawImage(this.buffer, this.pos.x, this.pos.y);
+    // since we're going for performance here, this.pos.x << 0 is the faster
+    // equivalent of math.floor. we're making sure the value is an integer,
+    // so do avoid sub pixel rendering.
+    bufferContext.drawImage(this.buffer, this.pos.x << 0, this.pos.y << 0);
   }
 
   update(deltaTime: number): void {
