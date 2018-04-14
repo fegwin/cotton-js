@@ -21,9 +21,6 @@ var Entity = (function () {
     Entity.prototype.calculateBounds = function () {
         this.bounds = new math_1.BoundingBox(this.pos, this.size);
     };
-    Entity.prototype.draw = function () {
-        throw new Error("This needs to be implemented by the child class (" + this.name + ")");
-    };
     Entity.prototype.update = function (deltaTime) {
         for (var trait in this.traits) {
             this.traits[trait].update(this, deltaTime);

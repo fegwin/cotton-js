@@ -1,7 +1,7 @@
 import { BoundingBox, Vec } from './util/math';
 import { Trait } from './trait';
 
-export class Entity {
+export abstract class Entity {
   name: string;
   traits: { [id: string]: Trait };
 
@@ -35,9 +35,7 @@ export class Entity {
     this.bounds = new BoundingBox(this.pos, this.size);
   }
 
-  draw() {
-    throw new Error(`This needs to be implemented by the child class (${this.name})`);
-  }
+  abstract draw(): void;
 
   update(deltaTime: number) {
     for (var trait in this.traits) {
