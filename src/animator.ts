@@ -18,6 +18,9 @@ export class Animator {
 
     this.compositor = compositor;
     this.context = context;
+
+    this.update = this.update.bind(this);
+    this.animate = this.animate.bind(this);
   }
 
   enqueue() {

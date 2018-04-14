@@ -8,6 +8,8 @@ var Animator = (function () {
         this.deltaTime = deltaTime;
         this.compositor = compositor;
         this.context = context;
+        this.update = this.update.bind(this);
+        this.animate = this.animate.bind(this);
     }
     Animator.prototype.enqueue = function () {
         window.requestAnimationFrame(this.update);
