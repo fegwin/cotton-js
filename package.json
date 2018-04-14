@@ -16,7 +16,8 @@
     "typescript": "^2.8.1"
   },
   "scripts": {
-    "prepublish": "npm run dist",
+    "prepublish": "yarn dist",
+    "build": "yarn prepublish",
     "dist": "rm -rf dist && tsc"
   }
 }
