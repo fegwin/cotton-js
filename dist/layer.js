@@ -4,14 +4,15 @@ var math_1 = require("./util/math");
 var Layer = (function () {
     function Layer(width, height, entities) {
         if (entities === void 0) { entities = []; }
-        this.entities = entities;
+        this.entities = [];
         this.width = width;
         this.height = height;
-        this.calculateBounds();
         this.buffer = document.createElement('canvas');
         this.buffer.width = width;
         this.buffer.height = height;
         this.bufferContext = this.buffer.getContext('2d');
+        this.calculateBounds();
+        this.addEntities(entities);
     }
     Layer.prototype.calculateBounds = function () {
         this.bounds = new math_1.BoundingBox(new math_1.Vec(0, 0), new math_1.Vec(this.width, this.height));

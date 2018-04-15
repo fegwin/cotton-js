@@ -20,7 +20,6 @@ export class Animator {
     this.context = context;
 
     this.update = this.update.bind(this);
-    this.animate = this.animate.bind(this);
   }
 
   protected enqueue(): void {
@@ -35,18 +34,14 @@ export class Animator {
     }
 
     while (this.accumulatedTime > this.deltaTime) {
-      this.animate(this.deltaTime);
+      this.compositor.update(this.deltaTime);
       this.accumulatedTime -= this.deltaTime;
     }
 
+    this.compositor.drawOnTo(this.context);
     this.lastTime = time;
 
     this.enqueue();
-  }
-
-  protected animate(deltaTime: number): void {
-    this.compositor.update(deltaTime);
-    this.compositor.drawOnTo(this.context);
   }
 
   protected start(): void {

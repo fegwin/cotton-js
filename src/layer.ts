@@ -7,22 +7,22 @@ export class Layer {
 
   public bounds: BoundingBox;
 
-  private entities: Entity[];
+  private entities: Entity[] = [];
 
   private buffer: HTMLCanvasElement;
   private bufferContext: CanvasRenderingContext2D;
 
   public constructor(width: number, height: number, entities: Entity[] = []) {
-    this.entities = entities;
     this.width = width;
     this.height = height;
-
-    this.calculateBounds();
 
     this.buffer = document.createElement('canvas');
     this.buffer.width = width;
     this.buffer.height = height;
     this.bufferContext = this.buffer.getContext('2d');
+
+    this.calculateBounds();
+    this.addEntities(entities);
   }
 
   private calculateBounds() {
