@@ -37,7 +37,7 @@ var Entity = (function () {
     Entity.prototype.updateRender = function (bufferContext) { };
     Entity.prototype.drawTo = function (bufferContext) {
         this.updateRender(this.bufferContext);
-        bufferContext.drawImage(this.buffer, this.pos.x << 0, this.pos.y << 0);
+        bufferContext.drawImage(this.buffer, (0.5 + this.pos.x) << 0, (0.5 + this.pos.y) << 0);
     };
     Entity.prototype.update = function (deltaTime) {
         for (var trait in this.traits) {

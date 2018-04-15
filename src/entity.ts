@@ -67,10 +67,10 @@ export abstract class Entity {
 
   public drawTo(bufferContext: CanvasRenderingContext2D): void {
     this.updateRender(this.bufferContext);
-    // since we're going for performance here, this.pos.x << 0 is the faster
-    // equivalent of math.floor. we're making sure the value is an integer,
+    // since we're going for performance here, (0.5 + this.pos.x) << 0 is the faster
+    // equivalent of math.round. we're making sure the value is an integer,
     // so do avoid sub pixel rendering.
-    bufferContext.drawImage(this.buffer, this.pos.x << 0, this.pos.y << 0);
+    bufferContext.drawImage(this.buffer, (0.5 + this.pos.x) << 0, (0.5 + this.pos.y) << 0);
   }
 
   update(deltaTime: number): void {
