@@ -1,26 +1,30 @@
 export class BoundingBox {
-  size: Vec;
-  pos: Vec;
+  private size: Vec;
+  private pos: Vec;
 
-  constructor(pos: Vec, size: Vec) {
+  public constructor(pos: Vec, size: Vec) {
     this.pos = pos;
     this.size = size;
   }
 
-  overlaps(box: BoundingBox) {
+  public overlaps(box: BoundingBox) {
+    return BoundingBox.overlaps(this, box);
+  }
+
+  public static overlaps(box1: BoundingBox, box2: BoundingBox) {
     return (
-      this.bottom > box.top &&
-      this.top < box.bottom &&
-      this.left < box.right &&
-      this.right > box.left
+      box1.bottom > box2.top &&
+      box1.top < box2.bottom &&
+      box1.left < box2.right &&
+      box1.right > box2.left
     );
   }
 
-  get bottom() {
+  public get bottom() {
     return this.pos.y + this.size.y;
   }
 
-  set bottom(y) {
+  public set bottom(y) {
     this.pos.y = y - this.size.y;
   }
 
@@ -49,18 +53,23 @@ export class BoundingBox {
   }
 }
 export class Vec {
-  x: number;
-  y: number;
+  public x: number;
+  public y: number;
 
-  constructor(x: number, y: number) {
+  public constructor(x: number, y: number) {
     this.set(x, y);
   }
 
-  set(x: number, y: number): void {
+  public set(x: number, y: number): void {
     this.x = x;
     this.y = y;
   }
 }
 
-export const getRandomNumber = (min: number, max: number) =>
-  Math.random() * (max - min) + min;
+export const getRandomNumber = (min: number, max: number) => Math.random() * (max - min) + min;
+
+export const getRandomInt = function(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+};

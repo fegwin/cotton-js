@@ -13,12 +13,15 @@ var Compositor = (function () {
         this.layers.push(layer);
     };
     Compositor.prototype.update = function (deltaTime) {
-        this.layers.forEach(function (layer) { return layer.update(deltaTime); });
+        for (var i = 0; i < this.layers.length; i++) {
+            this.layers[i].update(deltaTime);
+        }
     };
-    Compositor.prototype.draw = function (context) {
-        var _this = this;
-        this.layers.forEach(function (layer) { return layer.draw(_this.bufferContext); });
-        context.drawImage(this.buffer, 0, 0);
+    Compositor.prototype.drawOnTo = function (bufferContext) {
+        for (var i = 0; i < this.layers.length; i++) {
+            this.layers[i].drawOnTo(this.bufferContext);
+        }
+        bufferContext.drawImage(this.buffer, 0, 0);
     };
     return Compositor;
 }());

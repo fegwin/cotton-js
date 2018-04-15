@@ -9,7 +9,6 @@ var Animator = (function () {
         this.compositor = compositor;
         this.context = context;
         this.update = this.update.bind(this);
-        this.animate = this.animate.bind(this);
     }
     Animator.prototype.enqueue = function () {
         window.requestAnimationFrame(this.update);
@@ -20,15 +19,12 @@ var Animator = (function () {
             this.accumulatedTime = 1;
         }
         while (this.accumulatedTime > this.deltaTime) {
-            this.animate(this.deltaTime);
+            this.compositor.update(this.deltaTime);
             this.accumulatedTime -= this.deltaTime;
         }
+        this.compositor.drawOnTo(this.context);
         this.lastTime = time;
         this.enqueue();
-    };
-    Animator.prototype.animate = function (deltaTime) {
-        this.compositor.update(deltaTime);
-        this.compositor.draw(this.context);
     };
     Animator.prototype.start = function () {
         this.enqueue();

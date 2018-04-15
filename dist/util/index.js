@@ -8,6 +8,7 @@ exports.util = {
     Json: json_1.Json,
     BoundingBox: math_1.BoundingBox,
     getRandomNumber: math_1.getRandomNumber,
+    getRandomInt: math_1.getRandomInt,
     Vec: math_1.Vec,
 };
 //# sourceMappingURL=index.js.map

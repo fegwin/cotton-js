@@ -6,10 +6,13 @@ var BoundingBox = (function () {
         this.size = size;
     }
     BoundingBox.prototype.overlaps = function (box) {
-        return (this.bottom > box.top &&
-            this.top < box.bottom &&
-            this.left < box.right &&
-            this.right > box.left);
+        return BoundingBox.overlaps(this, box);
+    };
+    BoundingBox.overlaps = function (box1, box2) {
+        return (box1.bottom > box2.top &&
+            box1.top < box2.bottom &&
+            box1.left < box2.right &&
+            box1.right > box2.left);
     };
     Object.defineProperty(BoundingBox.prototype, "bottom", {
         get: function () {
@@ -65,7 +68,10 @@ var Vec = (function () {
     return Vec;
 }());
 exports.Vec = Vec;
-exports.getRandomNumber = function (min, max) {
-    return Math.random() * (max - min) + min;
+exports.getRandomNumber = function (min, max) { return Math.random() * (max - min) + min; };
+exports.getRandomInt = function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
 };
 //# sourceMappingURL=math.js.map

@@ -1,11 +1,11 @@
 import { Layer } from './layer';
 
 export class Compositor {
-  bufferContext: CanvasRenderingContext2D;
-  buffer: HTMLCanvasElement;
-  layers: Layer[];
+  private bufferContext: CanvasRenderingContext2D;
+  private buffer: HTMLCanvasElement;
+  private layers: Layer[];
 
-  constructor(width: number, height: number, layers: Layer[] = []) {
+  public constructor(width: number, height: number, layers: Layer[] = []) {
     this.layers = layers;
     this.buffer = document.createElement('canvas');
     this.buffer.width = width;
@@ -13,16 +13,21 @@ export class Compositor {
     this.bufferContext = this.buffer.getContext('2d');
   }
 
-  addLayer(layer: Layer) {
+  public addLayer(layer: Layer): void {
     this.layers.push(layer);
   }
 
-  update(deltaTime: number) {
-    this.layers.forEach(layer => layer.update(deltaTime));
+  public update(deltaTime: number): void {
+    for (var i = 0; i < this.layers.length; i++) {
+      this.layers[i].update(deltaTime);
+    }
   }
 
-  draw(context: CanvasRenderingContext2D) {
-    this.layers.forEach(layer => layer.draw(this.bufferContext));
-    context.drawImage(this.buffer, 0, 0);
+  public drawOnTo(bufferContext: CanvasRenderingContext2D): void {
+    for (var i = 0; i < this.layers.length; i++) {
+      this.layers[i].drawOnTo(this.bufferContext);
+    }
+
+    bufferContext.drawImage(this.buffer, 0, 0);
   }
 }
