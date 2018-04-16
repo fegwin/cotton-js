@@ -1,27 +1,52 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Compositor = (function () {
-    function Compositor(width, height, layers) {
-        if (layers === void 0) { layers = []; }
-        this.layers = layers;
-        this.buffer = document.createElement('canvas');
-        this.buffer.width = width;
-        this.buffer.height = height;
-        this.bufferContext = this.buffer.getContext('2d');
+var LayerElement = (function () {
+    function LayerElement(width, height, buffer, layer) {
+        this.width = width;
+        this.height = height;
+        this.buffer = buffer;
+        this.bufferContext = buffer.getContext('2d');
+        this.layer = layer;
     }
-    Compositor.prototype.addLayer = function (layer) {
-        this.layers.push(layer);
+    return LayerElement;
+}());
+var Compositor = (function () {
+    function Compositor(width, height, container, layers) {
+        if (layers === void 0) { layers = []; }
+        this.layers = [];
+        var newContainer = document.createElement('div');
+        newContainer.style.position = 'relative';
+        container.parentNode.replaceChild(newContainer, container);
+        this.container = newContainer;
+        this.addLayers(width, height, layers);
+    }
+    Compositor.prototype.addLayers = function (width, height, layers) {
+        for (var i = 0; i < layers.length; i++) {
+            var layer = layers[i];
+            var layerCanvas = document.createElement('canvas');
+            layerCanvas.width = width;
+            layerCanvas.height = height;
+            layerCanvas.style.position = 'absolute';
+            layerCanvas.style.left = '0px';
+            layerCanvas.style.top = '0px';
+            layerCanvas.id = 'layer' + i;
+            layerCanvas.style.zIndex = String(i);
+            this.layers.push(new LayerElement(width, height, layerCanvas, layer));
+            this.container.appendChild(layerCanvas);
+        }
     };
     Compositor.prototype.update = function (deltaTime) {
         for (var i = 0; i < this.layers.length; i++) {
-            this.layers[i].update(deltaTime);
+            this.layers[i].layer.update(deltaTime);
         }
     };
-    Compositor.prototype.drawOnTo = function (bufferContext) {
+    Compositor.prototype.draw = function () {
         for (var i = 0; i < this.layers.length; i++) {
-            this.layers[i].drawOnTo(this.bufferContext);
+            var layerElement = this.layers[i];
+            layerElement.bufferContext.clearRect(0, 0, layerElement.width, layerElement.height);
+            layerElement.layer.drawOnTo(layerElement.bufferContext);
+            layerElement.bufferContext.drawImage(layerElement.buffer, 0, 0);
         }
-        bufferContext.drawImage(this.buffer, 0, 0);
     };
     return Compositor;
 }());
