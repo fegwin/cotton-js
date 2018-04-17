@@ -35,13 +35,11 @@ var Layer = (function () {
         }
     };
     Layer.prototype.drawOnTo = function (bufferContext) {
-        this.bufferContext.clearRect(0, 0, this.width, this.height);
         for (var i = 0; i < this.entities.length; i++) {
             var entity = this.entities[i];
             if (math_1.BoundingBox.overlaps(this.bounds, entity.bounds))
-                entity.drawTo(this.bufferContext);
+                entity.drawTo(bufferContext);
         }
-        bufferContext.drawImage(this.buffer, 0, 0);
     };
     return Layer;
 }());

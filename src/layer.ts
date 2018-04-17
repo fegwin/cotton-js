@@ -51,14 +51,14 @@ export class Layer {
   }
 
   public drawOnTo(bufferContext: CanvasRenderingContext2D): void {
-    this.bufferContext.clearRect(0, 0, this.width, this.height);
+    //this.bufferContext.clearRect(0, 0, this.width, this.height);
 
     for (var i = 0; i < this.entities.length; i++) {
       var entity = this.entities[i];
       // Only draw the entity if it is visible.
-      if (BoundingBox.overlaps(this.bounds, entity.bounds)) entity.drawTo(this.bufferContext);
+      if (BoundingBox.overlaps(this.bounds, entity.bounds)) entity.drawTo(bufferContext);
     }
 
-    bufferContext.drawImage(this.buffer, 0, 0);
+    //bufferContext.drawImage(this.buffer, 0, 0);
   }
 }

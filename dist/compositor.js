@@ -17,7 +17,7 @@ var Compositor = (function () {
         var newContainer = document.createElement('div');
         newContainer.style.position = 'relative';
         container.parentNode.replaceChild(newContainer, container);
-        this.container = newContainer;
+        this.rootContainer = newContainer;
         this.addLayers(width, height, layers);
     }
     Compositor.prototype.addLayers = function (width, height, layers) {
@@ -32,7 +32,7 @@ var Compositor = (function () {
             layerCanvas.id = 'layer' + i;
             layerCanvas.style.zIndex = String(i);
             this.layers.push(new LayerElement(width, height, layerCanvas, layer));
-            this.container.appendChild(layerCanvas);
+            this.rootContainer.appendChild(layerCanvas);
         }
     };
     Compositor.prototype.update = function (deltaTime) {
@@ -45,7 +45,6 @@ var Compositor = (function () {
             var layerElement = this.layers[i];
             layerElement.bufferContext.clearRect(0, 0, layerElement.width, layerElement.height);
             layerElement.layer.drawOnTo(layerElement.bufferContext);
-            layerElement.bufferContext.drawImage(layerElement.buffer, 0, 0);
         }
     };
     return Compositor;

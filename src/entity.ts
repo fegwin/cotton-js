@@ -69,14 +69,14 @@ export abstract class Entity {
     this.updateRender(this.bufferContext);
     // since we're going for performance here, (0.5 + this.pos.x) << 0 is the faster
     // equivalent of math.round. we're making sure the value is an integer,
-    // so do avoid sub pixel rendering.
+    // so to avoid sub pixel rendering.
     bufferContext.drawImage(this.buffer, (0.5 + this.pos.x) << 0, (0.5 + this.pos.y) << 0);
   }
 
   update(deltaTime: number): void {
-    for (var trait in this.traits) {
-      this.traits[trait].update(this, deltaTime);
-    }
-    this.lifetime += deltaTime;
+    // for (var trait in this.traits) {
+    //   this.traits[trait].update(this, deltaTime);
+    // }
+    // this.lifetime += deltaTime;
   }
 }

@@ -12,14 +12,14 @@ class LayerElement {
     this.width = width;
     this.height = height;
     this.buffer = buffer;
+
     this.bufferContext = buffer.getContext('2d');
     this.layer = layer;
   }
 }
 
 export class Compositor {
-  private bufferContext: CanvasRenderingContext2D;
-  private container: HTMLElement;
+  private rootContainer: HTMLElement;
   private layers: LayerElement[] = [];
 
   public constructor(width: number, height: number, container: HTMLElement, layers: Layer[] = []) {
@@ -28,7 +28,7 @@ export class Compositor {
 
     container.parentNode.replaceChild(newContainer, container);
 
-    this.container = newContainer;
+    this.rootContainer = newContainer;
 
     this.addLayers(width, height, layers);
   }
@@ -50,7 +50,7 @@ export class Compositor {
 
       this.layers.push(new LayerElement(width, height, layerCanvas, layer));
 
-      this.container.appendChild(layerCanvas);
+      this.rootContainer.appendChild(layerCanvas);
     }
   }
 
@@ -65,7 +65,7 @@ export class Compositor {
       var layerElement = this.layers[i];
       layerElement.bufferContext.clearRect(0, 0, layerElement.width, layerElement.height);
       layerElement.layer.drawOnTo(layerElement.bufferContext);
-      layerElement.bufferContext.drawImage(layerElement.buffer, 0, 0);
+      //layerElement.bufferContext.drawImage(layerElement.buffer, 0, 0);
     }
   }
 }

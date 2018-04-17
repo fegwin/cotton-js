@@ -17,7 +17,7 @@ var Animator = (function () {
         if (this.accumulatedTime > 1) {
             this.accumulatedTime = 1;
         }
-        while (this.accumulatedTime > this.deltaTime) {
+        while (this.accumulatedTime >= this.deltaTime) {
             this.compositor.update(this.deltaTime);
             this.accumulatedTime -= this.deltaTime;
         }
