@@ -34,6 +34,7 @@ var Entity = (function () {
                 bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
                 bufferContext.stroke();
             }
+            this.firstPaintComplete = true;
         }
         context.drawImage(this.buffer.getCanvas(), (0.5 + this.pos.x) << 0, (0.5 + this.pos.y) << 0);
     };

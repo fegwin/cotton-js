@@ -7,13 +7,15 @@
   "author": "alakshman",
   "license": "MIT",
   "devDependencies": {
-    "@types/es6-promise": "^3.3.0",
     "babel-loader": "^7.1.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.10.0",
     "ts-loader": "^4.2.0",
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "@types/es6-promise": "^3.3.0"
   },
   "scripts": {
     "prepublish": "yarn dist",
