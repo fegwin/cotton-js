@@ -6,6 +6,8 @@ var Buffer = (function () {
         this.canvas.width = canvas ? canvas.width : width;
         this.canvas.height = canvas ? canvas.height : height;
         this.context = this.canvas.getContext('2d');
+        this.width = width;
+        this.height = height;
     }
     Buffer.prototype.getContext = function () {
         return this.context;
