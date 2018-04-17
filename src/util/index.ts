@@ -1,6 +1,6 @@
 import { CottonImage } from './image';
 import { Json } from './json';
-import { BoundingBox, getRandomNumber, getRandomInt, Vec } from './math';
+import { BoundingBox, getRandomNumber, getRandomInt, Point } from './math';
 
 export const util = {
   CottonImage,
@@ -8,5 +8,5 @@ export const util = {
   BoundingBox,
   getRandomNumber,
   getRandomInt,
-  Vec,
+  Point,
 };

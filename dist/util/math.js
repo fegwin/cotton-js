@@ -57,17 +57,17 @@ var BoundingBox = (function () {
     return BoundingBox;
 }());
 exports.BoundingBox = BoundingBox;
-var Vec = (function () {
-    function Vec(x, y) {
+var Point = (function () {
+    function Point(x, y) {
         this.set(x, y);
     }
-    Vec.prototype.set = function (x, y) {
+    Point.prototype.set = function (x, y) {
         this.x = x;
         this.y = y;
     };
-    return Vec;
+    return Point;
 }());
-exports.Vec = Vec;
+exports.Point = Point;
 exports.getRandomNumber = function (min, max) { return Math.random() * (max - min) + min; };
 exports.getRandomInt = function (min, max) {
     min = Math.ceil(min);
