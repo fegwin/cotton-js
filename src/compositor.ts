@@ -12,6 +12,7 @@ class LayerElement {
     this.width = width;
     this.height = height;
     this.buffer = buffer;
+    
     this.layer = layer;
   }
 }
