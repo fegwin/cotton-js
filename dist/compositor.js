@@ -1,13 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var buffer_1 = require("./buffer");
 var Compositor = (function () {
     function Compositor(width, height, layers) {
         if (layers === void 0) { layers = []; }
         this.layers = layers;
-        this.buffer = document.createElement('canvas');
-        this.buffer.width = width;
-        this.buffer.height = height;
-        this.bufferContext = this.buffer.getContext('2d');
+        this.buffer = new buffer_1.Buffer(width, height);
     }
     Compositor.prototype.addLayer = function (layer) {
         this.layers.push(layer);
@@ -17,11 +15,11 @@ var Compositor = (function () {
             this.layers[i].update(deltaTime);
         }
     };
-    Compositor.prototype.drawOnTo = function (bufferContext) {
+    Compositor.prototype.paintOn = function (context) {
         for (var i = 0; i < this.layers.length; i++) {
-            this.layers[i].drawOnTo(this.bufferContext);
+            this.layers[i].paintOn(this.buffer.getContext());
         }
-        bufferContext.drawImage(this.buffer, 0, 0);
+        context.drawImage(this.buffer.getCanvas(), 0, 0);
     };
     return Compositor;
 }());

@@ -1,21 +1,23 @@
-import { BoundingBox, Vec } from './util/math';
+import { BoundingBox, Point } from './util/math';
 import { Trait } from './trait';
+import { Buffer } from './buffer';
 
 export abstract class Entity {
   private name: string;
   private traits: { [id: string]: Trait };
 
   private lifetime: number;
-  private size: Vec;
-  private vel: Vec;
-  private pos: Vec;
+  private firstPaintComplete: boolean;
+
+  private size: Point;
+  private vel: Point;
+  private pos: Point;
 
   public bounds: BoundingBox;
 
-  private bufferContext: CanvasRenderingContext2D;
-  private buffer: HTMLCanvasElement;
+  private buffer: Buffer;
 
-  public constructor(pos: Vec, vel: Vec, size: Vec, traits: Trait[] = []) {
+  public constructor(pos: Point, vel: Point, size: Point, traits: Trait[] = []) {
     this.name = 'entity';
 
     this.pos = pos;
@@ -23,15 +25,12 @@ export abstract class Entity {
     this.size = size;
 
     this.lifetime = 0;
+    this.firstPaintComplete = false;
 
     this.calculateBounds();
     this.initialiseTraits(traits);
 
-    this.buffer = document.createElement('canvas');
-    this.buffer.width = this.size.x;
-    this.buffer.height = this.size.y;
-
-    this.bufferContext = this.buffer.getContext('2d');
+    this.buffer = new Buffer(this.size.x, this.size.y);
   }
 
   private initialiseTraits(traits: Trait[]): void {
@@ -44,36 +43,44 @@ export abstract class Entity {
     this.bounds = new BoundingBox(this.pos, this.size);
   }
 
-  // not too sure about this.
-  // kinda sucks that you need a setup method,
-  // but its to avoid having to call initial render in every
-  // derived class's constructor.
-  public setup() {
-    // gives you a nice little box around your entity
-    // to see whats going on.
-    var debug = false;
+  // This method will draw the entity onto the buffer
+  // Call this whenever you need to update the entity
+  //
+  // eg. Animations. Do this inside the update method
+  protected abstract draw(): void;
 
-    this.initialRender(this.bufferContext);
+  // This method is used to paint the buffer canvas onto a passed in canvas context
+  // General use will not require you to call this
+  // This is taken care of by the animation engine
+  // TODO try and hide this from the api AL 2018
+  public paintOn(context: CanvasRenderingContext2D): void {
+    // Lazily trigger the first draw
+    if (!this.firstPaintComplete) {
+      // gives you a nice little box around your entity
+      // to see whats going on.
+      const debug = false;
 
-    if (debug) {
-      this.bufferContext.strokeStyle = 'green';
-      this.bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
-      this.bufferContext.stroke();
+      this.draw();
+
+      if (debug) {
+        const bufferContext = this.buffer.getContext();
+        bufferContext.strokeStyle = 'green';
+        bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
+        bufferContext.stroke();
+      }
+
+      this.firstPaintComplete = true;
     }
-  }
-
-  protected abstract initialRender(bufferContext: CanvasRenderingContext2D): void;
-  protected updateRender(bufferContext: CanvasRenderingContext2D): void {}
-
-  public drawTo(bufferContext: CanvasRenderingContext2D): void {
-    this.updateRender(this.bufferContext);
+    
     // since we're going for performance here, (0.5 + this.pos.x) << 0 is the faster
     // equivalent of math.round. we're making sure the value is an integer,
     // so do avoid sub pixel rendering.
-    bufferContext.drawImage(this.buffer, (0.5 + this.pos.x) << 0, (0.5 + this.pos.y) << 0);
+    context.drawImage(this.buffer.getCanvas(), (0.5 + this.pos.x) << 0, (0.5 + this.pos.y) << 0);
   }
 
-  update(deltaTime: number): void {
+  // This method is where you should do your calculations
+  // Call super. Your traits will be updated for you
+  public update(deltaTime: number): void {
     for (var trait in this.traits) {
       this.traits[trait].update(this, deltaTime);
     }

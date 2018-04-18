@@ -1,7 +1,7 @@
 export declare class BoundingBox {
     private size;
     private pos;
-    constructor(pos: Vec, size: Vec);
+    constructor(pos: Point, size: Point);
     overlaps(box: BoundingBox): boolean;
     static overlaps(box1: BoundingBox, box2: BoundingBox): boolean;
     bottom: number;
@@ -9,7 +9,7 @@ export declare class BoundingBox {
     left: number;
     right: number;
 }
-export declare class Vec {
+export declare class Point {
     x: number;
     y: number;
     constructor(x: number, y: number);

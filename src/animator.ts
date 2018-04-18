@@ -19,14 +19,14 @@ export class Animator {
     this.compositor = compositor;
     this.context = context;
 
-    this.update = this.update.bind(this);
+    this.animate = this.animate.bind(this);
   }
 
   protected enqueue(): void {
-    window.requestAnimationFrame(this.update);
+    window.requestAnimationFrame(this.animate);
   }
 
-  protected update(time: number): void {
+  protected animate(time: number): void {
     this.accumulatedTime += (time - this.lastTime) / 1000;
 
     if (this.accumulatedTime > 1) {
@@ -38,7 +38,7 @@ export class Animator {
       this.accumulatedTime -= this.deltaTime;
     }
 
-    this.compositor.drawOnTo(this.context);
+    this.compositor.paintOn(this.context);
     this.lastTime = time;
 
     this.enqueue();

@@ -7,6 +7,6 @@ export declare class Animator {
     private accumulatedTime;
     constructor(compositor: Compositor, context: CanvasRenderingContext2D, deltaTime?: number);
     protected enqueue(): void;
-    protected update(time: number): void;
+    protected animate(time: number): void;
     protected start(): void;
 }
