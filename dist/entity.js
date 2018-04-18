@@ -39,6 +39,10 @@ var Entity = (function () {
         context.drawImage(this.buffer.getCanvas(), (0.5 + this.pos.x) << 0, (0.5 + this.pos.y) << 0);
     };
     Entity.prototype.update = function (deltaTime) {
+        for (var trait in this.traits) {
+            this.traits[trait].update(this, deltaTime);
+        }
+        this.lifetime += deltaTime;
     };
     return Entity;
 }());

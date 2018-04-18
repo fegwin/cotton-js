@@ -69,6 +69,7 @@ export class Compositor {
   public paint(): void {
     for (var i = 0; i < this.layers.length; i++) {
       var layer = this.layers[i];
+      layer.buffer.clear();
       layer.layer.paintOn(layer.buffer.getContext());
     }
   }

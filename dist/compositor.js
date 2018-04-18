@@ -43,6 +43,7 @@ var Compositor = (function () {
     Compositor.prototype.paint = function () {
         for (var i = 0; i < this.layers.length; i++) {
             var layer = this.layers[i];
+            layer.buffer.clear();
             layer.layer.paintOn(layer.buffer.getContext());
         }
     };
