@@ -7,12 +7,12 @@ var Animator = (function () {
         this.lastTime = 0;
         this.deltaTime = deltaTime;
         this.compositor = compositor;
-        this.update = this.update.bind(this);
+        this.animate = this.animate.bind(this);
     }
     Animator.prototype.enqueue = function () {
-        window.requestAnimationFrame(this.update);
+        window.requestAnimationFrame(this.animate);
     };
-    Animator.prototype.update = function (time) {
+    Animator.prototype.animate = function (time) {
         this.accumulatedTime += (time - this.lastTime) / 1000;
         if (this.accumulatedTime > 1) {
             this.accumulatedTime = 1;
@@ -21,7 +21,7 @@ var Animator = (function () {
             this.compositor.update(this.deltaTime);
             this.accumulatedTime -= this.deltaTime;
         }
-        this.compositor.draw();
+        this.compositor.paint();
         this.lastTime = time;
         this.enqueue();
     };

@@ -1,8 +1,8 @@
 export class BoundingBox {
-  private size: Vec;
-  private pos: Vec;
+  private size: Point;
+  private pos: Point;
 
-  public constructor(pos: Vec, size: Vec) {
+  public constructor(pos: Point, size: Point) {
     this.pos = pos;
     this.size = size;
   }
@@ -52,7 +52,7 @@ export class BoundingBox {
     this.pos.x = x - this.size.x;
   }
 }
-export class Vec {
+export class Point {
   public x: number;
   public y: number;
 

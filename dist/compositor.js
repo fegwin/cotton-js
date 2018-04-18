@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var buffer_1 = require("./buffer");
 var LayerElement = (function () {
     function LayerElement(width, height, buffer, layer) {
         this.width = width;
         this.height = height;
         this.buffer = buffer;
-        this.bufferContext = buffer.getContext('2d');
         this.layer = layer;
     }
     return LayerElement;
@@ -31,7 +31,7 @@ var Compositor = (function () {
             layerCanvas.style.top = '0px';
             layerCanvas.id = 'layer' + i;
             layerCanvas.style.zIndex = String(i);
-            this.layers.push(new LayerElement(width, height, layerCanvas, layer));
+            this.layers.push(new LayerElement(width, height, new buffer_1.Buffer(width, height, layerCanvas), layer));
             this.rootContainer.appendChild(layerCanvas);
         }
     };
@@ -40,11 +40,10 @@ var Compositor = (function () {
             this.layers[i].layer.update(deltaTime);
         }
     };
-    Compositor.prototype.draw = function () {
+    Compositor.prototype.paint = function () {
         for (var i = 0; i < this.layers.length; i++) {
-            var layerElement = this.layers[i];
-            layerElement.bufferContext.clearRect(0, 0, layerElement.width, layerElement.height);
-            layerElement.layer.drawOnTo(layerElement.bufferContext);
+            var layer = this.layers[i];
+            layer.layer.paintOn(layer.buffer.getContext());
         }
     };
     return Compositor;

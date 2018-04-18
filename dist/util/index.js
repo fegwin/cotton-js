@@ -9,6 +9,6 @@ exports.util = {
     BoundingBox: math_1.BoundingBox,
     getRandomNumber: math_1.getRandomNumber,
     getRandomInt: math_1.getRandomInt,
-    Vec: math_1.Vec,
+    Point: math_1.Point,
 };
 //# sourceMappingURL=index.js.map

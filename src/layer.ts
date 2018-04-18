@@ -1,5 +1,6 @@
 import { Entity } from './entity';
-import { BoundingBox, Vec } from './util/math';
+import { BoundingBox, Point } from './util/math';
+import { Buffer } from './buffer';
 
 export class Layer {
   private width: number;
@@ -9,24 +10,20 @@ export class Layer {
 
   private entities: Entity[] = [];
 
-  private buffer: HTMLCanvasElement;
-  private bufferContext: CanvasRenderingContext2D;
+  private buffer: Buffer;
 
   public constructor(width: number, height: number, entities: Entity[] = []) {
     this.width = width;
     this.height = height;
 
-    this.buffer = document.createElement('canvas');
-    this.buffer.width = width;
-    this.buffer.height = height;
-    this.bufferContext = this.buffer.getContext('2d');
+    this.buffer = new Buffer(this.width, this.height);
 
     this.calculateBounds();
     this.addEntities(entities);
   }
 
   private calculateBounds() {
-    this.bounds = new BoundingBox(new Vec(0, 0), new Vec(this.width, this.height));
+    this.bounds = new BoundingBox(new Point(0, 0), new Point(this.width, this.height));
   }
 
   public addEntity(entity: Entity): void {
@@ -34,7 +31,6 @@ export class Layer {
   }
 
   public addEntities(entities: Entity[]): void {
-    entities.forEach(entity => entity.setup());
     this.entities = this.entities.concat(entities);
   }
 
@@ -44,21 +40,27 @@ export class Layer {
     });
   }
 
+  // This method is called to request all entities to run their calculations
+  // General use will not require you to call this
+  // This is called for you by the animator
   public update(deltaTime: number): void {
     for (var i = 0; i < this.entities.length; i++) {
       this.entities[i].update(deltaTime);
     }
   }
 
-  public drawOnTo(bufferContext: CanvasRenderingContext2D): void {
-    //this.bufferContext.clearRect(0, 0, this.width, this.height);
+  // This method is called to update the layer buffer and then paint
+  // the resulting canvas onto the passed in context
+  // This is called for you by the animator
+  public paintOn(context: CanvasRenderingContext2D): void {
+    this.buffer.clear();
 
     for (var i = 0; i < this.entities.length; i++) {
       var entity = this.entities[i];
       // Only draw the entity if it is visible.
-      if (BoundingBox.overlaps(this.bounds, entity.bounds)) entity.drawTo(bufferContext);
+      if (BoundingBox.overlaps(this.bounds, entity.bounds)) entity.paintOn(this.buffer.getContext());
     }
 
-    //bufferContext.drawImage(this.buffer, 0, 0);
+    context.drawImage(this.buffer.getCanvas(), 0, 0);
   }
 }

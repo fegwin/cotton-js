@@ -6,6 +6,7 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "sourceMap": true,
-    "removeComments": true
+    "removeComments": true,
+    "declaration": true
   }
 }
