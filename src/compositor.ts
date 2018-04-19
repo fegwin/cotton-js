@@ -1,31 +1,32 @@
 import { Layer } from './layer';
 import { Buffer } from './buffer';
 
-class LayerElement {
-  public width: number;
-  public height: number;
-
+// Helper class to contain root buffer elements (what's on the dom)
+// to their layer class.
+class CanvasElementToLayer {
   public buffer: Buffer;
   public layer: Layer;
 
-  constructor(width: number, height: number, buffer: Buffer, layer: Layer) {
-    this.width = width;
-    this.height = height;
+  constructor(buffer: Buffer, layer: Layer) {
     this.buffer = buffer;
-    
     this.layer = layer;
   }
 }
 
 export class Compositor {
   private rootContainer: HTMLElement;
-  private layers: LayerElement[] = [];
+  private canvasElementToLayers: CanvasElementToLayer[] = [];
 
-  public constructor(width: number, height: number, container: HTMLElement, layers: Layer[] = []) {
+  public constructor(
+    width: number,
+    height: number,
+    rootElement: HTMLElement,
+    layers: Layer[] = [],
+  ) {
     var newContainer = document.createElement('div');
     newContainer.style.position = 'relative';
 
-    container.parentNode.replaceChild(newContainer, container);
+    rootElement.parentNode.replaceChild(newContainer, rootElement);
 
     this.rootContainer = newContainer;
     this.addLayers(width, height, layers);
@@ -35,31 +36,35 @@ export class Compositor {
     for (var i = 0; i < layers.length; i++) {
       var layer = layers[i];
 
-      var layerCanvas = document.createElement('canvas');
-      layerCanvas.width = width;
-      layerCanvas.height = height;
+      var layerCanvas = this.createLayerElement(width, height, i);
 
-      layerCanvas.style.position = 'absolute';
-      layerCanvas.style.left = '0px';
-      layerCanvas.style.top = '0px';
-
-      layerCanvas.id = 'layer' + i;
-      layerCanvas.style.zIndex = String(i);
-
-      this.layers.push(
-        new LayerElement(width, height, new Buffer(width, height, layerCanvas), layer),
+      this.canvasElementToLayers.push(
+        new CanvasElementToLayer(new Buffer(width, height, layerCanvas), layer),
       );
 
       this.rootContainer.appendChild(layerCanvas);
     }
   }
 
+  private createLayerElement(width: number, height: number, i: number) {
+    var layerCanvas = document.createElement('canvas');
+    layerCanvas.width = width;
+    layerCanvas.height = height;
+    layerCanvas.style.position = 'absolute';
+    layerCanvas.style.left = '0px';
+    layerCanvas.style.top = '0px';
+    layerCanvas.id = 'layer' + i;
+    layerCanvas.style.zIndex = String(i);
+
+    return layerCanvas;
+  }
+
   // This method will get each layer to update each of it's entities
   // Calculations are done here.
   // This is called for you by the animator
   public update(deltaTime: number): void {
-    for (var i = 0; i < this.layers.length; i++) {
-      this.layers[i].layer.update(deltaTime);
+    for (var i = 0; i < this.canvasElementToLayers.length; i++) {
+      this.canvasElementToLayers[i].layer.update(deltaTime);
     }
   }
 
@@ -68,10 +73,10 @@ export class Compositor {
   // the passed in context
   // This is called for you by the animator
   public paint(): void {
-    for (var i = 0; i < this.layers.length; i++) {
-      var layer = this.layers[i];
-      layer.buffer.clear();
-      layer.layer.paintOn(layer.buffer.getContext());
+    for (var i = 0; i < this.canvasElementToLayers.length; i++) {
+      var rootCanvasContainer = this.canvasElementToLayers[i];
+      rootCanvasContainer.buffer.clear();
+      rootCanvasContainer.layer.paintOn(rootCanvasContainer.buffer.getContext());
     }
   }
 }
