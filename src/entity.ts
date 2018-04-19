@@ -6,6 +6,7 @@ export abstract class Entity {
   public bounds: BoundingBox;
 
   private name: string;
+  private debug: boolean;
   private traits: { [id: string]: ITrait };
 
   private lifetime: number;
@@ -22,12 +23,16 @@ export abstract class Entity {
     vel: Point,
     size: Point,
     traits: ITrait[] = [],
+    debug: boolean = false,
   ) {
     this.name = "entity";
+    this.debug = debug;
 
     this.pos = pos;
     this.vel = vel;
     this.size = size;
+
+    this.traits = {};
 
     this.lifetime = 0;
     this.firstPaintComplete = false;
@@ -45,13 +50,11 @@ export abstract class Entity {
   public paintOn(context: CanvasRenderingContext2D): void {
     // Lazily trigger the first draw
     if (!this.firstPaintComplete) {
-      // gives you a nice little box around your entity
-      // to see whats going on.
-      const debug = false;
-
       this.draw();
 
-      if (debug) {
+      // gives you a nice little box around your entity
+      // to see whats going on.
+      if (this.debug) {
         const bufferContext = this.buffer.getContext();
         bufferContext.strokeStyle = "green";
         bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
@@ -76,7 +79,6 @@ export abstract class Entity {
   // This method is where you should do your calculations
   // Call super. Your traits will be updated for you
   public update(deltaTime: number): void {
-
     for (const trait of Object.keys(this.traits)) {
       this.traits[trait].update(this, deltaTime);
     }
