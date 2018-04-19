@@ -74,9 +74,9 @@ export class Compositor {
   // This is called for you by the animator
   public paint(): void {
     for (var i = 0; i < this.canvasElementToLayers.length; i++) {
-      var rootCanvasContainer = this.canvasElementToLayers[i];
-      rootCanvasContainer.buffer.clear();
-      rootCanvasContainer.layer.paintOn(rootCanvasContainer.buffer.getContext());
+      var canvasElementToLayers = this.canvasElementToLayers[i];
+      canvasElementToLayers.buffer.clear();
+      canvasElementToLayers.layer.paintOn(canvasElementToLayers.buffer.getContext());
     }
   }
 }
