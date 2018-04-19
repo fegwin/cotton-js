@@ -10,6 +10,7 @@ var Entity = (function () {
         this.pos = pos;
         this.vel = vel;
         this.size = size;
+        this.traits = {};
         this.lifetime = 0;
         this.firstPaintComplete = false;
         this.calculateBounds();

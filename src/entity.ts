@@ -31,6 +31,8 @@ export abstract class Entity {
     this.vel = vel;
     this.size = size;
 
+    this.traits = {};
+
     this.lifetime = 0;
     this.firstPaintComplete = false;
 
@@ -76,7 +78,6 @@ export abstract class Entity {
   // This method is where you should do your calculations
   // Call super. Your traits will be updated for you
   public update(deltaTime: number): void {
-
     for (const trait of Object.keys(this.traits)) {
       this.traits[trait].update(this, deltaTime);
     }
