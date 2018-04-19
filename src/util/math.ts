@@ -1,4 +1,13 @@
 export class BoundingBox {
+  public static overlaps(box1: BoundingBox, box2: BoundingBox) {
+    return (
+      box1.bottom > box2.top &&
+      box1.top < box2.bottom &&
+      box1.left < box2.right &&
+      box1.right > box2.left
+    );
+  }
+
   private size: Point;
   private pos: Point;
 
@@ -9,15 +18,6 @@ export class BoundingBox {
 
   public overlaps(box: BoundingBox) {
     return BoundingBox.overlaps(this, box);
-  }
-
-  public static overlaps(box1: BoundingBox, box2: BoundingBox) {
-    return (
-      box1.bottom > box2.top &&
-      box1.top < box2.bottom &&
-      box1.left < box2.right &&
-      box1.right > box2.left
-    );
   }
 
   public get bottom() {
@@ -68,7 +68,7 @@ export class Point {
 
 export const getRandomNumber = (min: number, max: number) => Math.random() * (max - min) + min;
 
-export const getRandomInt = function(min: number, max: number) {
+export const getRandomInt = (min: number, max: number) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;

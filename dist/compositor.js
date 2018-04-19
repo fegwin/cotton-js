@@ -44,9 +44,9 @@ var Compositor = (function () {
     };
     Compositor.prototype.paint = function () {
         for (var i = 0; i < this.canvasElementToLayers.length; i++) {
-            var rootCanvasContainer = this.canvasElementToLayers[i];
-            rootCanvasContainer.buffer.clear();
-            rootCanvasContainer.layer.paintOn(rootCanvasContainer.buffer.getContext());
+            var canvasElementToLayers = this.canvasElementToLayers[i];
+            canvasElementToLayers.buffer.clear();
+            canvasElementToLayers.layer.paintOn(canvasElementToLayers.buffer.getContext());
         }
     };
     return Compositor;
