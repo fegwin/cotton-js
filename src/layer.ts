@@ -1,12 +1,12 @@
-import { Entity } from './entity';
-import { BoundingBox, Point } from './util/math';
-import { Buffer } from './buffer';
+import { Buffer } from "./buffer";
+import { Entity } from "./entity";
+import { BoundingBox, Point } from "./util/math";
 
 export class Layer {
+  public bounds: BoundingBox;
+
   private width: number;
   private height: number;
-
-  public bounds: BoundingBox;
 
   private entities: Entity[] = [];
 
@@ -22,10 +22,6 @@ export class Layer {
     this.addEntities(entities);
   }
 
-  private calculateBounds() {
-    this.bounds = new BoundingBox(new Point(0, 0), new Point(this.width, this.height));
-  }
-
   public addEntity(entity: Entity): void {
     this.addEntities([entity]);
   }
@@ -35,7 +31,7 @@ export class Layer {
   }
 
   public removeEntity(entity: Entity): void {
-    this.entities = this.entities.filter(e => {
+    this.entities = this.entities.filter((e) => {
       return e !== entity;
     });
   }
@@ -44,8 +40,8 @@ export class Layer {
   // General use will not require you to call this
   // This is called for you by the animator
   public update(deltaTime: number): void {
-    for (var i = 0; i < this.entities.length; i++) {
-      this.entities[i].update(deltaTime);
+    for (const entity of this.entities) {
+      entity.update(deltaTime);
     }
   }
 
@@ -55,12 +51,17 @@ export class Layer {
   public paintOn(context: CanvasRenderingContext2D): void {
     this.buffer.clear();
 
-    for (var i = 0; i < this.entities.length; i++) {
-      var entity = this.entities[i];
+    for (const entity of this.entities) {
       // Only draw the entity if it is visible.
-      if (BoundingBox.overlaps(this.bounds, entity.bounds)) entity.paintOn(this.buffer.getContext());
+      if (BoundingBox.overlaps(this.bounds, entity.bounds)) {
+        entity.paintOn(this.buffer.getContext());
+      }
     }
 
     context.drawImage(this.buffer.getCanvas(), 0, 0);
+  }
+
+  private calculateBounds() {
+    this.bounds = new BoundingBox(new Point(0, 0), new Point(this.width, this.height));
   }
 }

@@ -6,24 +6,24 @@ export class Buffer {
   private height: number;
 
   constructor(width: number, height: number, canvas?: HTMLCanvasElement) {
-    this.canvas = canvas || document.createElement('canvas');
+    this.canvas = canvas || document.createElement("canvas");
     this.canvas.width = canvas ? canvas.width : width;
     this.canvas.height = canvas ? canvas.height : height;
-    this.context = this.canvas.getContext('2d');
+    this.context = this.canvas.getContext("2d");
 
     this.width = width;
     this.height = height;
   }
 
-  getContext() {
+  public getContext() {
     return this.context;
   }
 
-  getCanvas() {
+  public getCanvas() {
     return this.canvas;
   }
 
-  clear() {
+  public clear() {
     this.context.clearRect(0, 0, this.width, this.height);
   }
-};
+}
