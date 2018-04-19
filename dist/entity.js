@@ -7,6 +7,7 @@ var Entity = (function () {
         if (traits === void 0) { traits = []; }
         if (debug === void 0) { debug = false; }
         this.name = "entity";
+        this.debug = debug;
         this.pos = pos;
         this.vel = vel;
         this.size = size;

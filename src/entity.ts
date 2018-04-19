@@ -26,6 +26,7 @@ export abstract class Entity {
     debug: boolean = false,
   ) {
     this.name = "entity";
+    this.debug = debug;
 
     this.pos = pos;
     this.vel = vel;
