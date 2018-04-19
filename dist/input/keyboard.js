@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var PRESSED = 1;
 var RELEASED = 0;
-var KEYDOWN = 'keydown';
-var KEYUP = 'keyup';
+var KEYDOWN = "keydown";
+var KEYUP = "keyup";
 var Keyboard = (function () {
     function Keyboard(htmlElement) {
         var _this = this;

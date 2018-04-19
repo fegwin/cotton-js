@@ -1,10 +1,6 @@
 export declare class Keyboard {
-    keyStates: {
-        [key: string]: number;
-    };
-    keyMap: {
-        [key: string]: Array<(keyState: number) => void>;
-    };
+    private keyStates;
+    private keyMap;
     constructor(htmlElement: HTMLElement);
     addMapping(code: string, callback: () => void): void;
     handleEvent(event: KeyboardEvent): void;
