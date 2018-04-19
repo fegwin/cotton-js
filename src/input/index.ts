@@ -1,5 +1,5 @@
-import { Keyboard } from './keyboard';
+import { Keyboard } from "./keyboard";
 
 export const input = {
-  Keyboard
+  Keyboard,
 };
