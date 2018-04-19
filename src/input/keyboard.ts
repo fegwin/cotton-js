@@ -1,12 +1,12 @@
 const PRESSED = 1;
 const RELEASED = 0;
 
-const KEYDOWN = 'keydown';
-const KEYUP = 'keyup';
+const KEYDOWN = "keydown";
+const KEYUP = "keyup";
 
 export class Keyboard {
-  keyStates: { [key: string]: number }
-  keyMap: { [key: string]: Array<(keyState: number) => void> }
+  private keyStates: { [key: string]: number }
+  private keyMap: { [key: string]: Array<(keyState: number) => void> }
 
   constructor(htmlElement: HTMLElement) {
     // Holds the current state of a given key
@@ -17,11 +17,11 @@ export class Keyboard {
 
     [KEYDOWN, KEYUP]
       .forEach(
-          eventName => htmlElement.addEventListener(eventName, event => this.handleEvent(event as KeyboardEvent))
+          (eventName) => htmlElement.addEventListener(eventName, (event) => this.handleEvent(event as KeyboardEvent)),
       );
   }
 
-  addMapping(code: string, callback: () => void) {
+  public addMapping(code: string, callback: () => void) {
     if (!this.keyMap[code]) {
       this.keyMap[code] = new Array<() => void>();
     }
@@ -29,7 +29,7 @@ export class Keyboard {
     this.keyMap[code].push(callback);
   }
 
-  handleEvent(event: KeyboardEvent) {
+  public handleEvent(event: KeyboardEvent) {
     const { code } = event;
 
     event.preventDefault();
@@ -47,6 +47,6 @@ export class Keyboard {
 
     this.keyStates[code] = keyState;
     this.keyMap[code]
-      .forEach(callback => callback(keyState));
+      .forEach((callback) => callback(keyState));
   }
 }
