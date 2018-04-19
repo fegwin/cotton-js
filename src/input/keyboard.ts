@@ -8,12 +8,17 @@ export class Keyboard {
   keyStates: { [key: string]: number }
   keyMap: { [key: string]: Array<(keyState: number) => void> }
 
-  constructor() {
+  constructor(htmlElement: HTMLElement) {
     // Holds the current state of a given key
     this.keyStates = {};
 
     // Holds the callback functions for a key code
     this.keyMap = {};
+
+    [KEYDOWN, KEYUP]
+      .forEach(
+          eventName => htmlElement.addEventListener(eventName, event => this.handleEvent(event as KeyboardEvent))
+      );
   }
 
   addMapping(code: string, callback: () => void) {
@@ -43,10 +48,5 @@ export class Keyboard {
     this.keyStates[code] = keyState;
     this.keyMap[code]
       .forEach(callback => callback(keyState));
-  }
-
-  listenTo(htmlElement: HTMLElement) {
-    [KEYDOWN, KEYUP]
-      .forEach(eventName => htmlElement.addEventListener(eventName, event => this.handleEvent(event)));
   }
 }

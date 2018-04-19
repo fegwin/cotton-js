@@ -3,9 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var math_1 = require("./util/math");
 var buffer_1 = require("./buffer");
 var Entity = (function () {
-    function Entity(pos, vel, size, traits) {
+    function Entity(pos, vel, size, traits, debug) {
         if (traits === void 0) { traits = []; }
+        if (debug === void 0) { debug = false; }
         this.name = 'entity';
+        this.debug = debug;
         this.pos = pos;
         this.vel = vel;
         this.size = size;
@@ -26,9 +28,8 @@ var Entity = (function () {
     };
     Entity.prototype.paintOn = function (context) {
         if (!this.firstPaintComplete) {
-            var debug = false;
             this.draw();
-            if (debug) {
+            if (this.debug) {
                 var bufferContext = this.buffer.getContext();
                 bufferContext.strokeStyle = 'green';
                 bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);

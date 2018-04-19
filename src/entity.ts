@@ -4,6 +4,7 @@ import { Buffer } from './buffer';
 
 export abstract class Entity {
   private name: string;
+  private debug: boolean;
   private traits: { [id: string]: Trait };
 
   private lifetime: number;
@@ -17,8 +18,9 @@ export abstract class Entity {
 
   private buffer: Buffer;
 
-  public constructor(pos: Point, vel: Point, size: Point, traits: Trait[] = []) {
+  public constructor(pos: Point, vel: Point, size: Point, traits: Trait[] = [], debug: boolean = false) {
     this.name = 'entity';
+    this.debug = debug;
 
     this.pos = pos;
     this.vel = vel;
@@ -56,13 +58,11 @@ export abstract class Entity {
   public paintOn(context: CanvasRenderingContext2D): void {
     // Lazily trigger the first draw
     if (!this.firstPaintComplete) {
-      // gives you a nice little box around your entity
-      // to see whats going on.
-      const debug = false;
-
       this.draw();
 
-      if (debug) {
+      // gives you a nice little box around your entity
+      // to see whats going on.
+      if (this.debug) {
         const bufferContext = this.buffer.getContext();
         bufferContext.strokeStyle = 'green';
         bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
