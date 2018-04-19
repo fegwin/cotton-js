@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = require("./util");
-exports.util = util_1.util;
 var input_1 = require("./input");
 exports.input = input_1.input;
+var util_1 = require("./util");
+exports.util = util_1.util;
 var layer_1 = require("./layer");
 exports.Layer = layer_1.Layer;
 var entity_1 = require("./entity");

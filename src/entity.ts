@@ -23,7 +23,7 @@ export abstract class Entity {
     vel: Point,
     size: Point,
     traits: ITrait[] = [],
-    debug: boolean = false
+    debug: boolean = false,
   ) {
     this.name = "entity";
 

@@ -1,9 +1,9 @@
 export declare class BoundingBox {
+    static overlaps(box1: BoundingBox, box2: BoundingBox): boolean;
     private size;
     private pos;
     constructor(pos: Point, size: Point);
     overlaps(box: BoundingBox): boolean;
-    static overlaps(box1: BoundingBox, box2: BoundingBox): boolean;
     bottom: number;
     top: number;
     left: number;

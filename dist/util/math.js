@@ -5,14 +5,14 @@ var BoundingBox = (function () {
         this.pos = pos;
         this.size = size;
     }
-    BoundingBox.prototype.overlaps = function (box) {
-        return BoundingBox.overlaps(this, box);
-    };
     BoundingBox.overlaps = function (box1, box2) {
         return (box1.bottom > box2.top &&
             box1.top < box2.bottom &&
             box1.left < box2.right &&
             box1.right > box2.left);
+    };
+    BoundingBox.prototype.overlaps = function (box) {
+        return BoundingBox.overlaps(this, box);
     };
     Object.defineProperty(BoundingBox.prototype, "bottom", {
         get: function () {
