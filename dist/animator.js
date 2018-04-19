@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Animator = (function () {
-    function Animator(compositor, context, deltaTime) {
+    function Animator(compositor, deltaTime) {
         if (deltaTime === void 0) { deltaTime = 1 / 60; }
         this.accumulatedTime = 0;
         this.lastTime = 0;
         this.deltaTime = deltaTime;
         this.compositor = compositor;
-        this.context = context;
         this.animate = this.animate.bind(this);
     }
     Animator.prototype.enqueue = function () {
@@ -18,11 +17,11 @@ var Animator = (function () {
         if (this.accumulatedTime > 1) {
             this.accumulatedTime = 1;
         }
-        while (this.accumulatedTime > this.deltaTime) {
+        while (this.accumulatedTime >= this.deltaTime) {
             this.compositor.update(this.deltaTime);
             this.accumulatedTime -= this.deltaTime;
         }
-        this.compositor.paintOn(this.context);
+        this.compositor.paint();
         this.lastTime = time;
         this.enqueue();
     };

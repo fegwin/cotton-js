@@ -1,9 +1,10 @@
 import { Layer } from './layer';
 export declare class Compositor {
-    private buffer;
-    private layers;
-    constructor(width: number, height: number, layers?: Layer[]);
-    addLayer(layer: Layer): void;
+    private rootContainer;
+    private canvasElementToLayers;
+    constructor(width: number, height: number, rootElement: HTMLElement, layers?: Layer[]);
+    addLayers(width: number, height: number, layers: Layer[]): void;
+    private createLayerElement(width, height, i);
     update(deltaTime: number): void;
-    paintOn(context: CanvasRenderingContext2D): void;
+    paint(): void;
 }

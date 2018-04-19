@@ -18,6 +18,7 @@
     "@types/es6-promise": "^3.3.0"
   },
   "scripts": {
+    "watch": "rm -rf dist && tsc --watch",
     "prepublish": "yarn dist",
     "build": "yarn prepublish",
     "dist": "rm -rf dist && tsc"
