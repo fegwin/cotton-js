@@ -7,7 +7,7 @@ var CottonImage = (function () {
     CottonImage.prototype.loadImage = function (url) {
         return new es6_promise_1.Promise(function (resolve) {
             var img = new Image();
-            img.addEventListener('load', function () {
+            img.addEventListener("load", function () {
                 resolve(img);
             });
             img.src = url;

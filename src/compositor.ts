@@ -12,7 +12,11 @@ class CanvasElementToLayer {
     this.layer = layer;
   }
 }
-
+/**
+ * Composes different layers together
+ * and controls the handling of DOM
+ * manipulation.
+ */
 export class Compositor {
   private rootContainer: HTMLElement;
   private canvasElementToLayers: CanvasElementToLayer[] = [];

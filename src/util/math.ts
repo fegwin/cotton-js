@@ -1,3 +1,5 @@
+import { Animator, Compositor } from "..";
+
 export class BoundingBox {
   public static overlaps(box1: BoundingBox, box2: BoundingBox) {
     return (

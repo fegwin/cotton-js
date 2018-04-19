@@ -1,11 +1,21 @@
 import { Compositor } from "./compositor";
-
+/**
+ * Animates all entities in CottonJS.
+ * This class controls the updating of
+ * entities based on delta time.
+ * @class
+ */
 export class Animator {
   private compositor: Compositor;
   private deltaTime: number;
   private lastTime: number;
   private accumulatedTime: number;
 
+  /**
+   *
+   * @param compositor The compositor to animate
+   * @param deltaTime How many times a second to update
+   */
   public constructor(compositor: Compositor, deltaTime: number = 1 / 60) {
     this.accumulatedTime = 0;
     this.lastTime = 0;

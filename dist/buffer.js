@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Buffer = (function () {
     function Buffer(width, height, canvas) {
-        this.canvas = canvas || document.createElement('canvas');
+        this.canvas = canvas || document.createElement("canvas");
         this.canvas.width = canvas ? canvas.width : width;
         this.canvas.height = canvas ? canvas.height : height;
-        this.context = this.canvas.getContext('2d');
+        this.context = this.canvas.getContext("2d");
         this.width = width;
         this.height = height;
     }
@@ -21,5 +21,4 @@ var Buffer = (function () {
     return Buffer;
 }());
 exports.Buffer = Buffer;
-;
 //# sourceMappingURL=buffer.js.map

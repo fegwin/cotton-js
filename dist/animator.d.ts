@@ -1,4 +1,4 @@
-import { Compositor } from './compositor';
+import { Compositor } from "./compositor";
 export declare class Animator {
     private compositor;
     private deltaTime;

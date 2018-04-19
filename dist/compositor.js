@@ -12,8 +12,8 @@ var Compositor = (function () {
     function Compositor(width, height, rootElement, layers) {
         if (layers === void 0) { layers = []; }
         this.canvasElementToLayers = [];
-        var newContainer = document.createElement('div');
-        newContainer.style.position = 'relative';
+        var newContainer = document.createElement("div");
+        newContainer.style.position = "relative";
         rootElement.parentNode.replaceChild(newContainer, rootElement);
         this.rootContainer = newContainer;
         this.addLayers(width, height, layers);
@@ -26,28 +26,29 @@ var Compositor = (function () {
             this.rootContainer.appendChild(layerCanvas);
         }
     };
-    Compositor.prototype.createLayerElement = function (width, height, i) {
-        var layerCanvas = document.createElement('canvas');
-        layerCanvas.width = width;
-        layerCanvas.height = height;
-        layerCanvas.style.position = 'absolute';
-        layerCanvas.style.left = '0px';
-        layerCanvas.style.top = '0px';
-        layerCanvas.id = 'layer' + i;
-        layerCanvas.style.zIndex = String(i);
-        return layerCanvas;
-    };
     Compositor.prototype.update = function (deltaTime) {
-        for (var i = 0; i < this.canvasElementToLayers.length; i++) {
-            this.canvasElementToLayers[i].layer.update(deltaTime);
+        for (var _i = 0, _a = this.canvasElementToLayers; _i < _a.length; _i++) {
+            var canvasElementToLayer = _a[_i];
+            canvasElementToLayer.layer.update(deltaTime);
         }
     };
     Compositor.prototype.paint = function () {
-        for (var i = 0; i < this.canvasElementToLayers.length; i++) {
-            var canvasElementToLayers = this.canvasElementToLayers[i];
-            canvasElementToLayers.buffer.clear();
-            canvasElementToLayers.layer.paintOn(canvasElementToLayers.buffer.getContext());
+        for (var _i = 0, _a = this.canvasElementToLayers; _i < _a.length; _i++) {
+            var canvasElementToLayer = _a[_i];
+            canvasElementToLayer.buffer.clear();
+            canvasElementToLayer.layer.paintOn(canvasElementToLayer.buffer.getContext());
         }
+    };
+    Compositor.prototype.createLayerElement = function (width, height, i) {
+        var layerCanvas = document.createElement("canvas");
+        layerCanvas.width = width;
+        layerCanvas.height = height;
+        layerCanvas.style.position = "absolute";
+        layerCanvas.style.left = "0px";
+        layerCanvas.style.top = "0px";
+        layerCanvas.id = "layer" + i;
+        layerCanvas.style.zIndex = String(i);
+        return layerCanvas;
     };
     return Compositor;
 }());
