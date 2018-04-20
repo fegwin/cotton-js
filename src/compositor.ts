@@ -21,6 +21,12 @@ export class Compositor {
   private rootContainer: HTMLElement;
   private canvasElementToLayers: CanvasElementToLayer[] = [];
 
+  /**
+   * @param width The width of the Compositor (and it's buffer)
+   * @param height The height of the Compositor (and it's buffer)
+   * @param rootElement The root element on the DOM that all Canvas manipulation occurs from
+   * @param layers initial layers the Compositor contains
+   */
   public constructor(
     width: number,
     height: number,
@@ -37,7 +43,7 @@ export class Compositor {
   }
 
   /**
-   *
+   * Adds layers onto the compositor
    * @param width The width of all the layers
    * @param height The height of all the layers
    * @param layers An array of layers to add

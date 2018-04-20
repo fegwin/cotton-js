@@ -1,5 +1,5 @@
 /**
- * Provides an interface to paint
+ * Used as a container to paint on
  */
 export class Buffer {
   private canvas: HTMLCanvasElement;

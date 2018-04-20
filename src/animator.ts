@@ -11,7 +11,6 @@ export class Animator {
   private accumulatedTime: number;
 
   /**
-   *
    * @param compositor The compositor to animate
    * @param deltaTime How many times a second to update
    */
@@ -19,7 +18,6 @@ export class Animator {
     this.accumulatedTime = 0;
     this.lastTime = 0;
     this.deltaTime = deltaTime;
-
     this.compositor = compositor;
 
     this.animate = this.animate.bind(this);

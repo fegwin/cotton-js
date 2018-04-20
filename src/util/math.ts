@@ -1,5 +1,7 @@
 import { Animator, Compositor } from "..";
-
+/** Provides dimensions to bound an entity
+ *  and the methods to calculate overlapping entities.
+ */
 export class BoundingBox {
   public static overlaps(box1: BoundingBox, box2: BoundingBox) {
     return (
@@ -18,6 +20,11 @@ export class BoundingBox {
     this.size = size;
   }
 
+  /**
+   * Returns whether or not this bounding box and
+   * the other one overlap.
+   * @param box The other bounding box to check for overlap
+   */
   public overlaps(box: BoundingBox) {
     return BoundingBox.overlaps(this, box);
   }
@@ -68,8 +75,14 @@ export class Point {
   }
 }
 
+/** retrieves a random number between min and max.
+ * This includes decimal places.
+ */
 export const getRandomNumber = (min: number, max: number) => Math.random() * (max - min) + min;
 
+/** retrieves a random number between min and max.
+ * This only includes whole numbers.
+ */
 export const getRandomInt = (min: number, max: number) => {
   min = Math.ceil(min);
   max = Math.floor(max);
