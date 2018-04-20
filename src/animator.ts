@@ -3,7 +3,6 @@ import { Compositor } from "./compositor";
  * Animates all entities in CottonJS.
  * This class controls the updating of
  * entities based on delta time.
- * @class
  */
 export class Animator {
   private compositor: Compositor;
@@ -26,10 +25,6 @@ export class Animator {
     this.animate = this.animate.bind(this);
   }
 
-  protected enqueue(): void {
-    window.requestAnimationFrame(this.animate);
-  }
-
   protected animate(time: number): void {
     this.accumulatedTime += (time - this.lastTime) / 1000;
 
@@ -48,7 +43,11 @@ export class Animator {
     this.enqueue();
   }
 
-  protected start(): void {
+  private start(): void {
     this.enqueue();
+  }
+
+  private enqueue(): void {
+    window.requestAnimationFrame(this.animate);
   }
 }

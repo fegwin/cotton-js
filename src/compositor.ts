@@ -36,6 +36,12 @@ export class Compositor {
     this.addLayers(width, height, layers);
   }
 
+  /**
+   *
+   * @param width The width of all the layers
+   * @param height The height of all the layers
+   * @param layers An array of layers to add
+   */
   public addLayers(width: number, height: number, layers: Layer[]): void {
     for (let i = 0; i < layers.length; i++) {
       const layer = layers[i];
@@ -50,19 +56,22 @@ export class Compositor {
     }
   }
 
-  // This method will get each layer to update each of it's entities
-  // Calculations are done here.
-  // This is called for you by the animator
+  /**
+   * Gets each layer to update and each of it's entities and does calculations.
+   * This is called for you by the Animator.
+   * @param deltaTime How many times a second to update
+   */
   public update(deltaTime: number): void {
     for (const canvasElementToLayer of this.canvasElementToLayers) {
       canvasElementToLayer.layer.update(deltaTime);
     }
   }
 
-  // This method will take each layer and combine
-  // then into the buffer. The resulting canvas is painted onto
-  // the passed in context
-  // This is called for you by the animator
+  /**
+   * Takes each layer and combins them into a buffer.
+   * The resulting canvas is painted onto the passed in context.
+   * This is called for you by the animator.
+   */
   public paint(): void {
     for (const canvasElementToLayer of this.canvasElementToLayers) {
       canvasElementToLayer.buffer.clear();
