@@ -1,3 +1,4 @@
+export { input } from "./input";
 export { util } from "./util";
 export { Layer } from "./layer";
 export { Entity } from "./entity";
