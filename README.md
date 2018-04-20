@@ -1,4 +1,4 @@
-#  CottonJS
+#  Cotton JS
 
 A canvas 2D object oriented rendering engine. (Get it? Cotton? Canvas? 🥋)
 
@@ -31,5 +31,5 @@ Then:
 yarn docs
 ```
 
-This will generate a folder named "docs" in your CottonJS folder with a file named "Index.html". 
-Open this to view the API Documentation.
+This will generate a folder named **docs** in your CottonJS folder with a file named **Index.html**. 
+Open this and you're good to go!
