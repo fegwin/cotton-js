@@ -15,6 +15,11 @@ export class BoundingBox {
   private size: Point;
   private pos: Point;
 
+  /**
+   *
+   * @param pos The top left position of the bounding box
+   * @param size The size from the position
+   */
   public constructor(pos: Point, size: Point) {
     this.pos = pos;
     this.size = size;
@@ -75,12 +80,12 @@ export class Point {
   }
 }
 
-/** retrieves a random number between min and max.
+/** Retrieves a random number between min and max.
  * This includes decimal places.
  */
 export const getRandomNumber = (min: number, max: number) => Math.random() * (max - min) + min;
 
-/** retrieves a random number between min and max.
+/** Retrieves a random number between min and max.
  * This only includes whole numbers.
  */
 export const getRandomInt = (min: number, max: number) => {

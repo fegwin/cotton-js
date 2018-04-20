@@ -3,6 +3,11 @@ import { Layer } from "./layer";
 
 // Helper class to contain root buffer elements (what's on the dom)
 // to their layer class.
+
+/**
+ * Helper class to contain root buffer elements (what's on the dom)
+ * to their layer class.
+ */
 class CanvasElementToLayer {
   public buffer: Buffer;
   public layer: Layer;
@@ -12,6 +17,7 @@ class CanvasElementToLayer {
     this.layer = layer;
   }
 }
+
 /**
  * Composes different layers together
  * and controls the handling of DOM
