@@ -1,1 +1,0 @@
-//# sourceMappingURL=swipe.js.map
