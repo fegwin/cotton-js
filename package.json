@@ -22,6 +22,7 @@
     "watch": "rm -rf dist && tsc --watch",
     "prepublish": "yarn dist",
     "build": "yarn prepublish",
-    "dist": "rm -rf dist && tsc"
+    "dist": "rm -rf dist && tsc",
+    "postinstall": "npm run dist"
   }
 }
