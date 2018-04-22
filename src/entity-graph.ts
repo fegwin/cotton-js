@@ -7,6 +7,7 @@ export class EntityGraph {
 
   constructor() {
     this.entities = [];
+    this.entitiesByTrait = {};
   }
 
   public getEntitiesByTraits(trait: Trait): Entity[] {

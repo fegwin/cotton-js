@@ -5,6 +5,9 @@ import { BoundingBox, Point } from "./util/math";
 
 export abstract class Entity {
   public bounds: BoundingBox;
+  public velocity: Point;
+  public position: Point;
+  public acceleration: Point;
 
   private name: string;
   private debug: boolean;
@@ -17,14 +20,12 @@ export abstract class Entity {
   private firstPaintComplete: boolean;
 
   private size: Point;
-  private vel: Point;
-  private pos: Point;
 
   private buffer: Buffer;
 
   public constructor(
-    pos: Point,
-    vel: Point,
+    position: Point,
+    velocity: Point,
     size: Point,
     entityGraph: EntityGraph,
     traits: Trait[] = [],
@@ -33,13 +34,15 @@ export abstract class Entity {
     this.name = "entity";
     this.debug = debug;
 
-    this.pos = pos;
-    this.vel = vel;
+    this.position = position;
+    this.velocity = velocity;
+    this.acceleration = new Point(0, 0);
     this.size = size;
 
     this.entityGraph = entityGraph;
     this.traits = traits;
 
+    this.trait = {};
     this.traits.forEach((trait) => {
       this.trait[trait.getName()] = trait;
     });
@@ -80,9 +83,9 @@ export abstract class Entity {
     context.drawImage(
       this.buffer.getCanvas(),
       // tslint:disable-next-line:no-bitwise
-      (0.5 + this.pos.x) << 0,
+      (0.5 + this.position.x) << 0,
       // tslint:disable-next-line:no-bitwise
-      (0.5 + this.pos.y) << 0,
+      (0.5 + this.position.y) << 0,
     );
   }
 
@@ -108,6 +111,6 @@ export abstract class Entity {
   protected abstract draw(): void;
 
   private calculateBounds() {
-    this.bounds = new BoundingBox(this.pos, this.size);
+    this.bounds = new BoundingBox(this.position, this.size);
   }
 }

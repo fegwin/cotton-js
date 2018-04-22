@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var EntityGraph = (function () {
     function EntityGraph() {
         this.entities = [];
+        this.entitiesByTrait = {};
     }
     EntityGraph.prototype.getEntitiesByTraits = function (trait) {
         return this.entitiesByTrait[trait.getName()] || [];

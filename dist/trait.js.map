@@ -1,1 +1,1 @@
-{"version":3,"file":"trait.js","sourceRoot":"","sources":["../src/trait.ts"],"names":[],"mappings":";;AAGA;IAAA;IAGA,CAAC;IAAD,YAAC;AAAD,CAAC,AAHD,IAGC;AAHqB,sBAAK"}
+{"version":3,"file":"trait.js","sourceRoot":"","sources":["../src/trait.ts"],"names":[],"mappings":";;AAGA;IAAA;IAKA,CAAC;IAJQ,sBAAM,GAAb,UAAc,MAAc,EAAE,WAAwB,EAAE,SAAiB;QACvE,OAAO;IACT,CAAC;IAEH,YAAC;AAAD,CAAC,AALD,IAKC;AALqB,sBAAK"}
