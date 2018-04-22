@@ -12,4 +12,6 @@ var animator_1 = require("./animator");
 exports.Animator = animator_1.Animator;
 var compositor_1 = require("./compositor");
 exports.Compositor = compositor_1.Compositor;
+var entity_graph_1 = require("./entity-graph");
+exports.EntityGraph = entity_graph_1.EntityGraph;
 //# sourceMappingURL=index.js.map
