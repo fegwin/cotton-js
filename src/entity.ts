@@ -1,6 +1,6 @@
 import { Buffer } from "./buffer";
 import { EntityGraph } from "./entity-graph";
-import { ITrait } from "./trait";
+import { Trait } from "./trait";
 import { BoundingBox, Point } from "./util/math";
 
 export abstract class Entity {
@@ -10,8 +10,8 @@ export abstract class Entity {
   private debug: boolean;
 
   private entityGraph: EntityGraph;
-  private traits: ITrait[];
-  private trait: { [id: string]: ITrait };
+  private traits: Trait[];
+  private trait: { [id: string]: Trait };
 
   private lifetime: number;
   private firstPaintComplete: boolean;
@@ -27,7 +27,7 @@ export abstract class Entity {
     vel: Point,
     size: Point,
     entityGraph: EntityGraph,
-    traits: ITrait[] = [],
+    traits: Trait[] = [],
     debug: boolean = false,
   ) {
     this.name = "entity";
@@ -90,14 +90,14 @@ export abstract class Entity {
   // Call super. Your traits will be updated for you
   public update(deltaTime: number): void {
     for (const trait of this.traits) {
-      trait.update(this, deltaTime);
+      trait.update(this, this.entityGraph, deltaTime);
     }
 
     this.lifetime += deltaTime;
   }
 
   // This method returns all the traits implemented by the entity
-  public getTraits(): ITrait[] {
+  public getTraits(): Trait[] {
     return this.traits;
   }
 

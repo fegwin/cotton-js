@@ -1,5 +1,5 @@
 import { EntityGraph } from "./entity-graph";
-import { ITrait } from "./trait";
+import { Trait } from "./trait";
 import { BoundingBox, Point } from "./util/math";
 export declare abstract class Entity {
     bounds: BoundingBox;
@@ -14,10 +14,10 @@ export declare abstract class Entity {
     private vel;
     private pos;
     private buffer;
-    constructor(pos: Point, vel: Point, size: Point, entityGraph: EntityGraph, traits?: ITrait[], debug?: boolean);
+    constructor(pos: Point, vel: Point, size: Point, entityGraph: EntityGraph, traits?: Trait[], debug?: boolean);
     paintOn(context: CanvasRenderingContext2D): void;
     update(deltaTime: number): void;
-    getTraits(): ITrait[];
+    getTraits(): Trait[];
     protected abstract draw(): void;
     private calculateBounds();
 }

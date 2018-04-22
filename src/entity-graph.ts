@@ -1,5 +1,5 @@
 import { Entity } from ".";
-import { ITrait } from "./trait";
+import { Trait } from "./trait";
 
 export class EntityGraph {
   private entities: Entity[];
@@ -9,7 +9,7 @@ export class EntityGraph {
     this.entities = [];
   }
 
-  public getEntitiesByTraits(trait: ITrait): Entity[] {
+  public getEntitiesByTraits(trait: Trait): Entity[] {
     return this.entitiesByTrait[trait.getName()] || [];
   }
 
@@ -44,7 +44,7 @@ export class EntityGraph {
     const traits = entity.getTraits();
 
     traits.forEach((trait) => {
-      if(!this.entitiesByTrait[trait.getName()]) {
+      if (!this.entitiesByTrait[trait.getName()]) {
         throw new Error("EntityGraph out of sync");
       }
 

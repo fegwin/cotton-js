@@ -39,7 +39,7 @@ var Entity = (function () {
     Entity.prototype.update = function (deltaTime) {
         for (var _i = 0, _a = this.traits; _i < _a.length; _i++) {
             var trait = _a[_i];
-            trait.update(this, deltaTime);
+            trait.update(this, this.entityGraph, deltaTime);
         }
         this.lifetime += deltaTime;
     };

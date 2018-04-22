@@ -1,10 +1,10 @@
 import { Entity } from ".";
-import { ITrait } from "./trait";
+import { Trait } from "./trait";
 export declare class EntityGraph {
     private entities;
     private entitiesByTrait;
     constructor();
-    getEntitiesByTraits(trait: ITrait): Entity[];
+    getEntitiesByTraits(trait: Trait): Entity[];
     getEntitiesByTraitName(traitName: string): Entity[];
     registerEntity(entity: Entity): void;
     deregisterEntity(entity: Entity): void;

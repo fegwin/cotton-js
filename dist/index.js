@@ -14,4 +14,6 @@ var compositor_1 = require("./compositor");
 exports.Compositor = compositor_1.Compositor;
 var entity_graph_1 = require("./entity-graph");
 exports.EntityGraph = entity_graph_1.EntityGraph;
+var trait_1 = require("./trait");
+exports.Trait = trait_1.Trait;
 //# sourceMappingURL=index.js.map
