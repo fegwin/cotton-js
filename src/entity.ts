@@ -1,4 +1,5 @@
 import { Buffer } from "./buffer";
+import { EntityGraph } from "./entity-graph";
 import { ITrait } from "./trait";
 import { BoundingBox, Point } from "./util/math";
 
@@ -7,7 +8,10 @@ export abstract class Entity {
 
   private name: string;
   private debug: boolean;
-  private traits: { [id: string]: ITrait };
+
+  private entityGraph: EntityGraph;
+  private traits: ITrait[];
+  private trait: { [id: string]: ITrait };
 
   private lifetime: number;
   private firstPaintComplete: boolean;
@@ -22,6 +26,7 @@ export abstract class Entity {
     pos: Point,
     vel: Point,
     size: Point,
+    entityGraph: EntityGraph,
     traits: ITrait[] = [],
     debug: boolean = false,
   ) {
@@ -32,15 +37,20 @@ export abstract class Entity {
     this.vel = vel;
     this.size = size;
 
-    this.traits = {};
+    this.entityGraph = entityGraph;
+    this.traits = traits;
+
+    this.traits.forEach((trait) => {
+      this.trait[trait.getName()] = trait;
+    });
 
     this.lifetime = 0;
     this.firstPaintComplete = false;
 
     this.calculateBounds();
-    this.initialiseTraits(traits);
 
     this.buffer = new Buffer(this.size.x, this.size.y);
+    this.entityGraph.registerEntity(this);
   }
 
   // This method is used to paint the buffer canvas onto a passed in canvas context
@@ -79,11 +89,16 @@ export abstract class Entity {
   // This method is where you should do your calculations
   // Call super. Your traits will be updated for you
   public update(deltaTime: number): void {
-    for (const trait of Object.keys(this.traits)) {
-      this.traits[trait].update(this, deltaTime);
+    for (const trait of this.traits) {
+      trait.update(this, deltaTime);
     }
 
     this.lifetime += deltaTime;
+  }
+
+  // This method returns all the traits implemented by the entity
+  public getTraits(): ITrait[] {
+    return this.traits;
   }
 
   // This method will draw the entity onto the buffer
@@ -91,12 +106,6 @@ export abstract class Entity {
   //
   // eg. Animations. Do this inside the update method
   protected abstract draw(): void;
-
-  private initialiseTraits(traits: ITrait[]): void {
-    traits.forEach((trait) => {
-      this.traits[trait.getName()] = trait;
-    });
-  }
 
   private calculateBounds() {
     this.bounds = new BoundingBox(this.pos, this.size);

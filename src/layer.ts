@@ -1,5 +1,6 @@
 import { Buffer } from "./buffer";
 import { Entity } from "./entity";
+import { EntityGraph } from "./entity-graph";
 import { BoundingBox, Point } from "./util/math";
 
 export class Layer {
@@ -8,14 +9,16 @@ export class Layer {
   private width: number;
   private height: number;
 
+  private entityGraph: EntityGraph;
   private entities: Entity[] = [];
 
   private buffer: Buffer;
 
-  public constructor(width: number, height: number, entities: Entity[] = []) {
+  public constructor(width: number, height: number, entityGraph: EntityGraph, entities: Entity[] = []) {
     this.width = width;
     this.height = height;
 
+    this.entityGraph = entityGraph;
     this.buffer = new Buffer(this.width, this.height);
 
     this.calculateBounds();
@@ -34,6 +37,7 @@ export class Layer {
     this.entities = this.entities.filter((e) => {
       return e !== entity;
     });
+    this.entityGraph.deregisterEntity(entity);
   }
 
   // This method is called to request all entities to run their calculations
