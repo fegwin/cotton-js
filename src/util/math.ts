@@ -8,6 +8,25 @@ export class BoundingBox {
     );
   }
 
+  public static getOverlappingSides(entity: BoundingBox, box2: BoundingBox) {
+    let left = false;
+    let right = false;
+    let top = false;
+    let bottom = false;
+
+    if (entity.left < box2.right && entity.right > box2.left) { left = true; }
+    if (entity.right > box2.left && entity.left > box2.right) { right = true; }
+    if (entity.top < box2.bottom && entity.bottom > box2.top) { top = true; }
+    if (entity.bottom > box2.top && entity.top < box2.top) { bottom = true; }
+
+    return {
+      bottom,
+      left,
+      right,
+      top,
+    };
+  }
+
   private size: Point;
   private pos: Point;
 
@@ -18,6 +37,10 @@ export class BoundingBox {
 
   public overlaps(box: BoundingBox) {
     return BoundingBox.overlaps(this, box);
+  }
+
+  public getOverlappingSides(box: BoundingBox) {
+    return BoundingBox.getOverlappingSides(this, box);
   }
 
   public get bottom() {

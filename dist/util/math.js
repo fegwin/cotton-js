@@ -11,8 +11,35 @@ var BoundingBox = (function () {
             box1.left < box2.right &&
             box1.right > box2.left);
     };
+    BoundingBox.getOverlappingSides = function (entity, box2) {
+        var left = false;
+        var right = false;
+        var top = false;
+        var bottom = false;
+        if (entity.left < box2.right && entity.right > box2.left) {
+            left = true;
+        }
+        if (entity.right > box2.left && entity.left > box2.right) {
+            right = true;
+        }
+        if (entity.top < box2.bottom && entity.bottom > box2.top) {
+            top = true;
+        }
+        if (entity.bottom > box2.top && entity.top < box2.top) {
+            bottom = true;
+        }
+        return {
+            bottom: bottom,
+            left: left,
+            right: right,
+            top: top,
+        };
+    };
     BoundingBox.prototype.overlaps = function (box) {
         return BoundingBox.overlaps(this, box);
+    };
+    BoundingBox.prototype.getOverlappingSides = function (box) {
+        return BoundingBox.getOverlappingSides(this, box);
     };
     Object.defineProperty(BoundingBox.prototype, "bottom", {
         get: function () {
