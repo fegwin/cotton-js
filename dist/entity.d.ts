@@ -3,7 +3,6 @@ import { Trait } from "./trait";
 import { BoundingBox, Point } from "./util/math";
 export declare abstract class Entity {
     bounds: BoundingBox;
-    velocity: Point;
     position: Point;
     acceleration: Point;
     private name;
@@ -15,7 +14,7 @@ export declare abstract class Entity {
     private firstPaintComplete;
     private size;
     private buffer;
-    constructor(position: Point, velocity: Point, size: Point, entityGraph: EntityGraph, traits?: Trait[], debug?: boolean);
+    constructor(position: Point, size: Point, entityGraph: EntityGraph, traits?: Trait[], debug?: boolean);
     paintOn(context: CanvasRenderingContext2D): void;
     update(deltaTime: number): void;
     getTraits(): Trait[];

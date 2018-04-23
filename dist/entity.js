@@ -3,14 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var buffer_1 = require("./buffer");
 var math_1 = require("./util/math");
 var Entity = (function () {
-    function Entity(position, velocity, size, entityGraph, traits, debug) {
+    function Entity(position, size, entityGraph, traits, debug) {
         if (traits === void 0) { traits = []; }
         if (debug === void 0) { debug = false; }
         var _this = this;
         this.name = "entity";
         this.debug = debug;
         this.position = position;
-        this.velocity = velocity;
         this.acceleration = new math_1.Point(0, 0);
         this.size = size;
         this.entityGraph = entityGraph;
