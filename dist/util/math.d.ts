@@ -1,6 +1,8 @@
 export declare class BoundingBox {
-    static overlaps(box1: BoundingBox, box2: BoundingBox): boolean;
-    static getOverlappingSides(entity: BoundingBox, box2: BoundingBox): {
+    static contains(a: BoundingBox, b: BoundingBox): boolean;
+    static touches(a: BoundingBox, b: BoundingBox): boolean;
+    static overlaps(a: BoundingBox, b: BoundingBox): boolean;
+    static getOverlappingSides(box1: BoundingBox, box2: BoundingBox): {
         bottom: boolean;
         left: boolean;
         right: boolean;
@@ -9,6 +11,8 @@ export declare class BoundingBox {
     private size;
     private pos;
     constructor(pos: Point, size: Point);
+    contains(box: BoundingBox): boolean;
+    touches(box: BoundingBox): boolean;
     overlaps(box: BoundingBox): boolean;
     getOverlappingSides(box: BoundingBox): {
         bottom: boolean;

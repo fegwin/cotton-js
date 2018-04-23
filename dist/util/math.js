@@ -5,27 +5,45 @@ var BoundingBox = (function () {
         this.pos = pos;
         this.size = size;
     }
-    BoundingBox.overlaps = function (box1, box2) {
-        return (box1.bottom > box2.top &&
-            box1.top < box2.bottom &&
-            box1.left < box2.right &&
-            box1.right > box2.left);
+    BoundingBox.contains = function (a, b) {
+        return !(b.left < a.left ||
+            b.top < a.top ||
+            b.right > a.right ||
+            b.bottom > a.bottom);
     };
-    BoundingBox.getOverlappingSides = function (entity, box2) {
+    BoundingBox.touches = function (a, b) {
+        if (a.left > b.right || b.left > a.right) {
+            return false;
+        }
+        if (a.top > b.bottom || b.top > a.bottom) {
+            return false;
+        }
+        return true;
+    };
+    BoundingBox.overlaps = function (a, b) {
+        if (a.left >= b.right || b.left >= a.right) {
+            return false;
+        }
+        if (a.top >= b.bottom || b.top >= a.bottom) {
+            return false;
+        }
+        return true;
+    };
+    BoundingBox.getOverlappingSides = function (box1, box2) {
         var left = false;
         var right = false;
         var top = false;
         var bottom = false;
-        if (entity.left < box2.right && entity.right > box2.left) {
-            left = true;
-        }
-        if (entity.right > box2.left && entity.left < box2.right) {
+        if (BoundingBox.touches(box1, box2) && box1.left < box2.left && box1.right >= box2.left) {
             right = true;
         }
-        if (entity.top < box2.bottom && entity.bottom > box2.top) {
+        if (BoundingBox.touches(box1, box2) && box1.right > box2.right && box1.left <= box2.right) {
+            left = true;
+        }
+        if (BoundingBox.touches(box1, box2) && box1.top < box2.bottom && box1.bottom >= box2.bottom) {
             top = true;
         }
-        if (entity.bottom > box2.top && entity.top < box2.top) {
+        if (BoundingBox.touches(box1, box2) && box1.bottom > box2.top && box1.top <= box2.top) {
             bottom = true;
         }
         return {
@@ -34,6 +52,12 @@ var BoundingBox = (function () {
             right: right,
             top: top,
         };
+    };
+    BoundingBox.prototype.contains = function (box) {
+        return BoundingBox.contains(this, box);
+    };
+    BoundingBox.prototype.touches = function (box) {
+        return BoundingBox.touches(this, box);
     };
     BoundingBox.prototype.overlaps = function (box) {
         return BoundingBox.overlaps(this, box);
