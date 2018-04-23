@@ -1,4 +1,3 @@
-import { Animator, Compositor } from "..";
 /** Provides dimensions to bound an entity
  *  and the methods to calculate overlapping entities.
  */
