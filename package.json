@@ -13,6 +13,7 @@
     "eslint-plugin-import": "^2.10.0",
     "ts-loader": "^4.2.0",
     "tslint": "^5.9.1",
+    "typedoc": "^0.11.1",
     "typescript": "^2.8.1"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "watch": "rm -rf dist && tsc --watch",
     "prepublish": "yarn dist",
     "build": "yarn prepublish",
-    "dist": "rm -rf dist && tsc"
+    "dist": "rm -rf dist && tsc",
+    "docs": "yarn typedoc -- --out docs/ src/"
   }
 }
