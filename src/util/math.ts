@@ -15,7 +15,7 @@ export class BoundingBox {
     let bottom = false;
 
     if (entity.left < box2.right && entity.right > box2.left) { left = true; }
-    if (entity.right > box2.left && entity.left > box2.right) { right = true; }
+    if (entity.right > box2.left && entity.left < box2.right) { right = true; }
     if (entity.top < box2.bottom && entity.bottom > box2.top) { top = true; }
     if (entity.bottom > box2.top && entity.top < box2.top) { bottom = true; }
 

@@ -19,7 +19,7 @@ var BoundingBox = (function () {
         if (entity.left < box2.right && entity.right > box2.left) {
             left = true;
         }
-        if (entity.right > box2.left && entity.left > box2.right) {
+        if (entity.right > box2.left && entity.left < box2.right) {
             right = true;
         }
         if (entity.top < box2.bottom && entity.bottom > box2.top) {
