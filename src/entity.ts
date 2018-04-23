@@ -5,6 +5,7 @@ import { BoundingBox, Point } from "./util/math";
 
 export abstract class Entity {
   public bounds: BoundingBox;
+  public previousPosition: Point;
   public position: Point;
   public acceleration: Point;
 
@@ -32,8 +33,8 @@ export abstract class Entity {
     this.name = "entity";
     this.debug = debug;
 
+    this.previousPosition = position;
     this.position = position;
-    this.acceleration = new Point(0, 0);
     this.size = size;
 
     this.entityGraph = entityGraph;
