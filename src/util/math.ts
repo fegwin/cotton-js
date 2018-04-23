@@ -27,7 +27,7 @@ export class BoundingBox {
   // Check if rectangle a overlaps rectangle b
   // Each object (a and b) should have 2 properties to represent the
   // top-left corner (x1, y1) and 2 for the bottom-right corner (x2, y2).
-  public static  overlaps(a: BoundingBox, b: BoundingBox) {
+  public static overlaps(a: BoundingBox, b: BoundingBox) {
     // no horizontal overlap
     if (a.left >= b.right || b.left >= a.right) { return false; }
 
