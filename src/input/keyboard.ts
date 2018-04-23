@@ -5,8 +5,8 @@ const KEYDOWN = "keydown";
 const KEYUP = "keyup";
 
 export class Keyboard {
-  private keyStates: { [key: string]: number }
-  private keyMap: { [key: string]: Array<(keyState: number) => void> }
+  private keyStates: { [key: string]: number };
+  private keyMap: { [key: string]: Array<(keyState: number) => void> };
 
   constructor(htmlElement: HTMLElement) {
     // Holds the current state of a given key
