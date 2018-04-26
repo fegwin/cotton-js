@@ -5,7 +5,6 @@ import { BoundingBox, Point } from "./util/math";
 
 export abstract class Entity {
   public bounds: BoundingBox;
-  public previousPosition: Point;
   public position: Point;
   public acceleration: Point;
 
@@ -33,7 +32,6 @@ export abstract class Entity {
     this.name = "entity";
     this.debug = debug;
 
-    this.previousPosition = position;
     this.position = position;
     this.size = size;
 
@@ -68,7 +66,7 @@ export abstract class Entity {
       if (this.debug) {
         const bufferContext = this.buffer.getContext();
         bufferContext.strokeStyle = "green";
-        bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
+        bufferContext.rect(0, 0, this.size.x, this.size.y);
         bufferContext.stroke();
       }
 

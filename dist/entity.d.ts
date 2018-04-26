@@ -3,7 +3,6 @@ import { Trait } from "./trait";
 import { BoundingBox, Point } from "./util/math";
 export declare abstract class Entity {
     bounds: BoundingBox;
-    previousPosition: Point;
     position: Point;
     acceleration: Point;
     private name;

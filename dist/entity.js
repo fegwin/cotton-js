@@ -9,7 +9,6 @@ var Entity = (function () {
         var _this = this;
         this.name = "entity";
         this.debug = debug;
-        this.previousPosition = position;
         this.position = position;
         this.size = size;
         this.entityGraph = entityGraph;
@@ -30,7 +29,7 @@ var Entity = (function () {
             if (this.debug) {
                 var bufferContext = this.buffer.getContext();
                 bufferContext.strokeStyle = "green";
-                bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
+                bufferContext.rect(0, 0, this.size.x, this.size.y);
                 bufferContext.stroke();
             }
             this.firstPaintComplete = true;
