@@ -125,4 +125,5 @@ exports.getRandomInt = function (min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 };
+exports.sign = function (n) { return n && n / Math.abs(n); };
 //# sourceMappingURL=math.js.map

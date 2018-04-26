@@ -16,4 +16,6 @@ var entity_graph_1 = require("./entity-graph");
 exports.EntityGraph = entity_graph_1.EntityGraph;
 var trait_1 = require("./trait");
 exports.Trait = trait_1.Trait;
+var traits_1 = require("./traits");
+exports.traits = traits_1.traits;
 //# sourceMappingURL=index.js.map

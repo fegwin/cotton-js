@@ -4,6 +4,7 @@ import { BoundingBox, Point } from "./util/math";
 export declare abstract class Entity {
     bounds: BoundingBox;
     position: Point;
+    velocity: Point;
     acceleration: Point;
     private name;
     private debug;

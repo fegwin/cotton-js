@@ -6,3 +6,4 @@ export { Animator } from "./animator";
 export { Compositor } from "./compositor";
 export { EntityGraph } from "./entity-graph";
 export { Trait } from "./trait";
+export { traits } from "./traits";

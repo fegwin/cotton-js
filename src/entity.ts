@@ -10,7 +10,9 @@ import { BoundingBox, Point } from "./util/math";
  */
 export abstract class Entity {
   public bounds: BoundingBox;
+
   public position: Point;
+  public velocity: Point;
   public acceleration: Point;
 
   private name: string;
@@ -29,8 +31,7 @@ export abstract class Entity {
 
   /**
    *
-   * @param pos The initial position of the Entity.
-   * @param vel The initial velocity of the Entity
+   * @param pos The initial position of the Entity
    * @param size The initial size of the entity
    * @param traits The traits that the entity may have. (Movable, Explodable etc)
    */
@@ -45,6 +46,8 @@ export abstract class Entity {
     this.debug = debug;
 
     this.position = position;
+    this.velocity = new Point(0, 0);
+    this.acceleration = new Point(0, 0);
     this.size = size;
 
     this.entityGraph = entityGraph;

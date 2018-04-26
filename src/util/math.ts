@@ -147,3 +147,10 @@ export const getRandomInt = (min: number, max: number) => {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 };
+
+/**
+ * This method will get the sign of the number passed in
+ * 1, -1, 0 are the outputs
+ * @param n The number you are checking
+ */
+export const sign = (n: number) => n && n / Math.abs(n);
