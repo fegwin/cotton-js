@@ -10,8 +10,6 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
   public update(entity: Entity, entityGraph: EntityGraph, deltaTime: number) {
     const obstacles = entityGraph.getEntitiesByTraitName("Obstacle");
 
-    this.setPhysicsDefaults(entity);
-
     // Process X
     this.updateX(entity, entityGraph, deltaTime);
     this.applyObstacleCollisionResolutionX(entity, obstacles);

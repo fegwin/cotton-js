@@ -3,23 +3,13 @@ import { Point, sign } from "../util/math";
 
 export class BoundByPhysics extends Trait {
   private terminalVelocity: Point;
+
   constructor(terminalVelocity: Point) {
     super();
     this.terminalVelocity = terminalVelocity;
   }
 
-  public setPhysicsDefaults(entity: Entity) {
-    if (!entity.acceleration) {
-      entity.acceleration = new Point(0, 0);
-    }
-
-    if (!entity.velocity) {
-      entity.velocity = new Point(0, 0);
-    }
-  }
-
   public update(entity: Entity, entityGraph: EntityGraph, deltaTime: number) {
-    this.setPhysicsDefaults(entity);
     this.updateX(entity, entityGraph, deltaTime);
     this.updateY(entity, entityGraph, deltaTime);
   }

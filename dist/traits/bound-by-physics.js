@@ -19,16 +19,7 @@ var BoundByPhysics = (function (_super) {
         _this.terminalVelocity = terminalVelocity;
         return _this;
     }
-    BoundByPhysics.prototype.setPhysicsDefaults = function (entity) {
-        if (!entity.acceleration) {
-            entity.acceleration = new math_1.Point(0, 0);
-        }
-        if (!entity.velocity) {
-            entity.velocity = new math_1.Point(0, 0);
-        }
-    };
     BoundByPhysics.prototype.update = function (entity, entityGraph, deltaTime) {
-        this.setPhysicsDefaults(entity);
         this.updateX(entity, entityGraph, deltaTime);
         this.updateY(entity, entityGraph, deltaTime);
     };

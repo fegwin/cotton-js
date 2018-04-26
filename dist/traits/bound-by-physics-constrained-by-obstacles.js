@@ -19,7 +19,6 @@ var BoundByPhysicsConstrainedByObstacles = (function (_super) {
     }
     BoundByPhysicsConstrainedByObstacles.prototype.update = function (entity, entityGraph, deltaTime) {
         var obstacles = entityGraph.getEntitiesByTraitName("Obstacle");
-        this.setPhysicsDefaults(entity);
         this.updateX(entity, entityGraph, deltaTime);
         this.applyObstacleCollisionResolutionX(entity, obstacles);
         this.updateY(entity, entityGraph, deltaTime);
