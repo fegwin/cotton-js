@@ -1,3 +1,6 @@
+/** Provides dimensions to bound an entity
+ *  and the methods to calculate overlapping entities.
+ */
 export class BoundingBox {
   // Check if rectangle a contains rectangle b
   // Each object (a and b) should have 2 properties to represent the
@@ -59,6 +62,11 @@ export class BoundingBox {
   private size: Point;
   private pos: Point;
 
+  /**
+   *
+   * @param pos The top left position of the bounding box
+   * @param size The size from the position
+   */
   public constructor(pos: Point, size: Point) {
     this.pos = pos;
     this.size = size;
@@ -126,8 +134,14 @@ export class Point {
   }
 }
 
+/** Retrieves a random number between min and max.
+ * This includes decimal places.
+ */
 export const getRandomNumber = (min: number, max: number) => Math.random() * (max - min) + min;
 
+/** Retrieves a random number between min and max.
+ * This only includes whole numbers.
+ */
 export const getRandomInt = (min: number, max: number) => {
   min = Math.ceil(min);
   max = Math.floor(max);

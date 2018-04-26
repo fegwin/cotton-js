@@ -5,7 +5,7 @@ export declare class Animator {
     private lastTime;
     private accumulatedTime;
     constructor(compositor: Compositor, deltaTime?: number);
-    protected enqueue(): void;
     protected animate(time: number): void;
-    protected start(): void;
+    private start();
+    private enqueue();
 }

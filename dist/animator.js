@@ -9,9 +9,6 @@ var Animator = (function () {
         this.compositor = compositor;
         this.animate = this.animate.bind(this);
     }
-    Animator.prototype.enqueue = function () {
-        window.requestAnimationFrame(this.animate);
-    };
     Animator.prototype.animate = function (time) {
         this.accumulatedTime += (time - this.lastTime) / 1000;
         if (this.accumulatedTime > 1) {
@@ -27,6 +24,9 @@ var Animator = (function () {
     };
     Animator.prototype.start = function () {
         this.enqueue();
+    };
+    Animator.prototype.enqueue = function () {
+        window.requestAnimationFrame(this.animate);
     };
     return Animator;
 }());
