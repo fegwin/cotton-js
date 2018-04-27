@@ -1,16 +1,16 @@
 import { Entity, EntityLibrary, Trait } from "..";
-import { Point, sign } from "../util/math";
+import { Vector2, sign } from "../util/math";
 
 /**
  * This trait applies some simple physics laws to an entity
  */
 export class BoundByPhysics extends Trait {
-  private terminalVelocity: Point;
+  private terminalVelocity: Vector2;
 
   /**
    * @param terminalVelocity Max xy velocity the entity may assume
    */
-  constructor(terminalVelocity: Point) {
+  constructor(terminalVelocity: Vector2) {
     super();
     this.terminalVelocity = terminalVelocity;
   }

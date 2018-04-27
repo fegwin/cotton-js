@@ -1,7 +1,7 @@
 import { Buffer } from "./buffer";
 import { EntityLibrary } from "./entity-library";
 import { Trait } from "./trait";
-import { BoundingBox, Point } from "./util/math";
+import { BoundingBox, Vector2 } from "./util/math";
 
 /**
  * Provides the base class to which other entities in the system
@@ -11,9 +11,9 @@ import { BoundingBox, Point } from "./util/math";
 export abstract class Entity {
   public bounds: BoundingBox;
 
-  public position: Point;
-  public velocity: Point;
-  public acceleration: Point;
+  public position: Vector2;
+  public velocity: Vector2;
+  public acceleration: Vector2;
 
   private name: string;
   private debug: boolean;
@@ -25,7 +25,7 @@ export abstract class Entity {
   private lifetime: number;
   private firstPaintComplete: boolean;
 
-  private size: Point;
+  private size: Vector2;
 
   private buffer: Buffer;
 
@@ -36,8 +36,8 @@ export abstract class Entity {
    * @param traits The traits that the entity may have. (Movable, Explodable etc)
    */
   public constructor(
-    position: Point,
-    size: Point,
+    position: Vector2,
+    size: Vector2,
     entityLibrary: EntityLibrary,
     traits: Trait[] = [],
     debug: boolean = false,
@@ -46,8 +46,8 @@ export abstract class Entity {
     this.debug = debug;
 
     this.position = position;
-    this.velocity = new Point(0, 0);
-    this.acceleration = new Point(0, 0);
+    this.velocity = new Vector2(0, 0);
+    this.acceleration = new Vector2(0, 0);
     this.size = size;
 
     this.entityLibrary = entityLibrary;

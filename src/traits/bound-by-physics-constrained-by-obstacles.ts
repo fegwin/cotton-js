@@ -1,5 +1,5 @@
 import { Entity, EntityLibrary } from "..";
-import { BoundingBox, Point } from "../util/math";
+import { BoundingBox, Vector2 } from "../util/math";
 import { BoundByPhysics } from "./bound-by-physics";
 
 /**
@@ -10,7 +10,7 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
   /**
    * @param terminalVelocity Max xy velocity the entity may assume
    */
-  constructor(terminalVelocity: Point) {
+  constructor(terminalVelocity: Vector2) {
     super(terminalVelocity);
   }
 

@@ -1,7 +1,7 @@
 import { Buffer } from "./buffer";
 import { Entity } from "./entity";
 import { EntityLibrary } from "./entity-library";
-import { BoundingBox, Point } from "./util/math";
+import { BoundingBox, Vector2 } from "./util/math";
 
 /**
  * Contains entities that are rendered and updated
@@ -94,6 +94,6 @@ export class Layer {
   }
 
   private calculateBounds() {
-    this.bounds = new BoundingBox(new Point(0, 0), new Point(this.width, this.height));
+    this.bounds = new BoundingBox(new Vector2(0, 0), new Vector2(this.width, this.height));
   }
 }

@@ -20,11 +20,11 @@ var BoundByPhysicsConstrainedByObstacles = (function (_super) {
     BoundByPhysicsConstrainedByObstacles.prototype.update = function (entity, entityLibrary, deltaTime) {
         var obstacles = entityLibrary.getEntitiesByTraitName("Obstacle");
         this.updateX(entity, entityLibrary, deltaTime);
-        this.applyObstacleCollisionResolutionX(entity, obstacles);
+        this.resolveCollisionsX(entity, obstacles);
         this.updateY(entity, entityLibrary, deltaTime);
-        this.applyObstacleCollisionResolutionY(entity, obstacles);
+        this.resolveCollisionsY(entity, obstacles);
     };
-    BoundByPhysicsConstrainedByObstacles.prototype.applyObstacleCollisionResolutionX = function (entity, obstacles) {
+    BoundByPhysicsConstrainedByObstacles.prototype.resolveCollisionsX = function (entity, obstacles) {
         obstacles.forEach(function (obstacle) {
             if (!math_1.BoundingBox.overlaps(entity.bounds, obstacle.bounds)) {
                 return;
@@ -38,7 +38,7 @@ var BoundByPhysicsConstrainedByObstacles = (function (_super) {
             }
         });
     };
-    BoundByPhysicsConstrainedByObstacles.prototype.applyObstacleCollisionResolutionY = function (entity, obstacles) {
+    BoundByPhysicsConstrainedByObstacles.prototype.resolveCollisionsY = function (entity, obstacles) {
         obstacles.forEach(function (obstacle) {
             if (!math_1.BoundingBox.overlaps(entity.bounds, obstacle.bounds)) {
                 return;

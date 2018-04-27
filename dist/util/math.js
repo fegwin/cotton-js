@@ -53,18 +53,6 @@ var BoundingBox = (function () {
             top: top,
         };
     };
-    BoundingBox.prototype.contains = function (box) {
-        return BoundingBox.contains(this, box);
-    };
-    BoundingBox.prototype.touches = function (box) {
-        return BoundingBox.touches(this, box);
-    };
-    BoundingBox.prototype.overlaps = function (box) {
-        return BoundingBox.overlaps(this, box);
-    };
-    BoundingBox.prototype.getOverlappingSides = function (box) {
-        return BoundingBox.getOverlappingSides(this, box);
-    };
     Object.defineProperty(BoundingBox.prototype, "bottom", {
         get: function () {
             return this.pos.y + this.size.y;
@@ -108,17 +96,17 @@ var BoundingBox = (function () {
     return BoundingBox;
 }());
 exports.BoundingBox = BoundingBox;
-var Point = (function () {
-    function Point(x, y) {
+var Vector2 = (function () {
+    function Vector2(x, y) {
         this.set(x, y);
     }
-    Point.prototype.set = function (x, y) {
+    Vector2.prototype.set = function (x, y) {
         this.x = x;
         this.y = y;
     };
-    return Point;
+    return Vector2;
 }());
-exports.Point = Point;
+exports.Vector2 = Vector2;
 exports.getRandomNumber = function (min, max) { return Math.random() * (max - min) + min; };
 exports.getRandomInt = function (min, max) {
     min = Math.ceil(min);

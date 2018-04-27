@@ -1,11 +1,11 @@
 import { EntityLibrary } from "./entity-library";
 import { Trait } from "./trait";
-import { BoundingBox, Point } from "./util/math";
+import { BoundingBox, Vector2 } from "./util/math";
 export declare abstract class Entity {
     bounds: BoundingBox;
-    position: Point;
-    velocity: Point;
-    acceleration: Point;
+    position: Vector2;
+    velocity: Vector2;
+    acceleration: Vector2;
     private name;
     private debug;
     private entityLibrary;
@@ -15,7 +15,7 @@ export declare abstract class Entity {
     private firstPaintComplete;
     private size;
     private buffer;
-    constructor(position: Point, size: Point, entityLibrary: EntityLibrary, traits?: Trait[], debug?: boolean);
+    constructor(position: Vector2, size: Vector2, entityLibrary: EntityLibrary, traits?: Trait[], debug?: boolean);
     paintOn(context: CanvasRenderingContext2D): void;
     update(deltaTime: number): void;
     getTraits(): Trait[];

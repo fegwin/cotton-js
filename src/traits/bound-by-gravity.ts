@@ -1,5 +1,5 @@
 import { Entity, EntityLibrary, Trait } from "..";
-import { Point } from "../util/math";
+import { Vector2 } from "../util/math";
 
 /**
  * This trait bounds an entity to a fake gravitational pull
@@ -8,8 +8,8 @@ import { Point } from "../util/math";
  * Yew
  */
 export class BoundByGravity extends Trait {
-  private acceleration: Point;
-  constructor(acceleration: Point) {
+  private acceleration: Vector2;
+  constructor(acceleration: Vector2) {
     super();
     this.acceleration = acceleration;
   }
@@ -22,7 +22,7 @@ export class BoundByGravity extends Trait {
    */
   public update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
     if (!entity.acceleration) {
-      entity.acceleration = new Point(0, 0);
+      entity.acceleration = new Vector2(0, 0);
     }
 
     entity.acceleration.y = this.acceleration.y;

@@ -10,22 +10,13 @@ export declare class BoundingBox {
     };
     private size;
     private pos;
-    constructor(pos: Point, size: Point);
-    contains(box: BoundingBox): boolean;
-    touches(box: BoundingBox): boolean;
-    overlaps(box: BoundingBox): boolean;
-    getOverlappingSides(box: BoundingBox): {
-        bottom: boolean;
-        left: boolean;
-        right: boolean;
-        top: boolean;
-    };
+    constructor(pos: Vector2, size: Vector2);
     bottom: number;
     top: number;
     left: number;
     right: number;
 }
-export declare class Point {
+export declare class Vector2 {
     x: number;
     y: number;
     constructor(x: number, y: number);

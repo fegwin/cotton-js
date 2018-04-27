@@ -42,7 +42,7 @@ var Layer = (function () {
         context.drawImage(this.buffer.getCanvas(), 0, 0);
     };
     Layer.prototype.calculateBounds = function () {
-        this.bounds = new math_1.BoundingBox(new math_1.Point(0, 0), new math_1.Point(this.width, this.height));
+        this.bounds = new math_1.BoundingBox(new math_1.Vector2(0, 0), new math_1.Vector2(this.width, this.height));
     };
     return Layer;
 }());

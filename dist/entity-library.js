@@ -5,9 +5,6 @@ var EntityLibrary = (function () {
         this.entities = [];
         this.entitiesByTrait = {};
     }
-    EntityLibrary.prototype.getEntitiesByTraits = function (trait) {
-        return this.entitiesByTrait[trait.getName()] || [];
-    };
     EntityLibrary.prototype.getEntitiesByTraitName = function (traitName) {
         return this.entitiesByTrait[traitName] || [];
     };

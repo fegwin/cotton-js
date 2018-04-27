@@ -21,7 +21,7 @@ var BoundByGravity = (function (_super) {
     }
     BoundByGravity.prototype.update = function (entity, entityLibrary, deltaTime) {
         if (!entity.acceleration) {
-            entity.acceleration = new math_1.Point(0, 0);
+            entity.acceleration = new math_1.Vector2(0, 0);
         }
         entity.acceleration.y = this.acceleration.y;
         entity.acceleration.x = this.acceleration.x;

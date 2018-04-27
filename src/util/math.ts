@@ -2,9 +2,11 @@
  *  and the methods to calculate overlapping entities.
  */
 export class BoundingBox {
-  // Check if rectangle a contains rectangle b
-  // Each object (a and b) should have 2 properties to represent the
-  // top-left corner (x1, y1) and 2 for the bottom-right corner (x2, y2).
+  /**
+   * Check if box a contains box b
+   * @param a Box to test
+   * @param b Box to test against
+   */
   public static contains(a: BoundingBox, b: BoundingBox) {
     return !(
       b.left < a.left ||
@@ -14,9 +16,11 @@ export class BoundingBox {
     );
   }
 
-  // Check if rectangle a touches rectangle b
-  // Each object (a and b) should have 2 properties to represent the
-  // top-left corner (x1, y1) and 2 for the bottom-right corner (x2, y2).
+  /**
+   * Check if box a touches box b
+   * @param a Box to test
+   * @param b Box to test against
+   */
   public static touches(a: BoundingBox, b: BoundingBox) {
     // has horizontal gap
     if (a.left > b.right || b.left > a.right) { return false; }
@@ -27,9 +31,11 @@ export class BoundingBox {
     return true;
   }
 
-  // Check if rectangle a overlaps rectangle b
-  // Each object (a and b) should have 2 properties to represent the
-  // top-left corner (x1, y1) and 2 for the bottom-right corner (x2, y2).
+  /**
+   * Check if box a overlaps box b
+   * @param a Box to test
+   * @param b Box to test against
+   */
   public static overlaps(a: BoundingBox, b: BoundingBox) {
     // no horizontal overlap
     if (a.left >= b.right || b.left >= a.right) { return false; }
@@ -40,6 +46,11 @@ export class BoundingBox {
     return true;
   }
 
+  /**
+   * Get an object describing which sides are touching/overlapping given box a and box b
+   * @param box1 Box to test
+   * @param box2 Box to test against
+   */
   public static getOverlappingSides(box1: BoundingBox, box2: BoundingBox) {
     let left = false;
     let right = false;
@@ -59,33 +70,17 @@ export class BoundingBox {
     };
   }
 
-  private size: Point;
-  private pos: Point;
+  private size: Vector2;
+  private pos: Vector2;
 
   /**
    *
    * @param pos The top left position of the bounding box
    * @param size The size from the position
    */
-  public constructor(pos: Point, size: Point) {
+  public constructor(pos: Vector2, size: Vector2) {
     this.pos = pos;
     this.size = size;
-  }
-
-  public contains(box: BoundingBox) {
-    return BoundingBox.contains(this, box);
-  }
-
-  public touches(box: BoundingBox) {
-    return BoundingBox.touches(this, box);
-  }
-
-  public overlaps(box: BoundingBox) {
-    return BoundingBox.overlaps(this, box);
-  }
-
-  public getOverlappingSides(box: BoundingBox) {
-    return BoundingBox.getOverlappingSides(this, box);
   }
 
   public get bottom() {
@@ -121,7 +116,12 @@ export class BoundingBox {
   }
 }
 
-export class Point {
+/**
+ * A simple 2D vector class
+ * Has x
+ * Also has y
+ */
+export class Vector2 {
   public x: number;
   public y: number;
 

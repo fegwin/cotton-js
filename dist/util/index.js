@@ -7,7 +7,7 @@ exports.util = {
     BoundingBox: math_1.BoundingBox,
     CottonImage: image_1.CottonImage,
     Json: json_1.Json,
-    Point: math_1.Point,
+    Vector2: math_1.Vector2,
     getRandomInt: math_1.getRandomInt,
     getRandomNumber: math_1.getRandomNumber,
 };
