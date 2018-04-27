@@ -25,36 +25,32 @@ var BoundByPhysicsConstrainedByObstacles = (function (_super) {
         this.applyObstacleCollisionResolutionY(entity, obstacles);
     };
     BoundByPhysicsConstrainedByObstacles.prototype.applyObstacleCollisionResolutionX = function (entity, obstacles) {
-        var xResolution = 0;
         obstacles.forEach(function (obstacle) {
             if (!math_1.BoundingBox.overlaps(entity.bounds, obstacle.bounds)) {
                 return;
             }
             var sides = math_1.BoundingBox.getOverlappingSides(entity.bounds, obstacle.bounds);
             if (sides.right) {
-                xResolution -= entity.bounds.right - obstacle.bounds.left;
+                entity.position.x -= entity.bounds.right - obstacle.bounds.left;
             }
             if (sides.left) {
-                xResolution += obstacle.bounds.right - entity.bounds.left;
+                entity.position.x += obstacle.bounds.right - entity.bounds.left;
             }
         });
-        entity.position.x += xResolution;
     };
     BoundByPhysicsConstrainedByObstacles.prototype.applyObstacleCollisionResolutionY = function (entity, obstacles) {
-        var yResolution = 0;
         obstacles.forEach(function (obstacle) {
             if (!math_1.BoundingBox.overlaps(entity.bounds, obstacle.bounds)) {
                 return;
             }
             var sides = math_1.BoundingBox.getOverlappingSides(entity.bounds, obstacle.bounds);
             if (sides.bottom) {
-                yResolution -= entity.bounds.bottom - obstacle.bounds.top;
+                entity.position.y -= entity.bounds.bottom - obstacle.bounds.top;
             }
             if (sides.top) {
-                yResolution += obstacle.bounds.bottom - entity.bounds.top;
+                entity.position.y += obstacle.bounds.bottom - entity.bounds.top;
             }
         });
-        entity.position.y += yResolution;
     };
     return BoundByPhysicsConstrainedByObstacles;
 }(bound_by_physics_1.BoundByPhysics));

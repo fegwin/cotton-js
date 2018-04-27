@@ -20,8 +20,6 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
   }
 
   protected applyObstacleCollisionResolutionX(entity: Entity, obstacles: Entity[]) {
-    let xResolution = 0;
-
     obstacles.forEach((obstacle) => {
       if (!BoundingBox.overlaps(entity.bounds, obstacle.bounds)) { return; }
 
@@ -30,21 +28,17 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
       // We may have colided with left or right edge
       if (sides.right) {
         // Coming in from the left
-        xResolution -= entity.bounds.right - obstacle.bounds.left;
+        entity.position.x -= entity.bounds.right - obstacle.bounds.left;
       }
 
       if (sides.left) {
         // Coming in from the right
-        xResolution += obstacle.bounds.right - entity.bounds.left;
+        entity.position.x += obstacle.bounds.right - entity.bounds.left;
       }
     });
-
-    entity.position.x += xResolution;
   }
 
   protected applyObstacleCollisionResolutionY(entity: Entity, obstacles: Entity[]) {
-    let yResolution = 0;
-
     obstacles.forEach((obstacle) => {
       if (!BoundingBox.overlaps(entity.bounds, obstacle.bounds)) { return; }
 
@@ -53,15 +47,13 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
       // We may have colided with top or bottom edge
       if (sides.bottom) {
         // Coming in from the top
-        yResolution -= entity.bounds.bottom - obstacle.bounds.top;
+        entity.position.y -= entity.bounds.bottom - obstacle.bounds.top;
       }
 
       if (sides.top) {
         // Coming in from the bottom
-        yResolution += obstacle.bounds.bottom - entity.bounds.top;
+        entity.position.y += obstacle.bounds.bottom - entity.bounds.top;
       }
     });
-
-    entity.position.y += yResolution;
   }
 }
