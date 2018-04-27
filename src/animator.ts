@@ -12,7 +12,7 @@ export class Animator {
 
   /**
    * @param compositor The compositor to animate
-   * @param deltaTime How many times a second to update
+   * @param deltaTime The time since the last update cycle
    */
   public constructor(compositor: Compositor, deltaTime: number = 1 / 60) {
     this.accumulatedTime = 0;
@@ -22,12 +22,20 @@ export class Animator {
 
     this.animate = this.animate.bind(this);
   }
-/**
- * Provides the logic to step animation and provide
- * the logic for the game loop. This includes handling
- * of time and the step size between animation frames.
- * @param time The time since the animation has started
- */
+
+  /**
+   * Start the animator
+   */
+  public start(): void {
+    this.enqueue();
+  }
+
+  /**
+   * Provides the logic to step animation and provide
+   * the logic for the game loop. This includes handling
+   * of time and the step size between animation frames.
+   * @param time The time since the animation has started
+   */
   protected animate(time: number): void {
     this.accumulatedTime += (time - this.lastTime) / 1000;
 
@@ -43,10 +51,6 @@ export class Animator {
     this.compositor.paint();
     this.lastTime = time;
 
-    this.enqueue();
-  }
-
-  private start(): void {
     this.enqueue();
   }
 

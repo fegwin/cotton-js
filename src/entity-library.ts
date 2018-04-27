@@ -1,7 +1,13 @@
 import { Entity } from ".";
 import { Trait } from "./trait";
 
-export class EntityGraph {
+/**
+ * A library of entities that may interact with one another.
+ * Provides the ability to query entities by traits.
+ * Entities are required to register with the EntityLibrary upon creation
+ * Entities are requried to deregister with the EntityLibrary upon deletion
+ */
+export class EntityLibrary {
   private entities: Entity[];
   private entitiesByTrait: { [id: string]: Entity[] };
 
@@ -10,19 +16,21 @@ export class EntityGraph {
     this.entitiesByTrait = {};
   }
 
-  public getEntitiesByTraits(trait: Trait): Entity[] {
-    return this.entitiesByTrait[trait.getName()] || [];
-  }
-
+  /**
+   * Query entities by trait name
+   * @param traitName Entities which contain the following trait will be returned
+   */
   public getEntitiesByTraitName(traitName: string): Entity[] {
     return this.entitiesByTrait[traitName] || [];
   }
 
-  // Use this method to register an entity with the entity graph
-  // Entities that are shared on an entity graph, will be able to interact with
-  // one another
-  //
-  // pro tip. if you want to have layer seperation for entities, just pass in different entity graphs
+  /**
+   * Use this method to register an entity with the EntityLibrary
+   * Entities that are shared on an EntityLibrary, will be able to interact with
+   * one another.
+   * pro tip. if you want to have layer seperation for entities, just pass in different entity graphs
+   * @param entity The entity you wish to register
+   */
   public registerEntity(entity: Entity) {
     this.entities.push(entity);
 
@@ -38,15 +46,18 @@ export class EntityGraph {
     });
   }
 
-  // Use this method to deregister an entity.
-  // You will want to do this, once an entity is removed from the system
+  /**
+   * Use this method to deregister an entity.
+   * You will want to do this, once an entity is removed from the system
+   * @param entity The entity you wish to deregister
+   */
   public deregisterEntity(entity: Entity) {
     // Let's remove this entity from all the trait lookups
     const traits = entity.getTraits();
 
     traits.forEach((trait) => {
       if (!this.entitiesByTrait[trait.getName()]) {
-        throw new Error("EntityGraph out of sync");
+        throw new Error("EntityLibrary out of sync");
       }
 
       this.entitiesByTrait[trait.getName()] =

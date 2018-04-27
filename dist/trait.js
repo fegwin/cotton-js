@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Trait = (function () {
     function Trait() {
     }
-    Trait.prototype.update = function (entity, entityGraph, deltaTime) {
+    Trait.prototype.update = function (entity, entityLibrary, deltaTime) {
         return;
     };
     return Trait;

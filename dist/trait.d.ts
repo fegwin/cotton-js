@@ -1,6 +1,6 @@
 import { Entity } from "./entity";
-import { EntityGraph } from "./entity-graph";
+import { EntityLibrary } from "./entity-library";
 export declare abstract class Trait {
-    update(entity: Entity, entityGraph: EntityGraph, deltaTime: number): void;
+    update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number): void;
     abstract getName(): string;
 }

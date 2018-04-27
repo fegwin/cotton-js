@@ -19,21 +19,21 @@ var BoundByPhysics = (function (_super) {
         _this.terminalVelocity = terminalVelocity;
         return _this;
     }
-    BoundByPhysics.prototype.update = function (entity, entityGraph, deltaTime) {
-        this.updateX(entity, entityGraph, deltaTime);
-        this.updateY(entity, entityGraph, deltaTime);
+    BoundByPhysics.prototype.update = function (entity, entityLibrary, deltaTime) {
+        this.updateX(entity, entityLibrary, deltaTime);
+        this.updateY(entity, entityLibrary, deltaTime);
     };
     BoundByPhysics.prototype.getName = function () {
         return "BoundByPhysics";
     };
-    BoundByPhysics.prototype.updateY = function (entity, entityGraph, deltaTime) {
+    BoundByPhysics.prototype.updateY = function (entity, entityLibrary, deltaTime) {
         entity.velocity.y += deltaTime * entity.acceleration.y;
         if (this.terminalVelocity && Math.abs(entity.velocity.y) >= Math.abs(this.terminalVelocity.y)) {
             entity.velocity.y = math_1.sign(entity.velocity.y) * this.terminalVelocity.y;
         }
         entity.position.y += deltaTime * entity.velocity.y;
     };
-    BoundByPhysics.prototype.updateX = function (entity, entityGraph, deltaTime) {
+    BoundByPhysics.prototype.updateX = function (entity, entityLibrary, deltaTime) {
         entity.velocity.x += deltaTime * entity.acceleration.x;
         if (this.terminalVelocity && Math.abs(entity.velocity.x) >= Math.abs(this.terminalVelocity.x)) {
             entity.velocity.x = math_1.sign(entity.velocity.x) * this.terminalVelocity.x;

@@ -71,7 +71,7 @@ export class Compositor {
   /**
    * Gets each layer to update and each of it's entities and does calculations.
    * This is called for you by the Animator.
-   * @param deltaTime How many times a second to update
+   * @param deltaTime The time since the last update cycle
    */
   public update(deltaTime: number): void {
     for (const canvasElementToLayer of this.canvasElementToLayers) {

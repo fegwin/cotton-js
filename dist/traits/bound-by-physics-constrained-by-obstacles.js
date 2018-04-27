@@ -17,11 +17,11 @@ var BoundByPhysicsConstrainedByObstacles = (function (_super) {
     function BoundByPhysicsConstrainedByObstacles(terminalVelocity) {
         return _super.call(this, terminalVelocity) || this;
     }
-    BoundByPhysicsConstrainedByObstacles.prototype.update = function (entity, entityGraph, deltaTime) {
-        var obstacles = entityGraph.getEntitiesByTraitName("Obstacle");
-        this.updateX(entity, entityGraph, deltaTime);
+    BoundByPhysicsConstrainedByObstacles.prototype.update = function (entity, entityLibrary, deltaTime) {
+        var obstacles = entityLibrary.getEntitiesByTraitName("Obstacle");
+        this.updateX(entity, entityLibrary, deltaTime);
         this.applyObstacleCollisionResolutionX(entity, obstacles);
-        this.updateY(entity, entityGraph, deltaTime);
+        this.updateY(entity, entityLibrary, deltaTime);
         this.applyObstacleCollisionResolutionY(entity, obstacles);
     };
     BoundByPhysicsConstrainedByObstacles.prototype.applyObstacleCollisionResolutionX = function (entity, obstacles) {

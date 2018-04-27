@@ -1,10 +1,10 @@
-import { Entity, EntityGraph, Trait } from "..";
+import { Entity, EntityLibrary, Trait } from "..";
 import { Point } from "../util/math";
 export declare class BoundByPhysics extends Trait {
     private terminalVelocity;
     constructor(terminalVelocity: Point);
-    update(entity: Entity, entityGraph: EntityGraph, deltaTime: number): void;
+    update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number): void;
     getName(): string;
-    protected updateY(entity: Entity, entityGraph: EntityGraph, deltaTime: number): void;
-    protected updateX(entity: Entity, entityGraph: EntityGraph, deltaTime: number): void;
+    protected updateY(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number): void;
+    protected updateX(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number): void;
 }

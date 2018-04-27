@@ -1,24 +1,39 @@
-import { Entity, EntityGraph, Trait } from "..";
+import { Entity, EntityLibrary, Trait } from "..";
 import { Point, sign } from "../util/math";
 
+/**
+ * This trait applies some simple physics laws to an entity
+ */
 export class BoundByPhysics extends Trait {
   private terminalVelocity: Point;
 
+  /**
+   * @param terminalVelocity Max xy velocity the entity may assume
+   */
   constructor(terminalVelocity: Point) {
     super();
     this.terminalVelocity = terminalVelocity;
   }
 
-  public update(entity: Entity, entityGraph: EntityGraph, deltaTime: number) {
-    this.updateX(entity, entityGraph, deltaTime);
-    this.updateY(entity, entityGraph, deltaTime);
+  /**
+   * On each update cycle, we update the position of the entity
+   * First the velocity is updated based on the current acceleration
+   * Then the velocity is constrained to a terminal velocity (if provided)
+   * Then the new position is calculated
+   * @param entity The entity we are acting on
+   * @param entityLibrary The entity library containing other entities we may interact with
+   * @param deltaTime Time since the last update cycle
+   */
+  public update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
+    this.updateX(entity, entityLibrary, deltaTime);
+    this.updateY(entity, entityLibrary, deltaTime);
   }
 
   public getName() {
     return "BoundByPhysics";
   }
 
-  protected updateY(entity: Entity, entityGraph: EntityGraph, deltaTime: number) {
+  protected updateY(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
     // Update velocity
     entity.velocity.y += deltaTime * entity.acceleration.y;
 
@@ -32,7 +47,7 @@ export class BoundByPhysics extends Trait {
     entity.position.y += deltaTime * entity.velocity.y;
   }
 
-  protected updateX(entity: Entity, entityGraph: EntityGraph, deltaTime: number) {
+  protected updateX(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
     // Update velocity
     entity.velocity.x += deltaTime * entity.acceleration.x;
 

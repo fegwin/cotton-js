@@ -1,5 +1,5 @@
 import { Buffer } from "./buffer";
-import { EntityGraph } from "./entity-graph";
+import { EntityLibrary } from "./entity-library";
 import { Trait } from "./trait";
 import { BoundingBox, Point } from "./util/math";
 
@@ -18,7 +18,7 @@ export abstract class Entity {
   private name: string;
   private debug: boolean;
 
-  private entityGraph: EntityGraph;
+  private entityLibrary: EntityLibrary;
   private traits: Trait[];
   private trait: { [id: string]: Trait };
 
@@ -38,7 +38,7 @@ export abstract class Entity {
   public constructor(
     position: Point,
     size: Point,
-    entityGraph: EntityGraph,
+    entityLibrary: EntityLibrary,
     traits: Trait[] = [],
     debug: boolean = false,
   ) {
@@ -50,7 +50,7 @@ export abstract class Entity {
     this.acceleration = new Point(0, 0);
     this.size = size;
 
-    this.entityGraph = entityGraph;
+    this.entityLibrary = entityLibrary;
     this.traits = traits;
 
     this.trait = {};
@@ -64,7 +64,7 @@ export abstract class Entity {
     this.calculateBounds();
 
     this.buffer = new Buffer(this.size.x, this.size.y);
-    this.entityGraph.registerEntity(this);
+    this.entityLibrary.registerEntity(this);
   }
 
  /**
@@ -107,11 +107,11 @@ export abstract class Entity {
   /**
    * This method is where you should do your calculations.
    * Your traits will be updated for you.
-   * @param deltaTime How many times a second to update
+   * @param deltaTime Time since the last update cycle
    */
   public update(deltaTime: number): void {
     for (const trait of this.traits) {
-      trait.update(this, this.entityGraph, deltaTime);
+      trait.update(this, this.entityLibrary, deltaTime);
     }
 
     this.lifetime += deltaTime;
@@ -131,6 +131,9 @@ export abstract class Entity {
    */
   protected abstract draw(): void;
 
+  /**
+   * Calculates the AABB bounding box of the entity
+   */
   private calculateBounds() {
     this.bounds = new BoundingBox(this.position, this.size);
   }

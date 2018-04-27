@@ -19,7 +19,7 @@ var BoundByGravity = (function (_super) {
         _this.acceleration = acceleration;
         return _this;
     }
-    BoundByGravity.prototype.update = function (entity, entityGraph, deltaTime) {
+    BoundByGravity.prototype.update = function (entity, entityLibrary, deltaTime) {
         if (!entity.acceleration) {
             entity.acceleration = new math_1.Point(0, 0);
         }

@@ -1,6 +1,6 @@
 import { Entity } from ".";
 import { Trait } from "./trait";
-export declare class EntityGraph {
+export declare class EntityLibrary {
     private entities;
     private entitiesByTrait;
     constructor();

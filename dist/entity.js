@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var buffer_1 = require("./buffer");
 var math_1 = require("./util/math");
 var Entity = (function () {
-    function Entity(position, size, entityGraph, traits, debug) {
+    function Entity(position, size, entityLibrary, traits, debug) {
         if (traits === void 0) { traits = []; }
         if (debug === void 0) { debug = false; }
         var _this = this;
@@ -13,7 +13,7 @@ var Entity = (function () {
         this.velocity = new math_1.Point(0, 0);
         this.acceleration = new math_1.Point(0, 0);
         this.size = size;
-        this.entityGraph = entityGraph;
+        this.entityLibrary = entityLibrary;
         this.traits = traits;
         this.trait = {};
         this.traits.forEach(function (trait) {
@@ -23,7 +23,7 @@ var Entity = (function () {
         this.firstPaintComplete = false;
         this.calculateBounds();
         this.buffer = new buffer_1.Buffer(this.size.x, this.size.y);
-        this.entityGraph.registerEntity(this);
+        this.entityLibrary.registerEntity(this);
     }
     Entity.prototype.paintOn = function (context) {
         if (!this.firstPaintComplete) {
@@ -41,7 +41,7 @@ var Entity = (function () {
     Entity.prototype.update = function (deltaTime) {
         for (var _i = 0, _a = this.traits; _i < _a.length; _i++) {
             var trait = _a[_i];
-            trait.update(this, this.entityGraph, deltaTime);
+            trait.update(this, this.entityLibrary, deltaTime);
         }
         this.lifetime += deltaTime;
     };

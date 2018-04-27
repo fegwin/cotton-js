@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var EntityGraph = (function () {
-    function EntityGraph() {
+var EntityLibrary = (function () {
+    function EntityLibrary() {
         this.entities = [];
         this.entitiesByTrait = {};
     }
-    EntityGraph.prototype.getEntitiesByTraits = function (trait) {
+    EntityLibrary.prototype.getEntitiesByTraits = function (trait) {
         return this.entitiesByTrait[trait.getName()] || [];
     };
-    EntityGraph.prototype.getEntitiesByTraitName = function (traitName) {
+    EntityLibrary.prototype.getEntitiesByTraitName = function (traitName) {
         return this.entitiesByTrait[traitName] || [];
     };
-    EntityGraph.prototype.registerEntity = function (entity) {
+    EntityLibrary.prototype.registerEntity = function (entity) {
         var _this = this;
         this.entities.push(entity);
         var traits = entity.getTraits();
@@ -22,19 +22,19 @@ var EntityGraph = (function () {
             _this.entitiesByTrait[trait.getName()].push(entity);
         });
     };
-    EntityGraph.prototype.deregisterEntity = function (entity) {
+    EntityLibrary.prototype.deregisterEntity = function (entity) {
         var _this = this;
         var traits = entity.getTraits();
         traits.forEach(function (trait) {
             if (!_this.entitiesByTrait[trait.getName()]) {
-                throw new Error("EntityGraph out of sync");
+                throw new Error("EntityLibrary out of sync");
             }
             _this.entitiesByTrait[trait.getName()] =
                 _this.entitiesByTrait[trait.getName()].filter(function (e) { return e !== entity; });
             _this.entities = _this.entities.filter(function (e) { return e !== entity; });
         });
     };
-    return EntityGraph;
+    return EntityLibrary;
 }());
-exports.EntityGraph = EntityGraph;
-//# sourceMappingURL=entity-graph.js.map
+exports.EntityLibrary = EntityLibrary;
+//# sourceMappingURL=entity-library.js.map
