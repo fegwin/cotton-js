@@ -1,6 +1,7 @@
 import { Buffer } from "./buffer";
-import { ITrait } from "./trait";
-import { BoundingBox, Point } from "./util/math";
+import { EntityLibrary } from "./entity-library";
+import { Trait } from "./trait";
+import { BoundingBox, Vector2 } from "./util/math";
 
 /**
  * Provides the base class to which other entities in the system
@@ -10,49 +11,60 @@ import { BoundingBox, Point } from "./util/math";
 export abstract class Entity {
   public bounds: BoundingBox;
 
+  public position: Vector2;
+  public velocity: Vector2;
+  public acceleration: Vector2;
+
   private name: string;
   private debug: boolean;
-  private traits: { [id: string]: ITrait };
+
+  private entityLibrary: EntityLibrary;
+  private traits: Trait[];
+  private trait: { [id: string]: Trait };
 
   private lifetime: number;
   private firstPaintComplete: boolean;
 
-  private size: Point;
-  private vel: Point;
-  private pos: Point;
+  private size: Vector2;
 
   private buffer: Buffer;
 
   /**
    *
-   * @param pos The initial position of the Entity.
-   * @param vel The initial velocity of the Entity
+   * @param pos The initial position of the Entity
    * @param size The initial size of the entity
    * @param traits The traits that the entity may have. (Movable, Explodable etc)
    */
   public constructor(
-    pos: Point,
-    vel: Point,
-    size: Point,
-    traits: ITrait[] = [],
+    position: Vector2,
+    size: Vector2,
+    entityLibrary: EntityLibrary,
+    traits: Trait[] = [],
     debug: boolean = false,
   ) {
     this.name = "entity";
     this.debug = debug;
 
-    this.pos = pos;
-    this.vel = vel;
+    this.position = position;
+    this.velocity = new Vector2(0, 0);
+    this.acceleration = new Vector2(0, 0);
     this.size = size;
 
-    this.traits = {};
+    this.entityLibrary = entityLibrary;
+    this.traits = traits;
+
+    this.trait = {};
+    this.traits.forEach((trait) => {
+      this.trait[trait.getName()] = trait;
+    });
 
     this.lifetime = 0;
     this.firstPaintComplete = false;
 
     this.calculateBounds();
-    this.initialiseTraits(traits);
 
     this.buffer = new Buffer(this.size.x, this.size.y);
+    this.entityLibrary.registerEntity(this);
   }
 
  /**
@@ -71,7 +83,7 @@ export abstract class Entity {
       if (this.debug) {
         const bufferContext = this.buffer.getContext();
         bufferContext.strokeStyle = "green";
-        bufferContext.rect(0, 0, this.size.x - 1, this.size.y - 1);
+        bufferContext.rect(0, 0, this.size.x, this.size.y);
         bufferContext.stroke();
       }
 
@@ -86,23 +98,30 @@ export abstract class Entity {
     context.drawImage(
       this.buffer.getCanvas(),
       // tslint:disable-next-line:no-bitwise
-      (0.5 + this.pos.x) << 0,
+      (0.5 + this.position.x) << 0,
       // tslint:disable-next-line:no-bitwise
-      (0.5 + this.pos.y) << 0,
+      (0.5 + this.position.y) << 0,
     );
   }
 
   /**
    * This method is where you should do your calculations.
    * Your traits will be updated for you.
-   * @param deltaTime How many times a second to update
+   * @param deltaTime Time since the last update cycle
    */
   public update(deltaTime: number): void {
-    for (const trait of Object.keys(this.traits)) {
-      this.traits[trait].update(this, deltaTime);
+    for (const trait of this.traits) {
+      trait.update(this, this.entityLibrary, deltaTime);
     }
 
     this.lifetime += deltaTime;
+  }
+
+  /**
+   * This method returns all the traits implemented by the entity
+   */
+  public getTraits(): Trait[] {
+    return this.traits;
   }
 
   /**
@@ -112,13 +131,10 @@ export abstract class Entity {
    */
   protected abstract draw(): void;
 
-  private initialiseTraits(traits: ITrait[]): void {
-    traits.forEach((trait) => {
-      this.traits[trait.getName()] = trait;
-    });
-  }
-
+  /**
+   * Calculates the AABB bounding box of the entity
+   */
   private calculateBounds() {
-    this.bounds = new BoundingBox(this.pos, this.size);
+    this.bounds = new BoundingBox(this.position, this.size);
   }
 }

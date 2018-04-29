@@ -1,12 +1,14 @@
 import { Entity } from "./entity";
+import { EntityLibrary } from "./entity-library";
 import { BoundingBox } from "./util/math";
 export declare class Layer {
     bounds: BoundingBox;
     private width;
     private height;
+    private entityLibrary;
     private entities;
     private buffer;
-    constructor(width: number, height: number, entities?: Entity[]);
+    constructor(width: number, height: number, entityLibrary: EntityLibrary, entities?: Entity[]);
     addEntity(entity: Entity): void;
     addEntities(entities: Entity[]): void;
     removeEntity(entity: Entity): void;

@@ -1,6 +1,7 @@
 import { Buffer } from "./buffer";
 import { Entity } from "./entity";
-import { BoundingBox, Point } from "./util/math";
+import { EntityLibrary } from "./entity-library";
+import { BoundingBox, Vector2 } from "./util/math";
 
 /**
  * Contains entities that are rendered and updated
@@ -13,6 +14,7 @@ export class Layer {
   private width: number;
   private height: number;
 
+  private entityLibrary: EntityLibrary;
   private entities: Entity[] = [];
 
   private buffer: Buffer;
@@ -20,12 +22,14 @@ export class Layer {
   /**
    * @param width The width of the Layer
    * @param height The height of the Layer
+   * @param entityLibrary The entity library
    * @param entities The initial entities to place in the Layer
    */
-  public constructor(width: number, height: number, entities: Entity[] = []) {
+  public constructor(width: number, height: number, entityLibrary: EntityLibrary, entities: Entity[] = []) {
     this.width = width;
     this.height = height;
 
+    this.entityLibrary = entityLibrary;
     this.buffer = new Buffer(this.width, this.height);
 
     this.calculateBounds();
@@ -56,6 +60,7 @@ export class Layer {
     this.entities = this.entities.filter((e) => {
       return e !== entity;
     });
+    this.entityLibrary.deregisterEntity(entity);
   }
 
   /**
@@ -89,6 +94,6 @@ export class Layer {
   }
 
   private calculateBounds() {
-    this.bounds = new BoundingBox(new Point(0, 0), new Point(this.width, this.height));
+    this.bounds = new BoundingBox(new Vector2(0, 0), new Vector2(this.width, this.height));
   }
 }

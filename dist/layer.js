@@ -3,11 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var buffer_1 = require("./buffer");
 var math_1 = require("./util/math");
 var Layer = (function () {
-    function Layer(width, height, entities) {
+    function Layer(width, height, entityLibrary, entities) {
         if (entities === void 0) { entities = []; }
         this.entities = [];
         this.width = width;
         this.height = height;
+        this.entityLibrary = entityLibrary;
         this.buffer = new buffer_1.Buffer(this.width, this.height);
         this.calculateBounds();
         this.addEntities(entities);
@@ -22,6 +23,7 @@ var Layer = (function () {
         this.entities = this.entities.filter(function (e) {
             return e !== entity;
         });
+        this.entityLibrary.deregisterEntity(entity);
     };
     Layer.prototype.update = function (deltaTime) {
         for (var _i = 0, _a = this.entities; _i < _a.length; _i++) {
@@ -40,7 +42,7 @@ var Layer = (function () {
         context.drawImage(this.buffer.getCanvas(), 0, 0);
     };
     Layer.prototype.calculateBounds = function () {
-        this.bounds = new math_1.BoundingBox(new math_1.Point(0, 0), new math_1.Point(this.width, this.height));
+        this.bounds = new math_1.BoundingBox(new math_1.Vector2(0, 0), new math_1.Vector2(this.width, this.height));
     };
     return Layer;
 }());

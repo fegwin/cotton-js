@@ -1,5 +1,6 @@
 import { Entity } from "./entity";
-export interface ITrait {
-    update(entity: Entity, deltaTime: number): void;
-    getName(): string;
+import { EntityLibrary } from "./entity-library";
+export declare abstract class Trait {
+    update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number): void;
+    abstract getName(): string;
 }

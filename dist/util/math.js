@@ -5,14 +5,53 @@ var BoundingBox = (function () {
         this.pos = pos;
         this.size = size;
     }
-    BoundingBox.overlaps = function (box1, box2) {
-        return (box1.bottom > box2.top &&
-            box1.top < box2.bottom &&
-            box1.left < box2.right &&
-            box1.right > box2.left);
+    BoundingBox.contains = function (a, b) {
+        return !(b.left < a.left ||
+            b.top < a.top ||
+            b.right > a.right ||
+            b.bottom > a.bottom);
     };
-    BoundingBox.prototype.overlaps = function (box) {
-        return BoundingBox.overlaps(this, box);
+    BoundingBox.touches = function (a, b) {
+        if (a.left > b.right || b.left > a.right) {
+            return false;
+        }
+        if (a.top > b.bottom || b.top > a.bottom) {
+            return false;
+        }
+        return true;
+    };
+    BoundingBox.overlaps = function (a, b) {
+        if (a.left >= b.right || b.left >= a.right) {
+            return false;
+        }
+        if (a.top >= b.bottom || b.top >= a.bottom) {
+            return false;
+        }
+        return true;
+    };
+    BoundingBox.getOverlappingSides = function (box1, box2) {
+        var left = false;
+        var right = false;
+        var top = false;
+        var bottom = false;
+        if (BoundingBox.touches(box1, box2) && box1.left < box2.left && box1.right >= box2.left) {
+            right = true;
+        }
+        if (BoundingBox.touches(box1, box2) && box1.right > box2.right && box1.left <= box2.right) {
+            left = true;
+        }
+        if (BoundingBox.touches(box1, box2) && box1.top < box2.bottom && box1.bottom >= box2.bottom) {
+            top = true;
+        }
+        if (BoundingBox.touches(box1, box2) && box1.bottom > box2.top && box1.top <= box2.top) {
+            bottom = true;
+        }
+        return {
+            bottom: bottom,
+            left: left,
+            right: right,
+            top: top,
+        };
     };
     Object.defineProperty(BoundingBox.prototype, "bottom", {
         get: function () {
@@ -57,21 +96,22 @@ var BoundingBox = (function () {
     return BoundingBox;
 }());
 exports.BoundingBox = BoundingBox;
-var Point = (function () {
-    function Point(x, y) {
+var Vector2 = (function () {
+    function Vector2(x, y) {
         this.set(x, y);
     }
-    Point.prototype.set = function (x, y) {
+    Vector2.prototype.set = function (x, y) {
         this.x = x;
         this.y = y;
     };
-    return Point;
+    return Vector2;
 }());
-exports.Point = Point;
+exports.Vector2 = Vector2;
 exports.getRandomNumber = function (min, max) { return Math.random() * (max - min) + min; };
 exports.getRandomInt = function (min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 };
+exports.sign = function (n) { return n && n / Math.abs(n); };
 //# sourceMappingURL=math.js.map
