@@ -1,8 +1,9 @@
-export default abstract class SpriteSheet {
-    private width;
-    private height;
-    private image;
-    private tiles;
-    constructor(width: number, height: number);
-    abstract loadImage(): Promise<HTMLImageElement>;
+import { Buffer } from "./buffer";
+export declare class SpriteSheet {
+    static createSpriteSheet(spriteDef: any, spriteImage: HTMLImageElement): SpriteSheet;
+    static loadSpriteSheet(assetPath: string, name: string): Promise<SpriteSheet>;
+    private sprites;
+    constructor(sprites: {
+        [name: string]: Buffer[];
+    });
 }

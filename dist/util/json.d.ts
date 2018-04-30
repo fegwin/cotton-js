@@ -1,1 +1,1 @@
-export declare function loadJson(url: string): Promise<Response>;
+export declare function loadJson(url: string): Promise<any>;
