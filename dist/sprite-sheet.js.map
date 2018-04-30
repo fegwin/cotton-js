@@ -1,0 +1,1 @@
+{"version":3,"file":"sprite-sheet.js","sourceRoot":"","sources":["../src/sprite-sheet.ts"],"names":[],"mappings":";;AAEA;IAOE,qBAAY,KAAa,EAAE,MAAc;QACvC,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC;QACnB,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC;QACrB,IAAI,CAAC,KAAK,GAAG,EAAE,CAAC;IAClB,CAAC;IAGH,kBAAC;AAAD,CAAC,AAdD,IAcC"}
