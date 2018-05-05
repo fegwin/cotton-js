@@ -3,6 +3,11 @@ import { Layer } from "./layer";
 
 // Helper class to contain root buffer elements (what's on the dom)
 // to their layer class.
+
+/**
+ * Helper class to contain root buffer elements (what's on the dom)
+ * to their layer class.
+ */
 class CanvasElementToLayer {
   public buffer: Buffer;
   public layer: Layer;
@@ -13,10 +18,21 @@ class CanvasElementToLayer {
   }
 }
 
+/**
+ * Composes different layers together
+ * and controls the handling of DOM
+ * manipulation.
+ */
 export class Compositor {
   private rootContainer: HTMLElement;
   private canvasElementToLayers: CanvasElementToLayer[] = [];
 
+  /**
+   * @param width The width of the Compositor (and it's buffer)
+   * @param height The height of the Compositor (and it's buffer)
+   * @param rootElement The root element on the DOM that all Canvas manipulation occurs from
+   * @param layers initial layers the Compositor contains
+   */
   public constructor(
     width: number,
     height: number,
@@ -32,6 +48,12 @@ export class Compositor {
     this.addLayers(width, height, layers);
   }
 
+  /**
+   * Adds layers onto the compositor
+   * @param width The width of all the layers
+   * @param height The height of all the layers
+   * @param layers An array of layers to add
+   */
   public addLayers(width: number, height: number, layers: Layer[]): void {
     for (let i = 0; i < layers.length; i++) {
       const layer = layers[i];
@@ -46,19 +68,22 @@ export class Compositor {
     }
   }
 
-  // This method will get each layer to update each of it's entities
-  // Calculations are done here.
-  // This is called for you by the animator
+  /**
+   * Gets each layer to update and each of it's entities and does calculations.
+   * This is called for you by the Animator.
+   * @param deltaTime The time since the last update cycle
+   */
   public update(deltaTime: number): void {
     for (const canvasElementToLayer of this.canvasElementToLayers) {
       canvasElementToLayer.layer.update(deltaTime);
     }
   }
 
-  // This method will take each layer and combine
-  // then into the buffer. The resulting canvas is painted onto
-  // the passed in context
-  // This is called for you by the animator
+  /**
+   * Takes each layer and combins them into a buffer.
+   * The resulting canvas is painted onto the passed in context.
+   * This is called for you by the animator.
+   */
   public paint(): void {
     for (const canvasElementToLayer of this.canvasElementToLayers) {
       canvasElementToLayer.buffer.clear();
