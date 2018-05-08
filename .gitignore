@@ -61,6 +61,8 @@ typings/
 .next
 
 /build
+
+dist
 .DS_Store
 
 /docs

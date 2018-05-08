@@ -25,6 +25,7 @@
     "prepublish": "yarn dist",
     "build": "yarn prepublish",
     "dist": "rm -rf dist && tsc",
+    "postinstall": "npm run dist",
     "docs": "yarn typedoc -- --out docs/ src/"
   }
 }
