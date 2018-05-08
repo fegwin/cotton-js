@@ -1,22 +1,24 @@
 import {Sound} from "./sound";
+import { SoundClip } from "./soundClip";
 
 export class Audio {
   private context: AudioContext;
-  private soundsByUrl: {[url: string]: Sound} = {};
+  private soundClipsByUrl: {[url: string]: SoundClip} = {};
 
   constructor() {
     this.context = new window.AudioContext();
   }
 
-  public createSound(url: string): Sound {
-    const soundByUrl = this.soundsByUrl[url];
+  public createSoundClip(url: string): SoundClip {
+    const soundByUrl = this.soundClipsByUrl[url];
     if (!!soundByUrl) { return soundByUrl; }
 
     const source = this.context.createBufferSource();
-    const sound = new Sound(this.context, source);
+    const sound = new SoundClip(this.context, source);
+
     this.loadFromUrl(source, url);
 
-    return this.soundsByUrl[url] = sound;
+    return this.soundClipsByUrl[url] = sound;
   }
 
   private loadFromUrl(source: AudioBufferSourceNode, url: string): void {
