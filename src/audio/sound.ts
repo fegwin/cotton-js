@@ -33,7 +33,7 @@ export abstract class Sound {
 
   public removeEffects(): void {
     // do a bit of clean up, so old effects don't persist
-    // around.
+    // around in memory.
     this.effects.forEach((effect) => effect.disconnectAll());
 
     this.effects = [];
@@ -49,7 +49,7 @@ export abstract class Sound {
   }
 
   private reconfigureConnections(): void {
-    // Disconnect all noes
+    // Disconnect all nodes
     this.audioNode.disconnect();
     this.effects.forEach((e) => e.disconnectAll());
     this.analyserNode.disconnect();
