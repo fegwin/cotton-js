@@ -1,4 +1,4 @@
-export class Effect {
+export abstract class Effect {
   public audioNode: AudioNode;
 
   constructor(audioNode: AudioNode) {

@@ -37,6 +37,7 @@ export abstract class Sound {
     this.effects.forEach((effect) => effect.disconnectAll());
 
     this.effects = [];
+    this.reconfigureConnections();
   }
 
   public analyseFrequencies(freqStepInHz: number): {[index: number]: number} {
@@ -57,12 +58,17 @@ export abstract class Sound {
     for (let i = 0; i < this.effects.length; i++) {
       const currentEffect = this.effects[i];
 
+      // if we are the first node, we want to connect
+      // the source node to it.
       if (i === 0) {
         this.audioNode.connect(currentEffect.getNode());
         return;
       }
 
-      if (i === this.effects.length) {
+      // if we are the last node, we want to connect
+      // to the analyser node. This is the node
+      // right before the destination.
+      if (i === this.effects.length - 1) {
         currentEffect.getNode().connect(this.analyserNode);
         return;
       }
