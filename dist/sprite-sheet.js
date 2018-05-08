@@ -39,32 +39,40 @@ var buffer_1 = require("./buffer");
 var image_1 = require("./util/image");
 var json_1 = require("./util/json");
 var SpriteSheet = (function () {
-    function SpriteSheet(sprites) {
+    function SpriteSheet(sprites, animations) {
         this.sprites = sprites;
+        this.animations = animations;
     }
     SpriteSheet.createSpriteSheet = function (spriteDef, spriteImage) {
         if (!spriteDef.width || !spriteDef.height) {
             throw new Error("Inalid sprite def");
         }
-        var spriteWidth = spriteDef.width;
-        var spriteHeight = spriteDef.height;
         var sprites = {};
         if (spriteDef.sprites) {
             spriteDef.sprites.forEach(function (sprite) {
                 var spriteBuffers = [false, true].map(function (flip) {
-                    var buf = new buffer_1.Buffer(spriteWidth, spriteHeight);
+                    var buf = new buffer_1.Buffer(sprite.width, sprite.height);
                     var context = buf.getContext();
                     if (flip) {
                         context.scale(-1, -1);
-                        context.translate(-spriteWidth, 0);
+                        context.translate(-sprite.width, 0);
                     }
-                    context.drawImage(spriteImage, sprite.x * spriteWidth, sprite.y * spriteHeight, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight);
+                    context.drawImage(spriteImage, sprite.x, sprite.y, sprite.width, sprite.height, 0, 0, sprite.width, sprite.height);
                     return buf;
                 });
                 sprites[sprite.name] = spriteBuffers;
             });
         }
-        return new SpriteSheet(sprites);
+        var animations = {};
+        if (spriteDef.animations) {
+            spriteDef.animations.forEach(function (animation) {
+                animations[animation.name] = function (animationDelta, flip) {
+                    var spriteIndex = Math.floor(animationDelta / animation.animationLength) % animation.sprites.length;
+                    return animation.sprites[spriteIndex];
+                };
+            });
+        }
+        return new SpriteSheet(sprites, animations);
     };
     SpriteSheet.loadSpriteSheet = function (assetPath, name) {
         return __awaiter(this, void 0, void 0, function () {
@@ -84,6 +92,12 @@ var SpriteSheet = (function () {
                 }
             });
         });
+    };
+    SpriteSheet.prototype.getSprite = function (name, flip) {
+        return this.sprites[name][flip ? 1 : 0];
+    };
+    SpriteSheet.prototype.getSpriteForAnimation = function (name, animationDelta, flip) {
+        return this.animations[name](animationDelta, flip);
     };
     return SpriteSheet;
 }());

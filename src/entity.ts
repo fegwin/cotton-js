@@ -19,7 +19,6 @@ export abstract class Entity {
   private debug: boolean;
 
   private entityLibrary: EntityLibrary;
-  private traits: Trait[];
   private trait: { [id: string]: Trait };
 
   private lifetime: number;
@@ -51,10 +50,9 @@ export abstract class Entity {
     this.size = size;
 
     this.entityLibrary = entityLibrary;
-    this.traits = traits;
 
     this.trait = {};
-    this.traits.forEach((trait) => {
+    traits.forEach((trait) => {
       this.trait[trait.getName()] = trait;
     });
 
@@ -110,7 +108,7 @@ export abstract class Entity {
    * @param deltaTime Time since the last update cycle
    */
   public update(deltaTime: number): void {
-    for (const trait of this.traits) {
+    for (const trait of this.getTraits()) {
       trait.update(this, this.entityLibrary, deltaTime);
     }
 
@@ -121,7 +119,11 @@ export abstract class Entity {
    * This method returns all the traits implemented by the entity
    */
   public getTraits(): Trait[] {
-    return this.traits;
+    const traits: Trait[] = [];
+
+    Object.keys(this.trait).forEach((trait) => traits.push(this.trait[trait]));
+
+    return traits;
   }
 
   /**

@@ -1,5 +1,5 @@
 import { Entity, EntityLibrary, Trait } from "..";
-import { Vector2, sign } from "../util/math";
+import { sign, Vector2 } from "../util/math";
 
 /**
  * This trait applies some simple physics laws to an entity

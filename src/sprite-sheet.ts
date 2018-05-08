@@ -2,38 +2,36 @@ import { Buffer } from "./buffer";
 import { loadImage } from "./util/image";
 import { loadJson } from "./util/json";
 
+// TODO Various null checkingz
 export class SpriteSheet {
   public static createSpriteSheet(spriteDef: any, spriteImage: HTMLImageElement): SpriteSheet {
     if (!spriteDef.width || !spriteDef.height) {
       throw new Error("Inalid sprite def");
     }
 
-    const spriteWidth = spriteDef.width;
-    const spriteHeight = spriteDef.height;
-
     const sprites: { [name: string]: Buffer[] } = {};
 
     if (spriteDef.sprites) {
       spriteDef.sprites.forEach((sprite: any) => {
         const spriteBuffers = [false, true].map((flip) => {
-          const buf = new Buffer(spriteWidth, spriteHeight);
+          const buf = new Buffer(sprite.width, sprite.height);
           const context = buf.getContext();
 
           if (flip) {
             context.scale(-1, -1);
-            context.translate(-spriteWidth, 0);
+            context.translate(-sprite.width, 0);
           }
 
           context.drawImage(
             spriteImage,
-            sprite.x * spriteWidth,
-            sprite.y * spriteHeight,
-            spriteWidth,
-            spriteHeight,
+            sprite.x,
+            sprite.y,
+            sprite.width,
+            sprite.height,
             0,
             0,
-            spriteWidth,
-            spriteHeight,
+            sprite.width,
+            sprite.height,
           );
 
           return buf;
@@ -43,9 +41,19 @@ export class SpriteSheet {
       });
     }
 
-    // Define animation frames
+    const animations: { [name: string]: (animationDelta: number, flip: boolean) => string } = {};
 
-    return new SpriteSheet(sprites);
+    // Define animation frames
+    if (spriteDef.animations) {
+      spriteDef.animations.forEach((animation: any) => {
+        animations[animation.name] = (animationDelta: number, flip: boolean) => {
+          const spriteIndex = Math.floor(animationDelta / animation.animationLength) % animation.sprites.length;
+          return animation.sprites[spriteIndex];
+        };
+      });
+    }
+
+    return new SpriteSheet(sprites, animations);
   }
 
   public static async loadSpriteSheet(assetPath: string, name: string): Promise<SpriteSheet> {
@@ -60,8 +68,20 @@ export class SpriteSheet {
   }
 
   private sprites: { [name: string]: Buffer[] };
+  private animations: { [name: string]: (animationDelta: number, flip: boolean) => string };
 
-  public constructor(sprites: { [name: string]: Buffer[] }) {
+  public constructor(
+    sprites: { [name: string]: Buffer[] },
+    animations: { [name: string]: (animationDelta: number, flip: boolean) => string }) {
     this.sprites = sprites;
+    this.animations = animations;
+  }
+
+  public getSprite(name: string, flip: boolean): Buffer {
+    return this.sprites[name][flip ? 1 : 0];
+  }
+
+  public getSpriteForAnimation(name: string, animationDelta: number, flip: boolean) {
+    return this.animations[name](animationDelta, flip);
   }
 }

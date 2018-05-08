@@ -9,7 +9,6 @@ export declare abstract class Entity {
     private name;
     private debug;
     private entityLibrary;
-    private traits;
     private trait;
     private lifetime;
     private firstPaintComplete;

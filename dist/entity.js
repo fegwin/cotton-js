@@ -14,9 +14,8 @@ var Entity = (function () {
         this.acceleration = new math_1.Vector2(0, 0);
         this.size = size;
         this.entityLibrary = entityLibrary;
-        this.traits = traits;
         this.trait = {};
-        this.traits.forEach(function (trait) {
+        traits.forEach(function (trait) {
             _this.trait[trait.getName()] = trait;
         });
         this.lifetime = 0;
@@ -39,14 +38,17 @@ var Entity = (function () {
         context.drawImage(this.buffer.getCanvas(), (0.5 + this.position.x) << 0, (0.5 + this.position.y) << 0);
     };
     Entity.prototype.update = function (deltaTime) {
-        for (var _i = 0, _a = this.traits; _i < _a.length; _i++) {
+        for (var _i = 0, _a = this.getTraits(); _i < _a.length; _i++) {
             var trait = _a[_i];
             trait.update(this, this.entityLibrary, deltaTime);
         }
         this.lifetime += deltaTime;
     };
     Entity.prototype.getTraits = function () {
-        return this.traits;
+        var _this = this;
+        var traits = [];
+        Object.keys(this.trait).forEach(function (trait) { return traits.push(_this.trait[trait]); });
+        return traits;
     };
     Entity.prototype.calculateBounds = function () {
         this.bounds = new math_1.BoundingBox(this.position, this.size);
