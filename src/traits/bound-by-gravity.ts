@@ -21,10 +21,6 @@ export class BoundByGravity extends Trait {
    * @param deltaTime Time since the last update
    */
   public update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
-    if (!entity.acceleration) {
-      entity.acceleration = new Vector2(0, 0);
-    }
-
     entity.acceleration.y = this.acceleration.y;
     entity.acceleration.x = this.acceleration.x;
   }

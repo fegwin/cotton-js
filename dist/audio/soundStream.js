@@ -10,22 +10,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var __1 = require("..");
-var BoundByGravity = (function (_super) {
-    __extends(BoundByGravity, _super);
-    function BoundByGravity(acceleration) {
+var Sound_1 = require("./Sound");
+var SoundStream = (function (_super) {
+    __extends(SoundStream, _super);
+    function SoundStream() {
         var _this = _super.call(this) || this;
-        _this.acceleration = acceleration;
         return _this;
     }
-    BoundByGravity.prototype.update = function (entity, entityLibrary, deltaTime) {
-        entity.acceleration.y = this.acceleration.y;
-        entity.acceleration.x = this.acceleration.x;
+    SoundStream.prototype.mute = function () {
+        return;
     };
-    BoundByGravity.prototype.getName = function () {
-        return "BoundByGravity";
+    SoundStream.prototype.unmute = function () {
+        return;
     };
-    return BoundByGravity;
-}(__1.Trait));
-exports.BoundByGravity = BoundByGravity;
-//# sourceMappingURL=bound-by-gravity.js.map
+    return SoundStream;
+}(Sound_1.Sound));
+exports.SoundStream = SoundStream;
+//# sourceMappingURL=soundStream.js.map
