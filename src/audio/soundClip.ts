@@ -1,21 +1,29 @@
 import {Sound} from "./Sound";
 
 export class SoundClip extends Sound {
-  // TODO: Seems wrong? not sure just yet. better than a generic,
-  // because then you have to handle multiple lists.
-  // another option is having an interface.
-  private readonly bufferNode: AudioBufferSourceNode;
+  private buffer: AudioBuffer;
 
-  constructor(audioContext: AudioContext, audioNode: AudioBufferSourceNode) {
-    super(audioContext, audioNode);
-    this.bufferNode = audioNode;
+  constructor(audioContext: AudioContext, buffer: AudioBuffer = null) {
+    super(audioContext);
+
+    this.buffer = buffer;
   }
 
   public play(): void {
-    this.bufferNode.start(0);
+    if (this.buffer == null) { return; }
+
+    const source = this.audioContext.createBufferSource();
+    source.buffer = this.buffer;
+
+    this.setCurrentAudioNode(source);
+    source.start(0);
   }
 
   public stop(): void {
-    this.bufferNode.stop(0);
+    return; // TODO
+  }
+
+  public setBuffer(buffer: AudioBuffer) {
+    this.buffer = buffer;
   }
 }

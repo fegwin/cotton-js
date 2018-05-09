@@ -3,12 +3,13 @@ import { Effect } from "./effects";
 
 export abstract class Sound {
   protected readonly audioContext: AudioContext;
-  protected readonly audioNode: AudioNode;
-  protected readonly analyserNode: AnalyserNode;
+  protected audioNode: AudioNode;
+
+  private readonly analyserNode: AnalyserNode;
 
   private effects: Effect[] = [];
 
-  constructor(audioContext: AudioContext, audioNode: AudioNode) {
+  constructor(audioContext: AudioContext, audioNode: AudioNode = null) {
     this.audioNode = audioNode;
     this.audioContext = audioContext;
 
@@ -27,6 +28,8 @@ export abstract class Sound {
   }
 
   public removeEffect(effect: Effect): void {
+    // TODO: this may cause a memory leak if the effect node
+    // is not disconnected?
     this.effects = this.effects.filter((x) => x !== effect);
     this.reconfigureConnections();
   }
@@ -48,36 +51,32 @@ export abstract class Sound {
     return; // TODO
   }
 
+  protected setCurrentAudioNode(audioNode: AudioNode) {
+    this.audioNode = audioNode;
+    this.reconfigureConnections();
+  }
+
   private reconfigureConnections(): void {
-    // Disconnect all nodes
-    this.audioNode.disconnect();
-    this.effects.forEach((e) => e.disconnectAll());
-    this.analyserNode.disconnect();
+    const nodesInConnectOrder = [
+      this.audioNode,
+       ...this.effects.map((effect) => effect.getNode()),
+       this.analyserNode,
+       this.audioContext.destination,
+      ]
+      .filter((node) => node != null);
 
     // reattach the nodes
-    for (let i = 0; i < this.effects.length; i++) {
-      const currentEffect = this.effects[i];
-
-      // if we are the first node, we want to connect
-      // the source node to it.
-      if (i === 0) {
-        this.audioNode.connect(currentEffect.getNode());
+    for (let i = 0; i < nodesInConnectOrder.length; i++) {
+      // we've reached the end. no need to connect to anything.
+      if (i === nodesInConnectOrder.length - 1) {
         return;
       }
 
-      // if we are the last node, we want to connect
-      // to the analyser node. This is the node
-      // right before the destination.
-      if (i === this.effects.length - 1) {
-        currentEffect.getNode().connect(this.analyserNode);
-        return;
-      }
+      const currentNode = nodesInConnectOrder[i];
+      const nextNode = nodesInConnectOrder[i + 1];
+      currentNode.disconnect();
 
-      // we want to connect the current node to the next node in the
-      // sequence. This creates a chain.
-      currentEffect.getNode().connect(this.effects[i + 1].getNode());
+      currentNode.connect(nextNode);
     }
-
-    this.analyserNode.connect(this.audioContext.destination);
   }
 }

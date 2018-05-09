@@ -12,16 +12,14 @@ export class Audio {
   public createSoundClip(url: string): SoundClip {
     const soundByUrl = this.soundClipsByUrl[url];
     if (!!soundByUrl) { return soundByUrl; }
+    const sound = new SoundClip(this.context);
 
-    const source = this.context.createBufferSource();
-    const sound = new SoundClip(this.context, source);
-
-    this.loadFromUrl(source, url);
+    this.loadFromUrl(sound, url);
 
     return this.soundClipsByUrl[url] = sound;
   }
 
-  private loadFromUrl(source: AudioBufferSourceNode, url: string): void {
+  private loadFromUrl(clip: SoundClip, url: string): void {
     const request = new XMLHttpRequest();
 
     request.open("GET", url, true);
@@ -30,13 +28,10 @@ export class Audio {
     request.onload = () => {
       const audioData = request.response;
 
-      this.context.decodeAudioData(audioData, (buffer) => {
-          source.buffer = buffer;
-          source.connect(this.context.destination);
-        },
-        (e) => {
-          throw Error("Error with decoding audio data" + e);
-        });
+      this.context.decodeAudioData(
+        audioData,
+        (buffer) => clip.setBuffer(buffer),
+        (e) => { throw new Error("Error with decoding audio data" + e); });
     };
 
     request.send();

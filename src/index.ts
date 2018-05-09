@@ -7,3 +7,4 @@ export { Compositor } from "./compositor";
 export { EntityLibrary } from "./entity-library";
 export { Trait } from "./trait";
 export { traits } from "./traits";
+export { Audio } from "./audio";
