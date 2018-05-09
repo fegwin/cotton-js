@@ -97,6 +97,7 @@ export class SpriteSheet {
   }
 
   /**
+   * Sprite buffer is returned by name. Optional flipXY params.
    * @param name Name of sprite to be retrieved
    * @param flipX Mirror sprite horizontally?
    * @param flipY Mirror sprite vertically?
@@ -109,6 +110,11 @@ export class SpriteSheet {
     return this.sprites[name][flipX ? 1 : 0][flipY ? 1 : 0];
   }
 
+  /**
+   * A sprite name is returned from a defined animation.
+   * @param name Name of animation you are trying to retrieve a sprite for
+   * @param animationDelta "Distance" through the animation. This is used to index the sprite in the animation
+   */
   public getSpriteForAnimation(name: string, animationDelta: number) {
     if (!this.animations[name]) {
       throw new Error(`Animation ${name} is not defined`);
