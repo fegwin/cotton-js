@@ -4,11 +4,7 @@ export declare class SpriteSheet {
     static loadSpriteSheet(assetPath: string, name: string): Promise<SpriteSheet>;
     private sprites;
     private animations;
-    constructor(sprites: {
-        [name: string]: Buffer[];
-    }, animations: {
-        [name: string]: (animationDelta: number) => string;
-    });
-    getSprite(name: string, flip: boolean): Buffer;
+    private constructor();
+    getSprite(name: string, flipX: boolean, flipY: boolean): Buffer;
     getSpriteForAnimation(name: string, animationDelta: number): string;
 }

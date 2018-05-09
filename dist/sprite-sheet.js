@@ -45,20 +45,20 @@ var SpriteSheet = (function () {
     }
     SpriteSheet.createSpriteSheet = function (spriteDef, spriteImage) {
         if (!spriteDef.width || !spriteDef.height) {
-            throw new Error("Inalid sprite def");
+            throw new Error("Invalid sprite def");
         }
         var sprites = {};
         if (spriteDef.sprites) {
             spriteDef.sprites.forEach(function (sprite) {
-                var spriteBuffers = [false, true].map(function (flip) {
-                    var buf = new buffer_1.Buffer(sprite.width, sprite.height);
-                    var context = buf.getContext();
-                    if (flip) {
-                        context.scale(-1, 1);
-                        context.translate(-sprite.width, 0);
-                    }
-                    context.drawImage(spriteImage, sprite.x, sprite.y, sprite.width, sprite.height, 0, 0, sprite.width, sprite.height);
-                    return buf;
+                var spriteBuffers = [false, true].map(function (flipX) {
+                    return [false, true].map(function (flipY) {
+                        var buf = new buffer_1.Buffer(sprite.width, sprite.height);
+                        var context = buf.getContext();
+                        context.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+                        context.scale(flipX ? -sprite.width : 0, flipY ? -sprite.height : 0);
+                        context.drawImage(spriteImage, sprite.x, sprite.y, sprite.width, sprite.height, 0, 0, sprite.width, sprite.height);
+                        return buf;
+                    });
                 });
                 sprites[sprite.name] = spriteBuffers;
             });
@@ -93,10 +93,16 @@ var SpriteSheet = (function () {
             });
         });
     };
-    SpriteSheet.prototype.getSprite = function (name, flip) {
-        return this.sprites[name][flip ? 1 : 0];
+    SpriteSheet.prototype.getSprite = function (name, flipX, flipY) {
+        if (!this.sprites[name]) {
+            throw new Error("Sprite " + name + " is not defined");
+        }
+        return this.sprites[name][flipX ? 1 : 0][flipY ? 1 : 0];
     };
     SpriteSheet.prototype.getSpriteForAnimation = function (name, animationDelta) {
+        if (!this.animations[name]) {
+            throw new Error("Animation " + name + " is not defined");
+        }
         return this.animations[name](animationDelta);
     };
     return SpriteSheet;
