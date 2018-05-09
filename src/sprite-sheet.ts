@@ -18,7 +18,7 @@ export class SpriteSheet {
           const context = buf.getContext();
 
           if (flip) {
-            context.scale(-1, -1);
+            context.scale(-1, 1);
             context.translate(-sprite.width, 0);
           }
 
@@ -41,12 +41,12 @@ export class SpriteSheet {
       });
     }
 
-    const animations: { [name: string]: (animationDelta: number, flip: boolean) => string } = {};
+    const animations: { [name: string]: (animationDelta: number) => string } = {};
 
     // Define animation frames
     if (spriteDef.animations) {
       spriteDef.animations.forEach((animation: any) => {
-        animations[animation.name] = (animationDelta: number, flip: boolean) => {
+        animations[animation.name] = (animationDelta: number) => {
           const spriteIndex = Math.floor(animationDelta / animation.animationLength) % animation.sprites.length;
           return animation.sprites[spriteIndex];
         };
@@ -68,11 +68,11 @@ export class SpriteSheet {
   }
 
   private sprites: { [name: string]: Buffer[] };
-  private animations: { [name: string]: (animationDelta: number, flip: boolean) => string };
+  private animations: { [name: string]: (animationDelta: number) => string };
 
   public constructor(
     sprites: { [name: string]: Buffer[] },
-    animations: { [name: string]: (animationDelta: number, flip: boolean) => string }) {
+    animations: { [name: string]: (animationDelta: number) => string }) {
     this.sprites = sprites;
     this.animations = animations;
   }
@@ -81,7 +81,7 @@ export class SpriteSheet {
     return this.sprites[name][flip ? 1 : 0];
   }
 
-  public getSpriteForAnimation(name: string, animationDelta: number, flip: boolean) {
-    return this.animations[name](animationDelta, flip);
+  public getSpriteForAnimation(name: string, animationDelta: number) {
+    return this.animations[name](animationDelta);
   }
 }

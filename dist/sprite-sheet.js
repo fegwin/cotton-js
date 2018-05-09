@@ -54,7 +54,7 @@ var SpriteSheet = (function () {
                     var buf = new buffer_1.Buffer(sprite.width, sprite.height);
                     var context = buf.getContext();
                     if (flip) {
-                        context.scale(-1, -1);
+                        context.scale(-1, 1);
                         context.translate(-sprite.width, 0);
                     }
                     context.drawImage(spriteImage, sprite.x, sprite.y, sprite.width, sprite.height, 0, 0, sprite.width, sprite.height);
@@ -66,7 +66,7 @@ var SpriteSheet = (function () {
         var animations = {};
         if (spriteDef.animations) {
             spriteDef.animations.forEach(function (animation) {
-                animations[animation.name] = function (animationDelta, flip) {
+                animations[animation.name] = function (animationDelta) {
                     var spriteIndex = Math.floor(animationDelta / animation.animationLength) % animation.sprites.length;
                     return animation.sprites[spriteIndex];
                 };
@@ -96,8 +96,8 @@ var SpriteSheet = (function () {
     SpriteSheet.prototype.getSprite = function (name, flip) {
         return this.sprites[name][flip ? 1 : 0];
     };
-    SpriteSheet.prototype.getSpriteForAnimation = function (name, animationDelta, flip) {
-        return this.animations[name](animationDelta, flip);
+    SpriteSheet.prototype.getSpriteForAnimation = function (name, animationDelta) {
+        return this.animations[name](animationDelta);
     };
     return SpriteSheet;
 }());

@@ -7,8 +7,8 @@ export declare class SpriteSheet {
     constructor(sprites: {
         [name: string]: Buffer[];
     }, animations: {
-        [name: string]: (animationDelta: number, flip: boolean) => string;
+        [name: string]: (animationDelta: number) => string;
     });
     getSprite(name: string, flip: boolean): Buffer;
-    getSpriteForAnimation(name: string, animationDelta: number, flip: boolean): string;
+    getSpriteForAnimation(name: string, animationDelta: number): string;
 }
