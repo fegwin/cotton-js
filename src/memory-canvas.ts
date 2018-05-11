@@ -1,7 +1,7 @@
 /**
  * Used as a container to paint on
  */
-export class Buffer {
+export class MemoryCanvas {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
@@ -9,8 +9,8 @@ export class Buffer {
   private height: number;
 
   /**
-   * @param width The width of the buffer
-   * @param height The height of the buffer
+   * @param width The width of the MemoryCanvas
+   * @param height The height of the MemoryCanvas
    * @param canvas An existing element that will be used to paint with
    */
   constructor(width: number, height: number, canvas?: HTMLCanvasElement) {
@@ -24,21 +24,21 @@ export class Buffer {
   }
 
   /**
-   * Retrieve the context of the buffer
+   * Retrieve the context of the MemoryCanvas
    */
   public getContext() {
     return this.context;
   }
 
   /**
-   * Retrieve the canvas of the buffer
+   * Retrieve the canvas of the MemoryCanvas
    */
   public getCanvas() {
     return this.canvas;
   }
 
   /**
-   * Clears the buffer and remove anything painted
+   * Clears the MemoryCanvas and remove anything painted
    */
   public clear() {
     this.context.clearRect(0, 0, this.width, this.height);
