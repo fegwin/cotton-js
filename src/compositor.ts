@@ -1,19 +1,19 @@
-import { Buffer } from "./buffer";
+import { MemoryCanvas } from "./memory-canvas";
 import { Layer } from "./layer";
 
-// Helper class to contain root buffer elements (what's on the dom)
+// Helper class to contain root MemoryCanvas elements (what's on the dom)
 // to their layer class.
 
 /**
- * Helper class to contain root buffer elements (what's on the dom)
+ * Helper class to contain root MemoryCanvas elements (what's on the dom)
  * to their layer class.
  */
 class CanvasElementToLayer {
-  public buffer: Buffer;
+  public memoryCanvas: MemoryCanvas;
   public layer: Layer;
 
-  constructor(buffer: Buffer, layer: Layer) {
-    this.buffer = buffer;
+  constructor(memoryCanvas: MemoryCanvas, layer: Layer) {
+    this.memoryCanvas = memoryCanvas;
     this.layer = layer;
   }
 }
@@ -28,8 +28,8 @@ export class Compositor {
   private canvasElementToLayers: CanvasElementToLayer[] = [];
 
   /**
-   * @param width The width of the Compositor (and it's buffer)
-   * @param height The height of the Compositor (and it's buffer)
+   * @param width The width of the Compositor (and it's MemoryCanvas)
+   * @param height The height of the Compositor (and it's MemoryCanvas)
    * @param rootElement The root element on the DOM that all Canvas manipulation occurs from
    * @param layers initial layers the Compositor contains
    */
@@ -61,7 +61,7 @@ export class Compositor {
       const layerCanvas = this.createLayerElement(width, height, i);
 
       this.canvasElementToLayers.push(
-        new CanvasElementToLayer(new Buffer(width, height, layerCanvas), layer),
+        new CanvasElementToLayer(new MemoryCanvas(width, height, layerCanvas), layer),
       );
 
       this.rootContainer.appendChild(layerCanvas);
@@ -80,14 +80,14 @@ export class Compositor {
   }
 
   /**
-   * Takes each layer and combins them into a buffer.
+   * Takes each layer and combins them into a MemoryCanvas.
    * The resulting canvas is painted onto the passed in context.
    * This is called for you by the animator.
    */
   public paint(): void {
     for (const canvasElementToLayer of this.canvasElementToLayers) {
-      canvasElementToLayer.buffer.clear();
-      canvasElementToLayer.layer.paintOn(canvasElementToLayer.buffer.getContext());
+      canvasElementToLayer.memoryCanvas.clear();
+      canvasElementToLayer.layer.paintOn(canvasElementToLayer.memoryCanvas.getContext());
     }
   }
 

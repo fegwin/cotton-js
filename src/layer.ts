@@ -1,4 +1,4 @@
-import { Buffer } from "./buffer";
+import { MemoryCanvas } from "./memory-canvas";
 import { Entity } from "./entity";
 import { EntityLibrary } from "./entity-library";
 import { BoundingBox, Vector2 } from "./util/math";
@@ -17,7 +17,7 @@ export class Layer {
   private entityLibrary: EntityLibrary;
   private entities: Entity[] = [];
 
-  private buffer: Buffer;
+  private memoryCanvas: MemoryCanvas;
 
   /**
    * @param width The width of the Layer
@@ -30,7 +30,7 @@ export class Layer {
     this.height = height;
 
     this.entityLibrary = entityLibrary;
-    this.buffer = new Buffer(this.width, this.height);
+    this.memoryCanvas = new MemoryCanvas(this.width, this.height);
 
     this.calculateBounds();
     this.addEntities(entities);
@@ -75,22 +75,22 @@ export class Layer {
   }
 
   /**
-   * This method is called to update the layer buffer and then paint
+   * This method is called to update the layer MemoryCanvas and then paint
    * the resulting canvas onto the passed in context
    * This is called for you by the animator
    * @param context The context to paint on
    */
   public paintOn(context: CanvasRenderingContext2D): void {
-    this.buffer.clear();
+    this.memoryCanvas.clear();
 
     for (const entity of this.entities) {
       // Only draw the entity if it is visible.
       if (BoundingBox.overlaps(this.bounds, entity.bounds)) {
-        entity.paintOn(this.buffer.getContext());
+        entity.paintOn(this.memoryCanvas.getContext());
       }
     }
 
-    context.drawImage(this.buffer.getCanvas(), 0, 0);
+    context.drawImage(this.memoryCanvas.getCanvas(), 0, 0);
   }
 
   private calculateBounds() {
