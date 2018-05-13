@@ -48,7 +48,7 @@ export class SpriteSheet {
               const context = buf.getContext();
 
               context.scale(flipX ? -1 : 1, flipY ? -1 : 1);
-              context.scale(flipX ? -sprite.width : 0, flipY ? -sprite.height : 0);
+              context.translate(flipX ? -sprite.width : 0, flipY ? -sprite.height : 0);
 
               context.drawImage(
                 spriteImage,

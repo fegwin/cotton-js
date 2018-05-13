@@ -1,5 +1,5 @@
-import { MemoryCanvas } from "./memory-canvas";
 import { EntityLibrary } from "./entity-library";
+import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
 import { BoundingBox, Vector2 } from "./util/math";
 
