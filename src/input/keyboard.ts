@@ -1,8 +1,8 @@
-const PRESSED = 1;
-const RELEASED = 0;
+export const PRESSED = 1;
+export const RELEASED = 0;
 
-const KEYDOWN = "keydown";
-const KEYUP = "keyup";
+export const KEYDOWN = "keydown";
+export const KEYUP = "keyup";
 
 export class Keyboard {
   private keyStates: { [key: string]: number };
@@ -21,15 +21,15 @@ export class Keyboard {
       );
   }
 
-  public addMapping(code: string, callback: () => void) {
+  public addMapping(code: string, callback: (keyState: number) => void) {
     if (!this.keyMap[code]) {
-      this.keyMap[code] = new Array<() => void>();
+      this.keyMap[code] = new Array<(keyState: number) => void>();
     }
 
     this.keyMap[code].push(callback);
   }
 
-  public handleEvent(event: KeyboardEvent) {
+  private handleEvent(event: KeyboardEvent) {
     const { code } = event;
 
     event.preventDefault();
