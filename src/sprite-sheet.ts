@@ -2,6 +2,27 @@ import { MemoryCanvas } from "./memory-canvas";
 import { loadImage } from "./util/image";
 import { loadJson } from "./util/json";
 
+export interface IAnimation {
+  name: string;
+  animationLength: number;
+  sprites: string[];
+}
+
+export interface ISprite {
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface ISpriteDefinition {
+  name: string;
+  imageUrl: string;
+  animations: IAnimation[];
+  sprites: ISprite[];
+}
+
 /**
  * Provides an easy SpriteSheet API
  * Supported sprite sheets follow the CottonJs sprite definition specification
@@ -16,15 +37,11 @@ export class SpriteSheet {
    * @param spriteDef CottonJs sprite definition file (JSON)
    * @param spriteImage Image containing the sprites
    */
-  public static createSpriteSheet(spriteDef: any, spriteImage: HTMLImageElement): SpriteSheet {
-    if (!spriteDef.width || !spriteDef.height) {
-      throw new Error("Invalid sprite def");
-    }
-
+  public static createSpriteSheet(spriteDef: ISpriteDefinition, spriteImage: HTMLImageElement): SpriteSheet {
     const sprites: { [name: string]: MemoryCanvas[][] } = {};
 
     if (spriteDef.sprites) {
-      spriteDef.sprites.forEach((sprite: any) => {
+      spriteDef.sprites.forEach((sprite: ISprite) => {
         const spriteBuffers = [false, true].map((flipX) => {
           return [false, true].map((flipY) => {
               const buf = new MemoryCanvas(sprite.width, sprite.height);
@@ -57,7 +74,7 @@ export class SpriteSheet {
 
     // Define animation frames
     if (spriteDef.animations) {
-      spriteDef.animations.forEach((animation: any) => {
+      spriteDef.animations.forEach((animation: IAnimation) => {
         animations[animation.name] = (animationDelta: number) => {
           const spriteIndex = Math.floor(animationDelta / animation.animationLength) % animation.sprites.length;
           return animation.sprites[spriteIndex];
