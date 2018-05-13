@@ -1,5 +1,5 @@
-import { Buffer } from "./buffer";
 import { EntityLibrary } from "./entity-library";
+import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
 import { BoundingBox, Vector2 } from "./util/math";
 
@@ -19,7 +19,6 @@ export abstract class Entity {
   private debug: boolean;
 
   private entityLibrary: EntityLibrary;
-  private traits: Trait[];
   private trait: { [id: string]: Trait };
 
   private lifetime: number;
@@ -27,7 +26,7 @@ export abstract class Entity {
 
   private size: Vector2;
 
-  private buffer: Buffer;
+  private memoryCanvas: MemoryCanvas;
 
   /**
    *
@@ -51,10 +50,9 @@ export abstract class Entity {
     this.size = size;
 
     this.entityLibrary = entityLibrary;
-    this.traits = traits;
 
     this.trait = {};
-    this.traits.forEach((trait) => {
+    traits.forEach((trait) => {
       this.trait[trait.getName()] = trait;
     });
 
@@ -63,12 +61,12 @@ export abstract class Entity {
 
     this.calculateBounds();
 
-    this.buffer = new Buffer(this.size.x, this.size.y);
+    this.memoryCanvas = new MemoryCanvas(this.size.x, this.size.y);
     this.entityLibrary.registerEntity(this);
   }
 
  /**
-  * This method is used to paint the buffer canvas onto a passed in canvas context
+  * This method is used to paint the MemoryCanvas canvas onto a passed in canvas context
   * General use will not require you to call this
   * This is taken care of by the animation engine
   * TODO try and hide this from the api AL 2018
@@ -81,10 +79,10 @@ export abstract class Entity {
       // gives you a nice little box around your entity
       // to see whats going on.
       if (this.debug) {
-        const bufferContext = this.buffer.getContext();
-        bufferContext.strokeStyle = "green";
-        bufferContext.rect(0, 0, this.size.x, this.size.y);
-        bufferContext.stroke();
+        const memoryCanvasContext = this.memoryCanvas.getContext();
+        memoryCanvasContext.strokeStyle = "green";
+        memoryCanvasContext.rect(0, 0, this.size.x, this.size.y);
+        memoryCanvasContext.stroke();
       }
 
       this.firstPaintComplete = true;
@@ -96,7 +94,7 @@ export abstract class Entity {
     * so do avoid sub pixel rendering.
     */
     context.drawImage(
-      this.buffer.getCanvas(),
+      this.memoryCanvas.getCanvas(),
       // tslint:disable-next-line:no-bitwise
       (0.5 + this.position.x) << 0,
       // tslint:disable-next-line:no-bitwise
@@ -110,7 +108,7 @@ export abstract class Entity {
    * @param deltaTime Time since the last update cycle
    */
   public update(deltaTime: number): void {
-    for (const trait of this.traits) {
+    for (const trait of this.getTraits()) {
       trait.update(this, this.entityLibrary, deltaTime);
     }
 
@@ -121,11 +119,15 @@ export abstract class Entity {
    * This method returns all the traits implemented by the entity
    */
   public getTraits(): Trait[] {
-    return this.traits;
+    const traits: Trait[] = [];
+
+    Object.keys(this.trait).forEach((trait) => traits.push(this.trait[trait]));
+
+    return traits;
   }
 
   /**
-   * This method will draw the entity onto the buffer.
+   * This method will draw the entity onto the MemoryCanvas.
    * Call this whenever you need to update the entity, eg. Animations.
    * Do this inside the update method.
    */
