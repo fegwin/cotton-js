@@ -1,4 +1,4 @@
-import { Buffer } from "./buffer";
+import { MemoryCanvas } from "./memory-canvas";
 import { loadImage } from "./util/image";
 import { loadJson } from "./util/json";
 
@@ -21,13 +21,13 @@ export class SpriteSheet {
       throw new Error("Invalid sprite def");
     }
 
-    const sprites: { [name: string]: Buffer[][] } = {};
+    const sprites: { [name: string]: MemoryCanvas[][] } = {};
 
     if (spriteDef.sprites) {
       spriteDef.sprites.forEach((sprite: any) => {
         const spriteBuffers = [false, true].map((flipX) => {
           return [false, true].map((flipY) => {
-              const buf = new Buffer(sprite.width, sprite.height);
+              const buf = new MemoryCanvas(sprite.width, sprite.height);
               const context = buf.getContext();
 
               context.scale(flipX ? -1 : 1, flipY ? -1 : 1);
@@ -86,11 +86,11 @@ export class SpriteSheet {
     return SpriteSheet.createSpriteSheet(spriteDef, spriteImage);
   }
 
-  private sprites: { [name: string]: Buffer[][] };
+  private sprites: { [name: string]: MemoryCanvas[][] };
   private animations: { [name: string]: (animationDelta: number) => string };
 
   private constructor(
-    sprites: { [name: string]: Buffer[][] },
+    sprites: { [name: string]: MemoryCanvas[][] },
     animations: { [name: string]: (animationDelta: number) => string }) {
     this.sprites = sprites;
     this.animations = animations;
@@ -102,7 +102,7 @@ export class SpriteSheet {
    * @param flipX Mirror sprite horizontally?
    * @param flipY Mirror sprite vertically?
    */
-  public getSprite(name: string, flipX: boolean, flipY: boolean): Buffer {
+  public getSprite(name: string, flipX: boolean, flipY: boolean): MemoryCanvas {
     if (!this.sprites[name]) {
       throw new Error(`Sprite ${name} is not defined`);
     }
