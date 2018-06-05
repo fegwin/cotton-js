@@ -1,1 +1,1 @@
-export { Effect } from "./effect";
+export { AudioEffect } from "./AudioEffect";
