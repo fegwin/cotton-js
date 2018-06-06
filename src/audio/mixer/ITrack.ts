@@ -1,7 +1,7 @@
 
-import {IEffectable} from "./effects/IEffectable";
-import {IInputable} from "./IInputable";
-import {IOutputable} from "./IOutputable";
+import { IEffectable } from "../effects";
+import { IInputable } from "../IInputable";
+import { IOutputable } from "../IOutputable";
 
 export interface ITrack {
   name: string;

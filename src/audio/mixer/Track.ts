@@ -1,6 +1,6 @@
 
-import { AudioProcessor } from "./AudioProcessor";
-import { IEffectable } from "./effects";
+import { AudioProcessor } from "../AudioProcessor";
+import { IEffectable } from "../effects";
 import { ITrack } from "./ITrack";
 
 export class Track extends AudioProcessor implements ITrack {

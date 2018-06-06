@@ -1,4 +1,4 @@
-import {IInputable} from "./IInputable";
+import { IInputable } from "./IInputable";
 
 export interface IOutputable {
   output: AudioNode;

@@ -1,11 +1,13 @@
-import {IInputable} from "./IInputable";
-import {IOutputable} from "./IOutputable";
+import { audioContext } from "./audio";
+import { IInputable } from "./IInputable";
+import { IOutputable } from "./IOutputable";
 
 export abstract class AudioOutput implements IOutputable {
   public output: AudioNode;
+  protected audioContext = audioContext;
 
-  constructor(audio: AudioContext) {
-    this.output = audio.createGain();
+  constructor() {
+    this.output = audioContext.createGain();
   }
 
   public disconnectAll(): IOutputable {

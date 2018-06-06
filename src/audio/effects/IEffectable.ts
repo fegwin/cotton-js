@@ -1,5 +1,5 @@
-import {IInputable} from "../IInputable";
-import {IOutputable} from "../IOutputable";
+import { IInputable } from "../IInputable";
+import { IOutputable } from "../IOutputable";
 
 export interface IEffectable extends IInputable, IOutputable {
   name: string;
