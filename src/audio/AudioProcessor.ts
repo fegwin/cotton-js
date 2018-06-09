@@ -3,8 +3,8 @@ import { IInputable } from "./IInputable";
 import { IOutputable } from "./IOutputable";
 
 export abstract class AudioProcessor implements IInputable, IOutputable {
-  public output: AudioNode;
-  public input: AudioNode;
+  public output: GainNode;
+  public input: GainNode;
 
   protected audioContext = audioContext;
 

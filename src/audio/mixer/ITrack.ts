@@ -7,9 +7,6 @@ export interface ITrack extends IInputable, IOutputable {
   setVolume(amount: number): void;
   getVolume(): number;
 
-  addEffect(effect: IEffectable): void;
+  addEffects(effect: IEffectable[]): void;
   removeEffect(effect: IEffectable): void;
-
-  // Pan?
-  // Sends?
 }

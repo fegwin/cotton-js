@@ -3,7 +3,7 @@ import { IInputable } from "./IInputable";
 import { IOutputable } from "./IOutputable";
 
 export abstract class AudioOutput implements IOutputable {
-  public output: AudioNode;
+  public output: GainNode;
   protected audioContext = audioContext;
 
   constructor() {

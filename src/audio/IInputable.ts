@@ -1,3 +1,3 @@
 export interface IInputable {
-  input: AudioNode;
+  input: GainNode;
 }

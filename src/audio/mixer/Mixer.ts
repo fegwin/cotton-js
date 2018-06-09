@@ -18,5 +18,4 @@ export class Mixer extends AudioOutput {
     track.connectTo(this.MasterTrack);
     this.TracksByName[name] = track;
   }
-
 }

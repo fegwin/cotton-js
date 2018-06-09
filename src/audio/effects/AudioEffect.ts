@@ -3,8 +3,8 @@ import { IOutputable } from "../IOutputable";
 import { IEffectable } from "./IEffectable";
 
 export abstract class AudioEffect implements IEffectable {
-  public output: AudioNode;
-  public input: AudioNode;
+  public output: GainNode;
+  public input: GainNode;
 
   public name: string;
 
