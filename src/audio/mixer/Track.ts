@@ -43,7 +43,6 @@ export class Track extends AudioProcessor implements ITrack {
   }
 
   private reconfigureConnections(): void {
-
     for (let i = 0; i < this.effects.length; i++) {
       // Do first effect
       if (i === 0) {
