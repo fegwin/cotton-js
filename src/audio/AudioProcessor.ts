@@ -3,10 +3,10 @@ import { IInputable } from "./IInputable";
 import { IOutputable } from "./IOutputable";
 
 export abstract class AudioProcessor implements IInputable, IOutputable {
-  public output: GainNode;
-  public input: GainNode;
+  public readonly output: GainNode;
+  public readonly input: GainNode;
 
-  protected audioContext = audioContext;
+  protected readonly audioContext = audioContext;
 
   constructor() {
     this.input = audioContext.createGain();

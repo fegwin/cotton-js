@@ -3,22 +3,15 @@ import { IInputable } from "../IInputable";
 import { IEffectable } from "./IEffectable";
 
 export abstract class AudioEffect extends AudioProcessor implements IEffectable {
-  public output: GainNode;
-  public input: GainNode;
-
-  public dryNode: GainNode;
-
-  public name: string;
+  public readonly dryNode: GainNode;
+  public readonly name: string;
 
   constructor(effectName: string) {
     super();
+
     this.name = effectName;
 
-    const audio = this.audioContext;
-
-    this.input = audio.createGain();
-    this.output = audio.createGain();
-    this.dryNode = audio.createGain();
+    this.dryNode = this.audioContext.createGain();
 
     this.input.connect(this.dryNode);
     this.dryNode.connect(this.output);

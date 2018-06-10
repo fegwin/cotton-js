@@ -1,7 +1,7 @@
 import { AudioOutput } from "../AudioOutput";
 
 export class SoundClip extends AudioOutput {
-  private buffer: AudioBuffer;
+  private readonly buffer: AudioBuffer;
   private currentSource: AudioBufferSourceNode;
 
   constructor(buffer: AudioBuffer) {

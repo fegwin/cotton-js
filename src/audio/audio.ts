@@ -1,5 +1,6 @@
 import { loadBuffer } from "../util/arrayBuffer";
 import {BrowserSpeaker} from "./BrowserSpeaker";
+import { Reverb } from "./effects";
 import { SoundClip } from "./outputters/SoundClip";
 
 const audioContext = new AudioContext();
@@ -17,7 +18,9 @@ export async function createSoundClip(url: string, connectToBrowserSpeaker: bool
     soundClipsByUrl[url] = sound;
 
     if (connectToBrowserSpeaker) {
-      sound.connectTo(browserSpeaker);
+      const reverb = new Reverb(3, 3);
+      sound.connectTo(reverb);
+      reverb.connectTo(browserSpeaker);
     }
 
     return sound;

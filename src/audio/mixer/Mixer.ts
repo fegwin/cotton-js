@@ -3,8 +3,8 @@ import { ITrack } from "./ITrack";
 import { Track } from "./Track";
 
 export class Mixer extends AudioOutput {
-  protected TracksByName: { [trackName: string]: ITrack; } = {};
-  protected MasterTrack = new Track();
+  protected readonly TracksByName: { [trackName: string]: ITrack; } = {};
+  protected readonly MasterTrack = new Track();
 
   public getMaster(): ITrack {
     return this.MasterTrack;
