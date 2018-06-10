@@ -1,29 +1,25 @@
-import {Sound} from "./Sound";
+import { AudioOutput } from "../AudioOutput";
 
-export class SoundClip extends Sound {
+export class SoundClip extends AudioOutput {
   private buffer: AudioBuffer;
+  private currentSource: AudioBufferSourceNode;
 
-  constructor(audioContext: AudioContext, buffer: AudioBuffer = null) {
-    super(audioContext);
+  constructor(buffer: AudioBuffer) {
+    super();
 
     this.buffer = buffer;
   }
 
   public play(): void {
-    if (this.buffer == null) { return; }
+    this.currentSource.stop();
 
-    const source = this.audioContext.createBufferSource();
-    source.buffer = this.buffer;
+    this.currentSource = this.audioContext.createBufferSource();
+    this.currentSource.buffer = this.buffer;
 
-    this.setCurrentAudioNode(source);
-    source.start(0);
+    this.currentSource.start(0);
   }
 
   public stop(): void {
-    return; // TODO
-  }
-
-  public setBuffer(buffer: AudioBuffer) {
-    this.buffer = buffer;
+    this.currentSource.stop();
   }
 }

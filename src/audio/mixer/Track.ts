@@ -1,4 +1,3 @@
-
 import { AudioProcessor } from "../AudioProcessor";
 import { IEffectable } from "../effects";
 import { ITrack } from "./ITrack";
