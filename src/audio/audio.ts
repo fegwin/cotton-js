@@ -9,14 +9,12 @@ export async function createSoundClip(url: string): Promise<SoundClip> {
     if (!!soundByUrl) { return soundByUrl; }
 
     const buffer = await loadBuffer(url);
-
     const audioBuffer = await audioContext.decodeAudioData(buffer);
 
     const sound = new SoundClip(audioBuffer);
+    soundClipsByUrl[url] = sound;
 
-    this.loadFromUrl(sound, url);
-
-    return this.soundClipsByUrl[url] = sound;
+    return sound;
   }
 
 export { audioContext };

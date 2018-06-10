@@ -8,4 +8,4 @@ export { EntityLibrary } from "./entity-library";
 export { SpriteSheet, IAnimation, ISprite, ISpriteDefinition } from "./sprite-sheet";
 export { Trait } from "./trait";
 export { traits } from "./traits";
-export { Audio } from "./audio";
+export { createSoundClip, Mixer, Track, ITrack, audioContext } from "./audio";

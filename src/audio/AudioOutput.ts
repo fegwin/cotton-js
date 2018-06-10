@@ -10,18 +10,15 @@ export abstract class AudioOutput implements IOutputable {
     this.output = audioContext.createGain();
   }
 
-  public disconnectAll(): IOutputable {
+  public disconnectAll(): void {
     this.output.disconnect();
-    return this;
   }
 
-  public disconnect(targetOutput: IInputable): IOutputable {
+  public disconnect(targetOutput: IInputable): void {
     this.output.disconnect(targetOutput.input);
-    return this;
   }
 
-  public connectTo(target: IInputable): IOutputable {
+  public connectTo(target: IInputable): void {
     this.output.connect(target.input);
-    return this;
   }
 }
