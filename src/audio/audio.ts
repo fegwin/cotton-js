@@ -18,9 +18,7 @@ export async function createSoundClip(url: string, connectToBrowserSpeaker: bool
     soundClipsByUrl[url] = sound;
 
     if (connectToBrowserSpeaker) {
-      const reverb = new Reverb(3, 3);
-      sound.connectTo(reverb);
-      reverb.connectTo(browserSpeaker);
+      sound.connectTo(browserSpeaker);
     }
 
     return sound;
