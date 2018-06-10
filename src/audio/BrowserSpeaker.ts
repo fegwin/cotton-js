@@ -1,11 +1,13 @@
 import { audioContext } from "./audio";
+import { AudioDestination } from "./AudioDestination";
 import { IInputable } from "./IInputable";
 
-export abstract class AudioDestination implements IInputable {
+export class BrowserSpeaker extends AudioDestination {
   public input: GainNode;
   protected audioContext = audioContext;
 
   constructor() {
-    this.input = audioContext.createGain();
+    super();
+    this.input.connect(audioContext.destination);
   }
 }

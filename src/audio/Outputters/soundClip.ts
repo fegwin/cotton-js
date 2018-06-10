@@ -11,10 +11,13 @@ export class SoundClip extends AudioOutput {
   }
 
   public play(): void {
-    this.currentSource.stop();
-
+    if (this.currentSource) {
+      this.currentSource.stop();
+    }
     this.currentSource = this.audioContext.createBufferSource();
     this.currentSource.buffer = this.buffer;
+
+    this.currentSource.connect(this.output);
 
     this.currentSource.start(0);
   }
