@@ -1,4 +1,4 @@
-import { AudioEffect } from ".";
+import { AudioEffect } from "./AudioEffect";
 
 export class Reverb extends AudioEffect {
   private readonly reverbNode: ConvolverNode;

@@ -7,6 +7,8 @@ export class Track extends AudioProcessor implements ITrack {
 
   constructor() {
     super();
+
+    this.reconfigureConnections();
   }
 
   public setVolume(amount: number): void {

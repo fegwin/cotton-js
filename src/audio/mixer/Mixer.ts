@@ -6,6 +6,11 @@ export class Mixer extends AudioOutput {
   protected readonly TracksByName: { [trackName: string]: ITrack; } = {};
   protected readonly MasterTrack = new Track();
 
+  constructor() {
+    super();
+    this.MasterTrack.output.connect(this.output);
+  }
+
   public getMaster(): ITrack {
     return this.MasterTrack;
   }

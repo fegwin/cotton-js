@@ -1,6 +1,5 @@
 import { loadBuffer } from "../util/arrayBuffer";
 import {BrowserSpeaker} from "./BrowserSpeaker";
-import { Reverb } from "./effects";
 import { SoundClip } from "./outputters/SoundClip";
 
 const audioContext = new AudioContext();
