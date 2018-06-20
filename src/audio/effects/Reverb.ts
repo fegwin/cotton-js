@@ -15,7 +15,7 @@ export class Reverb extends AudioEffect {
     this.reverbNode.connect(this.reverbGainNode);
     this.reverbGainNode.connect(this.output);
 
-    this.setDryWet(0.5);
+    this.setDryWet(1);
   }
 
   protected setWet(amount: number): void {

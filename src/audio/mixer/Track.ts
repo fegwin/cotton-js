@@ -44,27 +44,26 @@ export class Track extends AudioProcessor implements ITrack {
   }
 
   private reconfigureConnections(): void {
-    for (let i = 0; i < this.effects.length; i++) {
-      // Do first effect
-      if (i === 0) {
-        this.input.disconnect();
-        const firstEffect = this.effects[0];
-        firstEffect.disconnectAll();
+    const effectStack = [...this.effects];
 
-        this.input.connect(firstEffect.input);
-        return;
+    let currentItem = effectStack.pop();
+
+    // Set the input to go into the first effect.
+    if (currentItem) {
+      this.input.connect(currentItem.input);
+     }
+
+    while (effectStack.length !== 0) {
+        const nextItem = effectStack.pop();
+        currentItem.connectTo(nextItem);
+        currentItem = nextItem;
       }
 
-      // Do last effect
-      if (i === this.effects.length) {
-        const lastEffect = this.effects[i];
-        lastEffect.disconnectAll();
+    const lastEffect = this.effects[this.effects.length - 1];
+    if (lastEffect) {
         lastEffect.output.connect(this.output);
-        return;
-      }
-      const currentEffect = this.effects[i];
-      currentEffect.disconnectAll();
-      currentEffect.connectTo(this.effects[i + 1]);
+    } else {
+      this.input.connect(this.output);
     }
   }
 }
