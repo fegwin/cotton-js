@@ -17,6 +17,20 @@ export class EntityLibrary {
   }
 
   /**
+   * Query entities by trait names
+   * @param traitNames Entities which contain the following traits will be returned
+   */
+  public getEntitiesByTraitNames(traitNames: string[]): Entity[] {
+    let retVal: Entity[] = [];
+
+    traitNames.forEach((traitName) => {
+      retVal = retVal.concat(this.getEntitiesByTraitName(traitName));
+    });
+
+    return retVal;
+  }
+
+  /**
    * Query entities by trait name
    * @param traitName Entities which contain the following trait will be returned
    */

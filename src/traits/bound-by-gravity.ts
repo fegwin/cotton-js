@@ -1,4 +1,4 @@
-import { Entity, EntityLibrary, Trait } from "..";
+import { Entity, Trait } from "..";
 import { Vector2 } from "../util/math";
 
 /**
@@ -9,24 +9,22 @@ import { Vector2 } from "../util/math";
  */
 export class BoundByGravity extends Trait {
   private acceleration: Vector2;
-  constructor(acceleration: Vector2) {
-    super();
+  constructor(entity: Entity, acceleration: Vector2) {
+    super(entity);
     this.acceleration = acceleration;
   }
 
   /**
    * On each update cycle, a constant acceleration will be applied.
-   * @param entity The entity to apply gravity to
-   * @param entityLibrary Entity Library containing other entities we may interact with
    * @param deltaTime Time since the last update
    */
-  public update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
-    if (!entity.acceleration) {
-      entity.acceleration = new Vector2(0, 0);
+  public update(deltaTime: number) {
+    if (!this.entity.acceleration) {
+      this.entity.acceleration = new Vector2(0, 0);
     }
 
-    entity.acceleration.y = this.acceleration.y;
-    entity.acceleration.x = this.acceleration.x;
+    this.entity.acceleration.y = this.acceleration.y;
+    this.entity.acceleration.x = this.acceleration.x;
   }
 
   public getName(): string {
