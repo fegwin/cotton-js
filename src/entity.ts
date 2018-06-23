@@ -50,9 +50,7 @@ export abstract class Entity {
     this.entityLibrary = entityLibrary;
 
     this.trait = {};
-    traits.forEach((trait) => {
-      this.trait[trait.getName()] = trait;
-    });
+    this.addTraits(traits);
 
     this.lifetime = 0;
     this.firstPaintComplete = false;
@@ -111,6 +109,34 @@ export abstract class Entity {
     }
 
     this.lifetime += deltaTime;
+  }
+
+  /**
+   * Adds a trait to the entity
+   * @param trait Trait to add
+   */
+  public addTrait(trait: Trait) {
+    this.addTraits([trait]);
+  }
+
+  /**
+   * Adds traits to the entity
+   * @param traits Traits to add
+   */
+  public addTraits(traits: Trait[]) {
+    traits.forEach((trait) => {
+      this.trait[trait.getName()] = trait;
+    });
+  }
+
+  /**
+   * Removes trait from the entity
+   * @param trait Name of trait to remove
+   */
+  public removeTrait(trait: string) {
+    if (!this.trait[trait]) { return; }
+
+    delete this.trait[trait];
   }
 
   /**
