@@ -36,6 +36,7 @@ export class AABBCollider {
     const collisions: AABBCollision[] = [];
 
     collidableEntities.forEach((testEntity) => {
+      if (this.entity === testEntity) { return; }
       if (!BoundingBox.overlaps(this.entity.bounds, testEntity.bounds)) { return; }
 
       collisions.push(new AABBCollision(

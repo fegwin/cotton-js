@@ -1,6 +1,6 @@
-import { Entity, EntityLibrary } from "..";
-import { AABBCollider, AABBCollision } from "../collision";
-import { BoundingBox, Vector2 } from "../util/math";
+import { Entity } from "..";
+import { AABBCollider } from "../collision";
+import { Vector2 } from "../util/math";
 import { BoundByPhysics } from "./bound-by-physics";
 
 /**
@@ -32,37 +32,41 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
   public update(deltaTime: number) {
     // Process X
     this.updateX(deltaTime);
-    this.resolveCollisions();
+    this.resolveCollisions(true, false);
 
     // Process Y
     this.updateY(deltaTime);
-    this.resolveCollisions();
+    this.resolveCollisions(false, true);
   }
 
-  protected resolveCollisions() {
+  protected resolveCollisions(resolveX: boolean, resolveY: boolean) {
     const collisions = this.collider.detectCollisions();
 
     collisions.forEach((collision) => {
-      // We may have colided with left or right edge
-      if (collision.sides.right) {
-        // Coming in from the left
-        this.entity.position.x -= this.entity.bounds.right - collision.entity.bounds.left;
+      if (resolveX) {
+        // We may have colided with left or right edge
+        if (collision.sides.right) {
+          // Coming in from the left
+          this.entity.position.x -= this.entity.bounds.right - collision.entity.bounds.left;
+        }
+
+        if (collision.sides.left) {
+          // Coming in from the right
+          this.entity.position.x += collision.entity.bounds.right - this.entity.bounds.left;
+        }
       }
 
-      if (collision.sides.left) {
-        // Coming in from the right
-        this.entity.position.x += collision.entity.bounds.right - this.entity.bounds.left;
-      }
+      if (resolveY) {
+        // We may have colided with top or bottom edge
+        if (collision.sides.bottom) {
+          // Coming in from the top
+          this.entity.position.y -= this.entity.bounds.bottom - collision.entity.bounds.top;
+        }
 
-      // We may have colided with top or bottom edge
-      if (collision.sides.bottom) {
-        // Coming in from the top
-        this.entity.position.y -= this.entity.bounds.bottom - collision.entity.bounds.top;
-      }
-
-      if (collision.sides.top) {
-        // Coming in from the bottom
-        this.entity.position.y += collision.entity.bounds.bottom - this.entity.bounds.top;
+        if (collision.sides.top) {
+          // Coming in from the bottom
+          this.entity.position.y += collision.entity.bounds.bottom - this.entity.bounds.top;
+        }
       }
     });
   }
