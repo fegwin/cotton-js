@@ -127,6 +127,8 @@ export abstract class Entity {
     traits.forEach((trait) => {
       this.trait[trait.getName()] = trait;
     });
+
+    this.entityLibrary.updateEntity(this);
   }
 
   /**
@@ -137,6 +139,8 @@ export abstract class Entity {
     if (!this.trait[trait]) { return; }
 
     delete this.trait[trait];
+
+    this.entityLibrary.updateEntity(this);
   }
 
   /**

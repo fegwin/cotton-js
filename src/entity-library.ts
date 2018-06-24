@@ -39,6 +39,16 @@ export class EntityLibrary {
   }
 
   /**
+   * Use this method to update the entity registration with the EntityLibrary
+   * You will need to do this if the Entity traits change
+   * @param entity The entity you wish to update
+   */
+  public updateEntity(entity: Entity) {
+    this.deregisterEntity(entity);
+    this.registerEntity(entity);
+  }
+
+  /**
    * Use this method to register an entity with the EntityLibrary
    * Entities that are shared on an EntityLibrary, will be able to interact with
    * one another.
@@ -71,7 +81,8 @@ export class EntityLibrary {
 
     traits.forEach((trait) => {
       if (!this.entitiesByTrait[trait.getName()]) {
-        throw new Error("EntityLibrary out of sync");
+        // Trait may have been removed? Maybe never added? Can safely ignore
+        return;
       }
 
       this.entitiesByTrait[trait.getName()] =
