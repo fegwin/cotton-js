@@ -1,7 +1,8 @@
+import { detectCollisionsAABB, detectCollisionsSAT, ICollision } from "./collision";
 import { EntityLibrary } from "./entity-library";
 import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
-import { BoundingBox, Vector2 } from "./util/math";
+import { BoundingBox, Polygon, Vector2 } from "./util/math";
 
 /**
  * Provides the base class to which other entities in the system
@@ -43,9 +44,10 @@ export abstract class Entity {
     this.debug = debug;
 
     this.position = position;
+    this.size = size;
+
     this.velocity = new Vector2(0, 0);
     this.acceleration = new Vector2(0, 0);
-    this.size = size;
 
     this.entityLibrary = entityLibrary;
 
@@ -169,6 +171,10 @@ export abstract class Entity {
     return instance.name;
   }
 
+  public getCollisionStrategy(): (entity: Entity, collidableEntityTraits: string[]) => ICollision[] {
+    return detectCollisionsAABB;
+  }
+
   /**
    * This method will draw the entity onto the MemoryCanvas.
    * Call this whenever you need to update the entity, eg. Animations.
@@ -181,5 +187,32 @@ export abstract class Entity {
    */
   private calculateBounds() {
     this.bounds = new BoundingBox(this.position, this.size);
+  }
+}
+
+export abstract class PolygonEntity extends Entity {
+  public shape: Polygon;
+
+  constructor(
+    position: Vector2,
+    shape: Polygon,
+    entityLibrary: EntityLibrary,
+    traits: Trait[] = [],
+    debug: boolean,
+  ) {
+    const box = shape.getBoundingBox();
+    super(
+      position,
+      new Vector2(box.right - box.left, box.bottom - box.top),
+      entityLibrary,
+      traits,
+      debug,
+    );
+
+    this.shape = shape;
+  }
+
+  public getCollisionStrategy(): (entity: Entity, collidableEntityTraits: string[]) => ICollision[] {
+    return detectCollisionsSAT;
   }
 }

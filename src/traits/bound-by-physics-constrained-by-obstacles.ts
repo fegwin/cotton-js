@@ -1,5 +1,5 @@
 import { Entity } from "..";
-import { AABBCollider } from "../collision";
+import { AABBCollision } from "../collision";
 import { Vector2 } from "../util/math";
 import { BoundByPhysics } from "./bound-by-physics";
 
@@ -8,15 +8,11 @@ import { BoundByPhysics } from "./bound-by-physics";
  * Additionally this trait will prevent the entity from passing through obstacles
  */
 export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
-  private collider: AABBCollider;
-
   /**
    * @param terminalVelocity Max xy velocity the entity may assume
    */
   constructor(entity: Entity, terminalVelocity: Vector2) {
     super(entity, terminalVelocity);
-
-    this.collider = new AABBCollider(this.entity, ["Obstacle"]);
   }
 
   /**
@@ -40,7 +36,8 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
   }
 
   protected resolveCollisions(resolveX: boolean, resolveY: boolean) {
-    const collisions = this.collider.detectCollisions();
+    const collisionStrategy = this.entity.getCollisionStrategy();
+    const collisions = collisionStrategy(this.entity, ["Obstacle"]) as AABBCollision[];
 
     collisions.forEach((collision) => {
       if (resolveX) {
