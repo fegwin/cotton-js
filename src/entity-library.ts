@@ -17,11 +17,35 @@ export class EntityLibrary {
   }
 
   /**
+   * Query entities by trait names
+   * @param traitNames Entities which contain the following traits will be returned
+   */
+  public getEntitiesByTraitNames(traitNames: string[]): Entity[] {
+    let retVal: Entity[] = [];
+
+    traitNames.forEach((traitName) => {
+      retVal = retVal.concat(this.getEntitiesByTraitName(traitName));
+    });
+
+    return retVal;
+  }
+
+  /**
    * Query entities by trait name
    * @param traitName Entities which contain the following trait will be returned
    */
   public getEntitiesByTraitName(traitName: string): Entity[] {
     return this.entitiesByTrait[traitName] || [];
+  }
+
+  /**
+   * Use this method to update the entity registration with the EntityLibrary
+   * You will need to do this if the Entity traits change
+   * @param entity The entity you wish to update
+   */
+  public updateEntity(entity: Entity) {
+    this.deregisterEntity(entity);
+    this.registerEntity(entity);
   }
 
   /**
@@ -57,7 +81,8 @@ export class EntityLibrary {
 
     traits.forEach((trait) => {
       if (!this.entitiesByTrait[trait.getName()]) {
-        throw new Error("EntityLibrary out of sync");
+        // Trait may have been removed? Maybe never added? Can safely ignore
+        return;
       }
 
       this.entitiesByTrait[trait.getName()] =
