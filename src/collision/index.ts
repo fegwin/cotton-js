@@ -1,5 +1,6 @@
 import { Entity } from "..";
-import { BoundingBox, ISides } from "../util/math";
+import { BoundingBox, ISides, Polygon } from "../util/math";
+import { CircleEntity, PolygonEntity } from "../entity";
 
 export interface ICollision {
   entity: Entity;
@@ -77,3 +78,18 @@ export const detectCollisionsSAT = (
 
   return collisions;
 };
+
+// Entity Collision Test
+export const isParticleInCircle = (particle: Entity, circle: CircleEntity) => {
+  throw new Error("BUILD ME");
+};
+
+export const isParticleInPolygon = (particle: Entity, polygon: PolygonEntity) => {
+  throw new Error("BUILD ME");
+};
+
+export const testCircleCircle = (a: CircleEntity, b: CircleEntity) => {
+  throw new Error("BUILD ME");
+}
+
+export const testPolygonCircle = ()
