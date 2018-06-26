@@ -1,5 +1,5 @@
 import { Entity } from "..";
-import { AABBCollision } from "../collision";
+import { AABBCollision, detectCollisionsAABB } from "../collision";
 import { Vector2 } from "../util/math";
 import { BoundByPhysics } from "./bound-by-physics";
 
@@ -36,7 +36,7 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
   }
 
   protected resolveCollisions(resolveX: boolean, resolveY: boolean) {
-    const collisionStrategy = this.entity.getCollisionStrategy();
+    const collisionStrategy = detectCollisionsAABB;
     const collisions = collisionStrategy(this.entity, ["Obstacle"]) as AABBCollision[];
 
     collisions.forEach((collision) => {

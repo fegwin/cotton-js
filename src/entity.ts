@@ -1,4 +1,3 @@
-import { detectCollisionsAABB, detectCollisionsSAT, ICollision } from "./collision";
 import { EntityLibrary } from "./entity-library";
 import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
@@ -8,12 +7,14 @@ import { BoundingBox, Polygon, Vector2 } from "./util/math";
  * Provides the base class to which other entities in the system
  * can implement. This provides the initial implementation
  * to be animated and rendered.
+ *
+ * This entity has no size, it is simply a "particle". A point defines it's interactive region.
  */
 export abstract class Entity {
+  public size: Vector2;
   public bounds: BoundingBox;
 
   public position: Vector2;
-
   public velocity: Vector2;
   public acceleration: Vector2;
 
@@ -42,6 +43,7 @@ export abstract class Entity {
   ) {
     this.debug = debug;
 
+    this.size = new Vector2(1, 1);
     this.position = position;
     this.velocity = new Vector2(0, 0);
     this.acceleration = new Vector2(0, 0);
@@ -166,21 +168,79 @@ export abstract class Entity {
     return instance.name;
   }
 
-  public getCollisionStrategy(): (entity: Entity, collidableEntityTraits: string[]) => ICollision[] {
-    return detectCollisionsAABB;
-  }
-
   /**
    * This method will draw the entity onto the MemoryCanvas.
    * Call this whenever you need to update the entity, eg. Animations.
    * Do this inside the update method.
    */
   protected abstract draw(): void;
+
+  /**
+   * Calculates the bounding box of the entity drawable/interactive area
+   */
+  protected calculateBounds() {
+    this.memoryCanvas = new MemoryCanvas(this.size.x, this.size.y);
+    this.bounds = new BoundingBox(this.position, this.size);
+  }
 }
 
-export abstract class PolygonEntity extends Entity {
+/**
+ * Provides the base class to which other entities in the system
+ * can implement. This provides the initial implementation
+ * to be animated and rendered.
+ *
+ * This entity has a size and a position. A rectangle defines it's interactive region.
+ */
+export abstract class RectangleEntity extends Entity {
+  constructor(
+    position: Vector2,
+    size: Vector2,
+    entityLibrary: EntityLibrary,
+    traits: Trait[] = [],
+    debug: boolean,
+  ) {
+    super(position, entityLibrary, traits, debug);
+
+    this.size = size;
+    this.calculateBounds();
+  }
+}
+
+/**
+ * Provides the base class to which other entities in the system
+ * can implement. This provides the initial implementation
+ * to be animated and rendered.
+ *
+ * This entity has a size, position, radius. A cirle defines it's interactive region.
+ */
+export abstract class CircleEntity extends RectangleEntity {
+  public centerPoint: Vector2;
+  public radius: number;
+
+  constructor(
+    position: Vector2,
+    radius: number,
+    entityLibrary: EntityLibrary,
+    traits: Trait[] = [],
+    debug: boolean,
+  ) {
+    const size = new Vector2(radius * 2, radius * 2);
+    super(position, size, entityLibrary, traits, debug);
+
+    this.radius = radius;
+    this.centerPoint = new Vector2(position.x + radius, position.y + radius);
+  }
+}
+
+/**
+ * Provides the base class to which other entities in the system
+ * can implement. This provides the initial implementation
+ * to be animated and rendered.
+ *
+ * This entity has a convex polygon defining it's interactive region
+ */
+export abstract class PolygonEntity extends RectangleEntity {
   public shape: Polygon;
-  public size: Vector2;
 
   constructor(
     position: Vector2,
@@ -200,19 +260,4 @@ export abstract class PolygonEntity extends Entity {
 
     this.shape = shape;
   }
-
-  public getCollisionStrategy(): (entity: Entity, collidableEntityTraits: string[]) => ICollision[] {
-    return detectCollisionsSAT;
-  }
-
-  /**
-   * Calculates the AABB bounding box of the entity
-   */
-  private calculateBounds() {
-    this.bounds = new BoundingBox(this.position, this.size);
-  }
-}
-
-export abstract class RectangleEntity extends Entity {
-
 }
