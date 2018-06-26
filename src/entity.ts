@@ -13,6 +13,7 @@ export abstract class Entity {
   public bounds: BoundingBox;
 
   public position: Vector2;
+
   public velocity: Vector2;
   public acceleration: Vector2;
 
@@ -24,8 +25,7 @@ export abstract class Entity {
   private lifetime: number;
   private firstPaintComplete: boolean;
 
-  private size: Vector2;
-
+  // Overriding class must set this
   private memoryCanvas: MemoryCanvas;
 
   /**
@@ -36,7 +36,6 @@ export abstract class Entity {
    */
   public constructor(
     position: Vector2,
-    size: Vector2,
     entityLibrary: EntityLibrary,
     traits: Trait[] = [],
     debug: boolean = false,
@@ -44,8 +43,6 @@ export abstract class Entity {
     this.debug = debug;
 
     this.position = position;
-    this.size = size;
-
     this.velocity = new Vector2(0, 0);
     this.acceleration = new Vector2(0, 0);
 
@@ -58,8 +55,6 @@ export abstract class Entity {
     this.firstPaintComplete = false;
 
     this.calculateBounds();
-
-    this.memoryCanvas = new MemoryCanvas(this.size.x, this.size.y);
     this.entityLibrary.registerEntity(this);
   }
 
@@ -181,17 +176,11 @@ export abstract class Entity {
    * Do this inside the update method.
    */
   protected abstract draw(): void;
-
-  /**
-   * Calculates the AABB bounding box of the entity
-   */
-  private calculateBounds() {
-    this.bounds = new BoundingBox(this.position, this.size);
-  }
 }
 
 export abstract class PolygonEntity extends Entity {
   public shape: Polygon;
+  public size: Vector2;
 
   constructor(
     position: Vector2,
@@ -215,4 +204,15 @@ export abstract class PolygonEntity extends Entity {
   public getCollisionStrategy(): (entity: Entity, collidableEntityTraits: string[]) => ICollision[] {
     return detectCollisionsSAT;
   }
+
+  /**
+   * Calculates the AABB bounding box of the entity
+   */
+  private calculateBounds() {
+    this.bounds = new BoundingBox(this.position, this.size);
+  }
+}
+
+export abstract class RectangleEntity extends Entity {
+
 }
