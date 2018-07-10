@@ -1,0 +1,56 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var memory_canvas_1 = require("./memory-canvas");
+var CanvasElementToLayer = (function () {
+    function CanvasElementToLayer(memoryCanvas, layer) {
+        this.memoryCanvas = memoryCanvas;
+        this.layer = layer;
+    }
+    return CanvasElementToLayer;
+}());
+var Compositor = (function () {
+    function Compositor(width, height, rootElement, layers) {
+        if (layers === void 0) { layers = []; }
+        this.canvasElementToLayers = [];
+        var newContainer = document.createElement("div");
+        newContainer.style.position = "relative";
+        rootElement.parentNode.replaceChild(newContainer, rootElement);
+        this.rootContainer = newContainer;
+        this.addLayers(width, height, layers);
+    }
+    Compositor.prototype.addLayers = function (width, height, layers) {
+        for (var i = 0; i < layers.length; i++) {
+            var layer = layers[i];
+            var layerCanvas = this.createLayerElement(width, height, i);
+            this.canvasElementToLayers.push(new CanvasElementToLayer(new memory_canvas_1.MemoryCanvas(width, height, layerCanvas), layer));
+            this.rootContainer.appendChild(layerCanvas);
+        }
+    };
+    Compositor.prototype.update = function (deltaTime) {
+        for (var _i = 0, _a = this.canvasElementToLayers; _i < _a.length; _i++) {
+            var canvasElementToLayer = _a[_i];
+            canvasElementToLayer.layer.update(deltaTime);
+        }
+    };
+    Compositor.prototype.paint = function () {
+        for (var _i = 0, _a = this.canvasElementToLayers; _i < _a.length; _i++) {
+            var canvasElementToLayer = _a[_i];
+            canvasElementToLayer.memoryCanvas.clear();
+            canvasElementToLayer.layer.paintOn(canvasElementToLayer.memoryCanvas.getContext());
+        }
+    };
+    Compositor.prototype.createLayerElement = function (width, height, i) {
+        var layerCanvas = document.createElement("canvas");
+        layerCanvas.width = width;
+        layerCanvas.height = height;
+        layerCanvas.style.position = "absolute";
+        layerCanvas.style.left = "0px";
+        layerCanvas.style.top = "0px";
+        layerCanvas.id = "layer" + i;
+        layerCanvas.style.zIndex = String(i);
+        return layerCanvas;
+    };
+    return Compositor;
+}());
+exports.Compositor = Compositor;
+//# sourceMappingURL=compositor.js.map
