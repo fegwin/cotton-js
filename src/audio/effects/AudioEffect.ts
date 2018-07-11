@@ -3,8 +3,8 @@ import { IInputable } from "../IInputable";
 import { IEffectable } from "./IEffectable";
 
 export abstract class AudioEffect extends AudioProcessor implements IEffectable {
-  public readonly dryNode: GainNode;
   public readonly name: string;
+  protected readonly dryNode: GainNode;
 
   constructor(effectName: string) {
     super();
