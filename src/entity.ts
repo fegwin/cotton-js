@@ -15,7 +15,6 @@ export abstract class Entity {
   public velocity: Vector2;
   public acceleration: Vector2;
 
-  private name: string;
   private debug: boolean;
 
   private entityLibrary: EntityLibrary;
@@ -41,7 +40,6 @@ export abstract class Entity {
     traits: Trait[] = [],
     debug: boolean = false,
   ) {
-    this.name = "entity";
     this.debug = debug;
 
     this.position = position;
@@ -52,9 +50,7 @@ export abstract class Entity {
     this.entityLibrary = entityLibrary;
 
     this.trait = {};
-    traits.forEach((trait) => {
-      this.trait[trait.getName()] = trait;
-    });
+    this.addTraits(traits);
 
     this.lifetime = 0;
     this.firstPaintComplete = false;
@@ -109,10 +105,42 @@ export abstract class Entity {
    */
   public update(deltaTime: number): void {
     for (const trait of this.getTraits()) {
-      trait.update(this, this.entityLibrary, deltaTime);
+      trait.update(deltaTime);
     }
 
     this.lifetime += deltaTime;
+  }
+
+  /**
+   * Adds a trait to the entity
+   * @param trait Trait to add
+   */
+  public addTrait(trait: Trait) {
+    this.addTraits([trait]);
+  }
+
+  /**
+   * Adds traits to the entity
+   * @param traits Traits to add
+   */
+  public addTraits(traits: Trait[]) {
+    traits.forEach((trait) => {
+      this.trait[trait.getName()] = trait;
+    });
+
+    this.entityLibrary.updateEntity(this);
+  }
+
+  /**
+   * Removes trait from the entity
+   * @param trait Name of trait to remove
+   */
+  public removeTrait(trait: string) {
+    if (!this.trait[trait]) { return; }
+
+    delete this.trait[trait];
+
+    this.entityLibrary.updateEntity(this);
   }
 
   /**
@@ -124,6 +152,21 @@ export abstract class Entity {
     Object.keys(this.trait).forEach((trait) => traits.push(this.trait[trait]));
 
     return traits;
+  }
+
+  /**
+   * Returns the EntityLibrary this Entity belongs to
+   */
+  public getEntityLibrary(): EntityLibrary {
+    return this.entityLibrary;
+  }
+
+  /**
+   * Retrieves the name of the entity
+   */
+  public getName(): string {
+    const instance: any = this.constructor;
+    return instance.name;
   }
 
   /**

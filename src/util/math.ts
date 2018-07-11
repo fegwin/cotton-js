@@ -1,3 +1,10 @@
+export interface ISides {
+  top: boolean;
+  bottom: boolean;
+  left: boolean;
+  right: boolean;
+}
+
 /** Provides dimensions to bound an entity
  *  and the methods to calculate overlapping entities.
  */
@@ -51,7 +58,7 @@ export class BoundingBox {
    * @param box1 Box to test
    * @param box2 Box to test against
    */
-  public static getOverlappingSides(box1: BoundingBox, box2: BoundingBox) {
+  public static getOverlappingSides(box1: BoundingBox, box2: BoundingBox): ISides {
     let left = false;
     let right = false;
     let top = false;

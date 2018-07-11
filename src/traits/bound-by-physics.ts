@@ -1,4 +1,4 @@
-import { Entity, EntityLibrary, Trait } from "..";
+import { Entity, Trait } from "..";
 import { sign, Vector2 } from "../util/math";
 
 /**
@@ -10,8 +10,8 @@ export class BoundByPhysics extends Trait {
   /**
    * @param terminalVelocity Max xy velocity the entity may assume
    */
-  constructor(terminalVelocity: Vector2) {
-    super();
+  constructor(entity: Entity, terminalVelocity: Vector2) {
+    super(entity);
     this.terminalVelocity = terminalVelocity;
   }
 
@@ -24,39 +24,39 @@ export class BoundByPhysics extends Trait {
    * @param entityLibrary The entity library containing other entities we may interact with
    * @param deltaTime Time since the last update cycle
    */
-  public update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
-    this.updateX(entity, entityLibrary, deltaTime);
-    this.updateY(entity, entityLibrary, deltaTime);
+  public update(deltaTime: number) {
+    this.updateX(deltaTime);
+    this.updateY(deltaTime);
   }
 
   public getName() {
     return "BoundByPhysics";
   }
 
-  protected updateY(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
+  protected updateY(deltaTime: number) {
     // Update velocity
-    entity.velocity.y += deltaTime * entity.acceleration.y;
+    this.entity.velocity.y += deltaTime * this.entity.acceleration.y;
 
     // Cap out at terminal velocity if required
-    if (this.terminalVelocity && Math.abs(entity.velocity.y) >= Math.abs(this.terminalVelocity.y)) {
+    if (this.terminalVelocity && Math.abs(this.entity.velocity.y) >= Math.abs(this.terminalVelocity.y)) {
 
-      entity.velocity.y = sign(entity.velocity.y) * this.terminalVelocity.y;
+      this.entity.velocity.y = sign(this.entity.velocity.y) * this.terminalVelocity.y;
     }
 
     // Update position
-    entity.position.y += deltaTime * entity.velocity.y;
+    this.entity.position.y += deltaTime * this.entity.velocity.y;
   }
 
-  protected updateX(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
+  protected updateX(deltaTime: number) {
     // Update velocity
-    entity.velocity.x += deltaTime * entity.acceleration.x;
+    this.entity.velocity.x += deltaTime * this.entity.acceleration.x;
 
     // Cap out at terminal velocity if required
-    if (this.terminalVelocity && Math.abs(entity.velocity.x) >= Math.abs(this.terminalVelocity.x)) {
-      entity.velocity.x = sign(entity.velocity.x) * this.terminalVelocity.x;
+    if (this.terminalVelocity && Math.abs(this.entity.velocity.x) >= Math.abs(this.terminalVelocity.x)) {
+      this.entity.velocity.x = sign(this.entity.velocity.x) * this.terminalVelocity.x;
     }
 
     // Update position
-    entity.position.x += deltaTime * entity.velocity.x;
+    this.entity.position.x += deltaTime * this.entity.velocity.x;
   }
 }

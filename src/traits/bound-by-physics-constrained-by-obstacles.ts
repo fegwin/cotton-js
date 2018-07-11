@@ -1,5 +1,6 @@
-import { Entity, EntityLibrary } from "..";
-import { BoundingBox, Vector2 } from "../util/math";
+import { Entity } from "..";
+import { AABBCollider } from "../collision";
+import { Vector2 } from "../util/math";
 import { BoundByPhysics } from "./bound-by-physics";
 
 /**
@@ -7,11 +8,15 @@ import { BoundByPhysics } from "./bound-by-physics";
  * Additionally this trait will prevent the entity from passing through obstacles
  */
 export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
+  private collider: AABBCollider;
+
   /**
    * @param terminalVelocity Max xy velocity the entity may assume
    */
-  constructor(terminalVelocity: Vector2) {
-    super(terminalVelocity);
+  constructor(entity: Entity, terminalVelocity: Vector2) {
+    super(entity, terminalVelocity);
+
+    this.collider = new AABBCollider(this.entity, ["Obstacle"]);
   }
 
   /**
@@ -24,52 +29,44 @@ export class BoundByPhysicsConstrainedByObstacles extends BoundByPhysics {
    * @param entityLibrary The entity library containing other entities we may interact with
    * @param deltaTime Time since the last update cycle
    */
-  public update(entity: Entity, entityLibrary: EntityLibrary, deltaTime: number) {
-    const obstacles = entityLibrary.getEntitiesByTraitName("Obstacle");
-
+  public update(deltaTime: number) {
     // Process X
-    this.updateX(entity, entityLibrary, deltaTime);
-    this.resolveCollisionsX(entity, obstacles);
+    this.updateX(deltaTime);
+    this.resolveCollisions(true, false);
 
     // Process Y
-    this.updateY(entity, entityLibrary, deltaTime);
-    this.resolveCollisionsY(entity, obstacles);
+    this.updateY(deltaTime);
+    this.resolveCollisions(false, true);
   }
 
-  protected resolveCollisionsX(entity: Entity, obstacles: Entity[]) {
-    obstacles.forEach((obstacle) => {
-      if (!BoundingBox.overlaps(entity.bounds, obstacle.bounds)) { return; }
+  protected resolveCollisions(resolveX: boolean, resolveY: boolean) {
+    const collisions = this.collider.detectCollisions();
 
-      const sides = BoundingBox.getOverlappingSides(entity.bounds, obstacle.bounds);
+    collisions.forEach((collision) => {
+      if (resolveX) {
+        // We may have colided with left or right edge
+        if (collision.sides.right) {
+          // Coming in from the left
+          this.entity.position.x -= this.entity.bounds.right - collision.entity.bounds.left;
+        }
 
-      // We may have colided with left or right edge
-      if (sides.right) {
-        // Coming in from the left
-        entity.position.x -= entity.bounds.right - obstacle.bounds.left;
+        if (collision.sides.left) {
+          // Coming in from the right
+          this.entity.position.x += collision.entity.bounds.right - this.entity.bounds.left;
+        }
       }
 
-      if (sides.left) {
-        // Coming in from the right
-        entity.position.x += obstacle.bounds.right - entity.bounds.left;
-      }
-    });
-  }
+      if (resolveY) {
+        // We may have colided with top or bottom edge
+        if (collision.sides.bottom) {
+          // Coming in from the top
+          this.entity.position.y -= this.entity.bounds.bottom - collision.entity.bounds.top;
+        }
 
-  protected resolveCollisionsY(entity: Entity, obstacles: Entity[]) {
-    obstacles.forEach((obstacle) => {
-      if (!BoundingBox.overlaps(entity.bounds, obstacle.bounds)) { return; }
-
-      const sides = BoundingBox.getOverlappingSides(entity.bounds, obstacle.bounds);
-
-      // We may have colided with top or bottom edge
-      if (sides.bottom) {
-        // Coming in from the top
-        entity.position.y -= entity.bounds.bottom - obstacle.bounds.top;
-      }
-
-      if (sides.top) {
-        // Coming in from the bottom
-        entity.position.y += obstacle.bounds.bottom - entity.bounds.top;
+        if (collision.sides.top) {
+          // Coming in from the bottom
+          this.entity.position.y += collision.entity.bounds.bottom - this.entity.bounds.top;
+        }
       }
     });
   }
