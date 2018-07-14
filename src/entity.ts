@@ -15,6 +15,8 @@ export abstract class Entity {
   public velocity: Vector2;
   public acceleration: Vector2;
 
+  protected memoryCanvas: MemoryCanvas;
+
   private debug: boolean;
 
   private entityLibrary: EntityLibrary;
@@ -24,8 +26,6 @@ export abstract class Entity {
   private firstPaintComplete: boolean;
 
   private size: Vector2;
-
-  private memoryCanvas: MemoryCanvas;
 
   /**
    *
