@@ -162,6 +162,13 @@ export abstract class Entity {
   }
 
   /**
+   * Returns the Memory canvas for the current entity
+   */
+  public getMemoryCanvas(): MemoryCanvas {
+    return this.memoryCanvas;
+  }
+
+  /**
    * Retrieves the name of the entity
    */
   public getName(): string {
