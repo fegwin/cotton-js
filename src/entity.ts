@@ -14,6 +14,7 @@ export abstract class Entity {
   public position: Vector2;
   public velocity: Vector2;
   public acceleration: Vector2;
+  public size: Vector2;
 
   private debug: boolean;
 
@@ -22,8 +23,6 @@ export abstract class Entity {
 
   private lifetime: number;
   private firstPaintComplete: boolean;
-
-  private size: Vector2;
 
   private memoryCanvas: MemoryCanvas;
 
