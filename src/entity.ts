@@ -1,10 +1,10 @@
 import { EntityLibrary } from "./entity-library";
 import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
-import { BoundingBox, Polygon, Vector2 } from "./util/math";
+import { BoundingBox, Polygon, Vector2, Circle } from "./util/math";
 
 export enum EntityType {
-  Particle = "Particle",
+  Point = "Point",
   Rectangle = "Rectangle",
   Circle = "Circle",
   Polygon = "Polygon",
@@ -15,7 +15,7 @@ export enum EntityType {
  * can implement. This provides the initial implementation
  * to be animated and rendered.
  *
- * This entity has no size, it is simply a "particle". A point defines it's interactive region.
+ * This entity has no size, it is simply a "point". A point defines it's interactive region.
  */
 export abstract class Entity {
   public size: Vector2;
@@ -68,7 +68,7 @@ export abstract class Entity {
   }
 
   public getEntityType(): EntityType {
-    return EntityType.Particle;
+    return EntityType.Point;
   }
 
  /**
@@ -179,6 +179,10 @@ export abstract class Entity {
     return instance.name;
   }
 
+  public getHitBox(): any {
+    return this.position;
+  }
+
   /**
    * This method will draw the entity onto the MemoryCanvas.
    * Call this whenever you need to update the entity, eg. Animations.
@@ -219,6 +223,10 @@ export abstract class RectangleEntity extends Entity {
   public getEntityType(): EntityType {
     return EntityType.Rectangle;
   }
+
+  public getHitBox() {
+    return this.bounds.getPolygon();
+  }
 }
 
 /**
@@ -248,6 +256,10 @@ export abstract class CircleEntity extends RectangleEntity {
 
   public getEntityType(): EntityType {
     return EntityType.Circle;
+  }
+
+  public getHitBox(): any {
+    return new Circle(this.position, this.radius);
   }
 }
 
@@ -282,5 +294,9 @@ export abstract class PolygonEntity extends RectangleEntity {
 
   public getEntityType(): EntityType {
     return EntityType.Polygon;
+  }
+
+  public getHitBox(): any {
+    return this.shape;
   }
 }

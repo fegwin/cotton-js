@@ -90,6 +90,18 @@ export class BoundingBox {
     this.size = size;
   }
 
+  public getPolygon(): Polygon {
+    const h = Math.abs(this.top - this.bottom);
+    const w = Math.abs(this.right - this.left);
+
+    return new Polygon([
+      new Vector2(0, 0),
+      new Vector2(w, 0),
+      new Vector2(w, h),
+      new Vector2(0, h),
+     ], new Vector2(this.pos.x, this.pos.y));
+  }
+
   public get bottom() {
     return this.pos.y + this.size.y;
   }
@@ -123,6 +135,25 @@ export class BoundingBox {
   }
 }
 
+export class Circle {
+  public position: Vector2;
+  public size: Vector2;
+  public centerPoint: Vector2;
+  public radius: number;
+
+  constructor(position: Vector2, radius: number) {
+    this.position = position;
+    this.radius = radius;
+
+    this.size = new Vector2(radius * 2, radius * 2);
+    this.centerPoint = new Vector2(position.x + radius, position.y + radius);
+  }
+
+  public getBoundingBox(): BoundingBox {
+    return new BoundingBox(this.position, this.size);
+  }
+}
+
 /**
  * A simple 2D vector class
  * Has x
@@ -134,7 +165,7 @@ export class Vector2 {
   public x: number;
   public y: number;
 
-  public constructor(x: number, y: number) {
+  public constructor(x: number = 0, y: number = 0) {
     this.set(x, y);
   }
 
@@ -314,13 +345,22 @@ export class Vector2 {
 }
 
 export class Polygon {
+  // Construct from methods
+  public static fromPositionVector(position: Vector2): Polygon {
+    const tinyBox = new BoundingBox(position, new Vector2(0.000001, 0.000001));
+
+    return tinyBox.getPolygon();
+  }
+
   public calcPoints: Vector2[];
   public edges: Vector2[];
   public normals: Vector2[];
 
+  public position: Vector2;
   private points: Vector2[];
 
-  constructor(points?: Vector2[]) {
+  constructor(points?: Vector2[], position: Vector2 = new Vector2(0, 0)) {
+    this.position = position;
     this.points = points || [];
 
     this.recalculate();
