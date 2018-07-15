@@ -163,7 +163,7 @@ export class Vector2 {
    * @returns self for chaining
    */
   public copy(other: Vector2): Vector2 {
-    other.set(this.x, this.y);
+    this.set(other.x, other.y);
     return this;
   }
 
@@ -314,11 +314,11 @@ export class Vector2 {
 }
 
 export class Polygon {
-  private points: Vector2[];
+  public calcPoints: Vector2[];
+  public edges: Vector2[];
+  public normals: Vector2[];
 
-  private calcPoints: Vector2[];
-  private edges: Vector2[];
-  private normals: Vector2[];
+  private points: Vector2[];
 
   constructor(points?: Vector2[]) {
     this.points = points || [];

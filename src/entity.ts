@@ -3,6 +3,13 @@ import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
 import { BoundingBox, Polygon, Vector2 } from "./util/math";
 
+export enum EntityType {
+  Particle = "Particle",
+  Rectangle = "Rectangle",
+  Circle = "Circle",
+  Polygon = "Polygon",
+}
+
 /**
  * Provides the base class to which other entities in the system
  * can implement. This provides the initial implementation
@@ -58,6 +65,10 @@ export abstract class Entity {
 
     this.calculateBounds();
     this.entityLibrary.registerEntity(this);
+  }
+
+  public getEntityType(): EntityType {
+    return EntityType.Particle;
   }
 
  /**
@@ -204,6 +215,10 @@ export abstract class RectangleEntity extends Entity {
     this.size = size;
     this.calculateBounds();
   }
+
+  public getEntityType(): EntityType {
+    return EntityType.Rectangle;
+  }
 }
 
 /**
@@ -229,6 +244,10 @@ export abstract class CircleEntity extends RectangleEntity {
 
     this.radius = radius;
     this.centerPoint = new Vector2(position.x + radius, position.y + radius);
+  }
+
+  public getEntityType(): EntityType {
+    return EntityType.Circle;
   }
 }
 
@@ -259,5 +278,9 @@ export abstract class PolygonEntity extends RectangleEntity {
     );
 
     this.shape = shape;
+  }
+
+  public getEntityType(): EntityType {
+    return EntityType.Polygon;
   }
 }
