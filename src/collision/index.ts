@@ -1,6 +1,5 @@
 import { Entity } from "..";
-import { CircleEntity, PolygonEntity } from "../entity";
-import { BoundingBox, ISides, Vector2, Polygon, Circle } from "../util/math";
+import { BoundingBox, Circle, ISides, Polygon, Vector2 } from "../util/math";
 
 // todo give credit to sat.js guy
 
