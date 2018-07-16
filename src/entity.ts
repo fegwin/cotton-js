@@ -1,7 +1,7 @@
 import { EntityLibrary } from "./entity-library";
 import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
-import { BoundingBox, Polygon, Vector2, Circle } from "./util/math";
+import { BoundingBox, Circle, Polygon, Vector2 } from "./util/math";
 
 export enum EntityType {
   Point = "Point",
@@ -25,6 +25,9 @@ export abstract class Entity {
   public velocity: Vector2;
   public acceleration: Vector2;
 
+  // Overriding class must set this
+  protected memoryCanvas: MemoryCanvas;
+
   private debug: boolean;
 
   private entityLibrary: EntityLibrary;
@@ -32,9 +35,6 @@ export abstract class Entity {
 
   private lifetime: number;
   private firstPaintComplete: boolean;
-
-  // Overriding class must set this
-  private memoryCanvas: MemoryCanvas;
 
   /**
    *
@@ -272,6 +272,7 @@ export abstract class CircleEntity extends RectangleEntity {
  */
 export abstract class PolygonEntity extends RectangleEntity {
   public shape: Polygon;
+  private secondPaintComplete: boolean;
 
   constructor(
     position: Vector2,
@@ -290,6 +291,25 @@ export abstract class PolygonEntity extends RectangleEntity {
     );
 
     this.shape = shape;
+    this.calculateBounds();
+  }
+
+  public paintOn(context: CanvasRenderingContext2D): void {
+    super.paintOn(context);
+
+    if (this.secondPaintComplete) { return; }
+
+    const memoryCanvasContext = this.memoryCanvas.getContext();
+    memoryCanvasContext.strokeStyle = "red";
+    memoryCanvasContext.beginPath();
+    memoryCanvasContext.moveTo(0, 0);
+
+    this.shape.calcPoints.forEach((point) => {
+      memoryCanvasContext.lineTo(point.x, point.y);
+    });
+
+    memoryCanvasContext.closePath();
+    memoryCanvasContext.stroke();
   }
 
   public getEntityType(): EntityType {

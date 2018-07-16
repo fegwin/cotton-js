@@ -357,11 +357,14 @@ export class Polygon {
   public normals: Vector2[];
 
   public position: Vector2;
-  private points: Vector2[];
+  public points: Vector2[];
 
   constructor(points?: Vector2[], position: Vector2 = new Vector2(0, 0)) {
     this.position = position;
     this.points = points || [];
+    this.calcPoints = [];
+    this.edges = [];
+    this.normals = [];
 
     this.recalculate();
   }
@@ -376,7 +379,7 @@ export class Polygon {
       if (point.x < xMin) { xMin = point.x; }
       if (point.y < yMin) { yMin = point.y; }
       if (point.x > xMax) { xMax = point.x; }
-      if (point.y < yMax) { yMax = point.x; }
+      if (point.y > yMax) { yMax = point.y; }
     });
 
     const pos = new Vector2(Math.min(xMin, xMax), Math.min(yMin, yMax));
