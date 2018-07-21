@@ -50,12 +50,14 @@ export const detectCollisionsAABB = (
 
 export class SATCollision implements ICollision {
   public entity: Entity;
+  public response: ISATCollisionResponse;
 
   /**
    * @param entity Entity collided with
    */
-  constructor(entity: Entity) {
+  constructor(entity: Entity, collisionResponse: ISATCollisionResponse) {
     this.entity = entity;
+    this.response = collisionResponse;
   }
 }
 
@@ -96,7 +98,7 @@ export const detectCollisionsSAT = (
       return;
     }
 
-    collisions.push(new SATCollision(testEntity));
+    collisions.push(new SATCollision(testEntity, collisionResponse));
   });
 
   return collisions;
@@ -152,43 +154,41 @@ const isSeparatingAxis = (
   }
 
   // This is not a separating axis. If we're calculating a response, calculate the overlap.
-  if (response) {
-    let overlap = 0;
-    // A starts further left than B
-    if (rangeA[0] < rangeB[0]) {
-      response.aInB = false;
-      // A ends before B does. We have to pull A out of B
-      if (rangeA[1] < rangeB[1]) {
-        overlap = rangeA[1] - rangeB[0];
-        response.bInA = false;
-      // B is fully inside A.  Pick the shortest way out.
-      } else {
-        const option1 = rangeA[1] - rangeB[0];
-        const option2 = rangeB[1] - rangeA[0];
-        overlap = option1 < option2 ? option1 : -option2;
-      }
-    // B starts further left than A
-    } else {
+  let overlap = 0;
+  // A starts further left than B
+  if (rangeA[0] < rangeB[0]) {
+    response.aInB = false;
+    // A ends before B does. We have to pull A out of B
+    if (rangeA[1] < rangeB[1]) {
+      overlap = rangeA[1] - rangeB[0];
       response.bInA = false;
-      // B ends before A ends. We have to push A out of B
-      if (rangeA[1] > rangeB[1]) {
-        overlap = rangeA[0] - rangeB[1];
-        response.aInB = false;
-      // A is fully inside B.  Pick the shortest way out.
-      } else {
-        const option1 = rangeA[1] - rangeB[0];
-        const option2 = rangeB[1] - rangeA[0];
-        overlap = option1 < option2 ? option1 : -option2;
-      }
+    // B is fully inside A.  Pick the shortest way out.
+    } else {
+      const option1 = rangeA[1] - rangeB[0];
+      const option2 = rangeB[1] - rangeA[0];
+      overlap = option1 < option2 ? option1 : -option2;
     }
-    // If this is the smallest amount of overlap we've seen so far, set it as the minimum overlap.
-    const absOverlap = Math.abs(overlap);
-    if (absOverlap < response.overlap) {
-      response.overlap = absOverlap;
-      response.overlapN.copy(axis);
-      if (overlap < 0) {
-        response.overlapN.reverse();
-      }
+  // B starts further left than A
+  } else {
+    response.bInA = false;
+    // B ends before A ends. We have to push A out of B
+    if (rangeA[1] > rangeB[1]) {
+      overlap = rangeA[0] - rangeB[1];
+      response.aInB = false;
+    // A is fully inside B.  Pick the shortest way out.
+    } else {
+      const option1 = rangeA[1] - rangeB[0];
+      const option2 = rangeB[1] - rangeA[0];
+      overlap = option1 < option2 ? option1 : -option2;
+    }
+  }
+  // If this is the smallest amount of overlap we've seen so far, set it as the minimum overlap.
+  const absOverlap = Math.abs(overlap);
+  if (absOverlap < response.overlap) {
+    response.overlap = absOverlap;
+    response.overlapN.copy(axis);
+    if (overlap < 0) {
+      response.overlapN.reverse();
     }
   }
 
@@ -415,6 +415,9 @@ export const testPolygonPolygon = (a: Polygon, b: Polygon): ISATCollisionRespons
   const bLen = bPoints.length;
 
   const satResponse: ISATResponse = {
+    aInB: true,
+    bInA: true,
+    overlap: Number.MAX_VALUE,
     overlapN: new Vector2(),
     overlapV: new Vector2(),
   };
@@ -438,7 +441,7 @@ export const testPolygonPolygon = (a: Polygon, b: Polygon): ISATCollisionRespons
   }
 
   const response: ISATCollisionResponse = {
-    isColliding: false,
+    isColliding: true,
     ...satResponse,
   };
 
@@ -446,7 +449,9 @@ export const testPolygonPolygon = (a: Polygon, b: Polygon): ISATCollisionRespons
   // and we've already calculated the smallest overlap (in isSeparatingAxis).  Calculate the
   // final overlap vector.
 
-  response.overlapV.copy(response.overlapN).scale(response.overlap);
+  response.overlapV
+    .copy(response.overlapN)
+    .scale(response.overlap);
 
   return response;
 };

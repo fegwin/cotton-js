@@ -291,6 +291,8 @@ export abstract class PolygonEntity extends RectangleEntity {
     );
 
     this.shape = shape;
+    this.shape.position = position; // Shape to share position with entity
+
     this.calculateBounds();
   }
 
@@ -302,11 +304,12 @@ export abstract class PolygonEntity extends RectangleEntity {
     const memoryCanvasContext = this.memoryCanvas.getContext();
     memoryCanvasContext.strokeStyle = "red";
     memoryCanvasContext.beginPath();
-    memoryCanvasContext.moveTo(0, 0);
+    memoryCanvasContext.moveTo(this.shape.calcPoints[0].x, this.shape.calcPoints[0].y);
 
-    this.shape.calcPoints.forEach((point) => {
-      memoryCanvasContext.lineTo(point.x, point.y);
-    });
+    let i = this.shape.calcPoints.length;
+    while (i--) {
+      memoryCanvasContext.lineTo(this.shape.calcPoints[i].x, this.shape.calcPoints[i].y);
+    }
 
     memoryCanvasContext.closePath();
     memoryCanvasContext.stroke();

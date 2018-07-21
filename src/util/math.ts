@@ -189,8 +189,8 @@ export class Vector2 {
   }
 
   /**
-   * Copy (x,y) onto another Vector
-   * @param other Vector which will receive our (x, y)
+   * Copy (x,y) from another Vector onto this one
+   * @param other Vector which we want to copy
    * @returns self for chaining
    */
   public copy(other: Vector2): Vector2 {
