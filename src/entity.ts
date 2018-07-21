@@ -25,7 +25,6 @@ export abstract class Entity {
   public velocity: Vector2;
   public acceleration: Vector2;
 
-  // Overriding class must set this
   protected memoryCanvas: MemoryCanvas;
 
   private debug: boolean;
