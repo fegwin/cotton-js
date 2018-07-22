@@ -26,8 +26,7 @@ export abstract class Entity {
   public acceleration: Vector2;
 
   protected memoryCanvas: MemoryCanvas;
-
-  private debug: boolean;
+  protected debug: boolean;
 
   private entityLibrary: EntityLibrary;
   private trait: { [id: string]: Trait };
@@ -238,6 +237,8 @@ export abstract class RectangleEntity extends Entity {
 export abstract class CircleEntity extends RectangleEntity {
   public centerPoint: Vector2;
   public radius: number;
+  private secondPaintComplete: boolean;
+  private shape: Circle;
 
   constructor(
     position: Vector2,
@@ -251,6 +252,22 @@ export abstract class CircleEntity extends RectangleEntity {
 
     this.radius = radius;
     this.centerPoint = new Vector2(position.x + radius, position.y + radius);
+    this.shape = new Circle(this.position, this.radius);
+  }
+
+  public paintOn(context: CanvasRenderingContext2D): void {
+    super.paintOn(context);
+
+    if (this.secondPaintComplete || !this.debug) { return; }
+
+    const memoryCanvasContext = this.memoryCanvas.getContext();
+    memoryCanvasContext.strokeStyle = "red";
+    memoryCanvasContext.beginPath();
+    memoryCanvasContext.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI, false);
+    memoryCanvasContext.closePath();
+    memoryCanvasContext.stroke();
+
+    this.secondPaintComplete = true;
   }
 
   public getEntityType(): EntityType {
@@ -258,7 +275,7 @@ export abstract class CircleEntity extends RectangleEntity {
   }
 
   public getHitBox(): any {
-    return new Circle(this.position, this.radius);
+    return this.shape;
   }
 }
 
@@ -298,7 +315,7 @@ export abstract class PolygonEntity extends RectangleEntity {
   public paintOn(context: CanvasRenderingContext2D): void {
     super.paintOn(context);
 
-    if (this.secondPaintComplete) { return; }
+    if (this.secondPaintComplete || !this.debug) { return; }
 
     const memoryCanvasContext = this.memoryCanvas.getContext();
     memoryCanvasContext.strokeStyle = "red";

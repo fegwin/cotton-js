@@ -277,7 +277,10 @@ export const testPolygonCircle = (polygon: Polygon, circle: Circle): ISATCollisi
   const point = new Vector2(0, 0);
 
   const response: ISATCollisionResponse = {
-    isColliding: false,
+    aInB: true,
+    bInA: true,
+    isColliding: true,
+    overlap: Number.MAX_VALUE,
     overlapN: new Vector2(),
     overlapV: new Vector2(),
   };
@@ -321,7 +324,7 @@ export const testPolygonCircle = (polygon: Polygon, circle: Circle): ISATCollisi
           return {
             isColliding: false,
           };
-        } else if (response) {
+        } else {
           // It intersects, calculate the overlap.
           response.bInA = false;
           overlapN = point.normalize();
@@ -344,7 +347,7 @@ export const testPolygonCircle = (polygon: Polygon, circle: Circle): ISATCollisi
           return {
             isColliding: false,
           };
-        } else if (response) {
+        } else {
           // It intersects, calculate the overlap.
           response.bInA = false;
           overlapN = point.normalize();
@@ -366,7 +369,7 @@ export const testPolygonCircle = (polygon: Polygon, circle: Circle): ISATCollisi
         return {
           isColliding: false,
         };
-      } else if (response) {
+      } else {
         // It intersects, calculate the overlap.
         overlapN = normal;
         overlap = radius - dist;
@@ -380,7 +383,7 @@ export const testPolygonCircle = (polygon: Polygon, circle: Circle): ISATCollisi
 
     // If this is the smallest overlap we've seen, keep it.
     // (overlapN may be null if the circle was in the wrong Voronoi region).
-    if (overlapN && response && Math.abs(overlap) < Math.abs(response.overlap)) {
+    if (overlapN && Math.abs(overlap) < Math.abs(response.overlap)) {
       response.overlap = overlap;
       response.overlapN = overlapN;
     }
