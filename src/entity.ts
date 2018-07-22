@@ -1,14 +1,24 @@
 import { EntityLibrary } from "./entity-library";
 import { MemoryCanvas } from "./memory-canvas";
 import { Trait } from "./trait";
-import { BoundingBox, Vector2 } from "./util/math";
+import { BoundingBox, Circle, Polygon, Vector2 } from "./util/math";
+
+export enum EntityType {
+  Point = "Point",
+  Rectangle = "Rectangle",
+  Circle = "Circle",
+  Polygon = "Polygon",
+}
 
 /**
  * Provides the base class to which other entities in the system
  * can implement. This provides the initial implementation
  * to be animated and rendered.
+ *
+ * This entity has no size, it is simply a "point". A point defines it's interactive region.
  */
 export abstract class Entity {
+  public size: Vector2;
   public bounds: BoundingBox;
 
   public position: Vector2;
@@ -16,16 +26,13 @@ export abstract class Entity {
   public acceleration: Vector2;
 
   protected memoryCanvas: MemoryCanvas;
-
-  private debug: boolean;
+  protected debug: boolean;
 
   private entityLibrary: EntityLibrary;
   private trait: { [id: string]: Trait };
 
   private lifetime: number;
   private firstPaintComplete: boolean;
-
-  private size: Vector2;
 
   /**
    *
@@ -35,17 +42,16 @@ export abstract class Entity {
    */
   public constructor(
     position: Vector2,
-    size: Vector2,
     entityLibrary: EntityLibrary,
     traits: Trait[] = [],
     debug: boolean = false,
   ) {
     this.debug = debug;
 
+    this.size = new Vector2(1, 1);
     this.position = position;
     this.velocity = new Vector2(0, 0);
     this.acceleration = new Vector2(0, 0);
-    this.size = size;
 
     this.entityLibrary = entityLibrary;
 
@@ -56,9 +62,11 @@ export abstract class Entity {
     this.firstPaintComplete = false;
 
     this.calculateBounds();
-
-    this.memoryCanvas = new MemoryCanvas(this.size.x, this.size.y);
     this.entityLibrary.registerEntity(this);
+  }
+
+  public getEntityType(): EntityType {
+    return EntityType.Point;
   }
 
  /**
@@ -169,6 +177,10 @@ export abstract class Entity {
     return instance.name;
   }
 
+  public getHitBox(): any {
+    return this.position;
+  }
+
   /**
    * This method will draw the entity onto the MemoryCanvas.
    * Call this whenever you need to update the entity, eg. Animations.
@@ -177,9 +189,153 @@ export abstract class Entity {
   protected abstract draw(): void;
 
   /**
-   * Calculates the AABB bounding box of the entity
+   * Calculates the bounding box of the entity drawable/interactive area
    */
-  private calculateBounds() {
+  protected calculateBounds() {
+    this.memoryCanvas = new MemoryCanvas(this.size.x, this.size.y);
     this.bounds = new BoundingBox(this.position, this.size);
+  }
+}
+
+/**
+ * Provides the base class to which other entities in the system
+ * can implement. This provides the initial implementation
+ * to be animated and rendered.
+ *
+ * This entity has a size and a position. A rectangle defines it's interactive region.
+ */
+export abstract class RectangleEntity extends Entity {
+  constructor(
+    position: Vector2,
+    size: Vector2,
+    entityLibrary: EntityLibrary,
+    traits: Trait[] = [],
+    debug: boolean,
+  ) {
+    super(position, entityLibrary, traits, debug);
+
+    this.size = size;
+    this.calculateBounds();
+  }
+
+  public getEntityType(): EntityType {
+    return EntityType.Rectangle;
+  }
+
+  public getHitBox() {
+    return this.bounds.getPolygon();
+  }
+}
+
+/**
+ * Provides the base class to which other entities in the system
+ * can implement. This provides the initial implementation
+ * to be animated and rendered.
+ *
+ * This entity has a size, position, radius. A cirle defines it's interactive region.
+ */
+export abstract class CircleEntity extends RectangleEntity {
+  public centerPoint: Vector2;
+  public radius: number;
+  private secondPaintComplete: boolean;
+  private shape: Circle;
+
+  constructor(
+    position: Vector2,
+    radius: number,
+    entityLibrary: EntityLibrary,
+    traits: Trait[] = [],
+    debug: boolean,
+  ) {
+    const size = new Vector2(radius * 2, radius * 2);
+    super(position, size, entityLibrary, traits, debug);
+
+    this.radius = radius;
+    this.centerPoint = new Vector2(position.x + radius, position.y + radius);
+    this.shape = new Circle(this.position, this.radius);
+  }
+
+  public paintOn(context: CanvasRenderingContext2D): void {
+    super.paintOn(context);
+
+    if (this.secondPaintComplete || !this.debug) { return; }
+
+    const memoryCanvasContext = this.memoryCanvas.getContext();
+    memoryCanvasContext.strokeStyle = "red";
+    memoryCanvasContext.beginPath();
+    memoryCanvasContext.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI, false);
+    memoryCanvasContext.closePath();
+    memoryCanvasContext.stroke();
+
+    this.secondPaintComplete = true;
+  }
+
+  public getEntityType(): EntityType {
+    return EntityType.Circle;
+  }
+
+  public getHitBox(): any {
+    return this.shape;
+  }
+}
+
+/**
+ * Provides the base class to which other entities in the system
+ * can implement. This provides the initial implementation
+ * to be animated and rendered.
+ *
+ * This entity has a convex polygon defining it's interactive region
+ */
+export abstract class PolygonEntity extends RectangleEntity {
+  public shape: Polygon;
+  private secondPaintComplete: boolean;
+
+  constructor(
+    position: Vector2,
+    shape: Polygon,
+    entityLibrary: EntityLibrary,
+    traits: Trait[] = [],
+    debug: boolean,
+  ) {
+    const box = shape.getBoundingBox();
+    super(
+      position,
+      new Vector2(box.right - box.left, box.bottom - box.top),
+      entityLibrary,
+      traits,
+      debug,
+    );
+
+    this.shape = shape;
+    this.shape.position = position; // Shape to share position with entity
+
+    this.calculateBounds();
+  }
+
+  public paintOn(context: CanvasRenderingContext2D): void {
+    super.paintOn(context);
+
+    if (this.secondPaintComplete || !this.debug) { return; }
+
+    const memoryCanvasContext = this.memoryCanvas.getContext();
+    memoryCanvasContext.strokeStyle = "red";
+    memoryCanvasContext.beginPath();
+    memoryCanvasContext.moveTo(this.shape.calcPoints[0].x, this.shape.calcPoints[0].y);
+
+    let i = this.shape.calcPoints.length;
+    while (i--) {
+      memoryCanvasContext.lineTo(this.shape.calcPoints[i].x, this.shape.calcPoints[i].y);
+    }
+
+    memoryCanvasContext.closePath();
+    memoryCanvasContext.stroke();
+  }
+
+  public getEntityType(): EntityType {
+    return EntityType.Polygon;
+  }
+
+  public getHitBox(): any {
+    return this.shape;
   }
 }

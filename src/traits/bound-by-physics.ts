@@ -39,7 +39,6 @@ export class BoundByPhysics extends Trait {
 
     // Cap out at terminal velocity if required
     if (this.terminalVelocity && Math.abs(this.entity.velocity.y) >= Math.abs(this.terminalVelocity.y)) {
-
       this.entity.velocity.y = sign(this.entity.velocity.y) * this.terminalVelocity.y;
     }
 

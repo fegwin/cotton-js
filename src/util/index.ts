@@ -1,9 +1,18 @@
 import { loadImage } from "./image";
 import { loadJson } from "./json";
-import { BoundingBox, getRandomInt, getRandomNumber, Vector2 } from "./math";
+import {
+  BoundingBox,
+  Circle,
+  getRandomInt,
+  getRandomNumber,
+  Polygon,
+  Vector2,
+} from "./math";
 
 export const util = {
   BoundingBox,
+  Circle,
+  Polygon,
   Vector2,
   getRandomInt,
   getRandomNumber,
