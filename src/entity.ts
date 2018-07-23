@@ -69,6 +69,10 @@ export abstract class Entity {
     return EntityType.Point;
   }
 
+  public invalidate(): void {
+    this.firstPaintComplete = false;
+  }
+
  /**
   * This method is used to paint the MemoryCanvas canvas onto a passed in canvas context
   * General use will not require you to call this
@@ -255,6 +259,11 @@ export abstract class CircleEntity extends RectangleEntity {
     this.shape = new Circle(this.position, this.radius);
   }
 
+  public invalidate(): void {
+    super.invalidate();
+    this.secondPaintComplete = false;
+  }
+
   public paintOn(context: CanvasRenderingContext2D): void {
     super.paintOn(context);
 
@@ -312,6 +321,13 @@ export abstract class PolygonEntity extends RectangleEntity {
     this.calculateBounds();
   }
 
+  public invalidate(): void {
+    super.invalidate();
+    this.secondPaintComplete = false;
+    this.memoryCanvas.clear();
+    this.calculateBounds();
+  }
+
   public paintOn(context: CanvasRenderingContext2D): void {
     super.paintOn(context);
 
@@ -329,6 +345,7 @@ export abstract class PolygonEntity extends RectangleEntity {
 
     memoryCanvasContext.closePath();
     memoryCanvasContext.stroke();
+    this.secondPaintComplete = true;
   }
 
   public getEntityType(): EntityType {
