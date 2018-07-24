@@ -401,9 +401,19 @@ export class Polygon {
     return new BoundingBox(pos, size);
   }
 
-  public setAngle(angle: number): void {
+  public setAngle(angle: number): Polygon {
     this.angle = angle;
     this.recalculate();
+    return this;
+  }
+
+  public rotate(angle: number, centrePoint: Vector2 = null): Polygon {
+    const points = this.points;
+    points.forEach((point) => {
+      point.rotate(angle, centrePoint);
+    });
+    this.recalculate();
+    return this;
   }
 
   private recalculate() {
