@@ -186,7 +186,7 @@ export abstract class Entity {
    * Call this whenever you need to update the entity, eg. Animations.
    * Do this inside the update method.
    */
-  protected abstract draw(): void;
+  public abstract draw(): void;
 
   /**
    * Calculates the bounding box of the entity drawable/interactive area
