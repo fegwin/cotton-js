@@ -192,7 +192,8 @@ export abstract class Entity {
    * Calculates the bounding box of the entity drawable/interactive area
    */
   protected calculateBounds() {
-    this.memoryCanvas = new MemoryCanvas(this.size.x, this.size.y);
+    const largestSize = Math.max(this.size.x, this.size.y);
+    this.memoryCanvas = new MemoryCanvas(largestSize, largestSize);
     this.bounds = new BoundingBox(this.position, this.size);
   }
 }

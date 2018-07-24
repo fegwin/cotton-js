@@ -363,6 +363,7 @@ export class Polygon {
     return tinyBox.getPolygon();
   }
 
+  public zeroShiftedCalcPoints: Vector2[];
   public calcPoints: Vector2[];
   public edges: Vector2[];
   public normals: Vector2[];
@@ -417,6 +418,11 @@ export class Polygon {
   }
 
   private recalculate() {
+    this.calcPoints = [];
+    this.edges = [];
+    this.normals = [];
+    this.zeroShiftedCalcPoints = [];
+
     this.points.forEach((point) => {
       const calcPoint = point.clone();
       if (this.angle) {
@@ -441,6 +447,20 @@ export class Polygon {
         .copy(edge)
         .perpendicular()
         .normalize();
+    });
+
+    const offset = new Vector2(0, 0);
+    this.calcPoints.forEach((calcPoint) => {
+      if (calcPoint.x < offset.x) {
+        offset.x = calcPoint.x;
+      }
+      if (calcPoint.y < offset.y) {
+        offset.y = calcPoint.y;
+      }
+    });
+
+    this.calcPoints.forEach((calcPoint) => {
+      this.zeroShiftedCalcPoints.push(calcPoint.clone().subtract(offset));
     });
   }
 }
