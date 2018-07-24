@@ -25,11 +25,12 @@ export abstract class Entity {
   public velocity: Vector2;
   public acceleration: Vector2;
 
+  public trait: { [id: string]: Trait };
+
   protected memoryCanvas: MemoryCanvas;
   protected debug: boolean;
 
   private entityLibrary: EntityLibrary;
-  private trait: { [id: string]: Trait };
 
   private lifetime: number;
   private firstPaintComplete: boolean;
