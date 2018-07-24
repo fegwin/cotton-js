@@ -209,12 +209,23 @@ export class Vector2 {
   /**
    * Rotate this vector (counter-clockwise) by the specified angle (in radians).
    * @param angle Angle to rotate vector by
+   * @param centrePoint Point about which to rotate this vector. If null, rotation will be around the origin
    * @returns self for chaining
    */
-  public rotate(angle: number): Vector2 {
+  public rotate(angle: number, centrePoint: Vector2 = null): Vector2 {
+    if (!centrePoint) {
+      return this.set(
+        this.x * Math.cos(angle) - this.y * Math.sin(angle),
+        this.x * Math.sin(angle) + this.y * Math.cos(angle),
+      );
+    }
+
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
     return this.set(
-      this.x * Math.cos(angle) - this.y * Math.sin(angle),
-      this.x * Math.sin(angle) + this.y * Math.cos(angle),
+      (cos * (this.x - centrePoint.x)) + (sin * (this.y - centrePoint.y)) + centrePoint.x,
+      (cos * (this.y - centrePoint.y)) - (sin * (this.x - centrePoint.x)) + centrePoint.y,
     );
   }
 
