@@ -25,11 +25,12 @@ export abstract class Entity {
   public velocity: Vector2;
   public acceleration: Vector2;
 
+  public trait: { [id: string]: Trait };
+
   protected memoryCanvas: MemoryCanvas;
   protected debug: boolean;
 
   private entityLibrary: EntityLibrary;
-  private trait: { [id: string]: Trait };
 
   private lifetime: number;
   private firstPaintComplete: boolean;
@@ -186,13 +187,14 @@ export abstract class Entity {
    * Call this whenever you need to update the entity, eg. Animations.
    * Do this inside the update method.
    */
-  protected abstract draw(): void;
+  public abstract draw(): void;
 
   /**
    * Calculates the bounding box of the entity drawable/interactive area
    */
   protected calculateBounds() {
-    this.memoryCanvas = new MemoryCanvas(this.size.x, this.size.y);
+    const largestSize = Math.max(this.size.x, this.size.y);
+    this.memoryCanvas = new MemoryCanvas(largestSize, largestSize);
     this.bounds = new BoundingBox(this.position, this.size);
   }
 }
@@ -329,6 +331,7 @@ export abstract class PolygonEntity extends RectangleEntity {
 
     memoryCanvasContext.closePath();
     memoryCanvasContext.stroke();
+    this.secondPaintComplete = true;
   }
 
   public getEntityType(): EntityType {

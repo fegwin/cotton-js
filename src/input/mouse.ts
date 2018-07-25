@@ -24,7 +24,7 @@ export class Mouse {
     htmlElement.addEventListener("contextmenu", (e) => e.preventDefault());
   }
 
-  public addMapping(code: string, callback: () => void) {
+  public addMapping(code: string, callback: (mouseInfo: IMouseInfo) => void) {
     if (!this.mouseMap[code]) {
       this.mouseMap[code] = new Array<() => void>();
     }

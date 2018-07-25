@@ -363,15 +363,18 @@ export class Polygon {
     return tinyBox.getPolygon();
   }
 
+  public zeroShiftedCalcPoints: Vector2[];
   public calcPoints: Vector2[];
   public edges: Vector2[];
   public normals: Vector2[];
 
   public position: Vector2;
+  public angle: number;
   public points: Vector2[];
 
-  constructor(points?: Vector2[], position: Vector2 = new Vector2(0, 0)) {
+  constructor(points?: Vector2[], position: Vector2 = new Vector2(0, 0), angle: number = 0) {
     this.position = position;
+    this.angle = angle;
     this.points = points || [];
     this.calcPoints = [];
     this.edges = [];
@@ -386,24 +389,46 @@ export class Polygon {
     let xMax = 0;
     let yMax = 0;
 
-    this.points.forEach((point) => {
+    this.calcPoints.forEach((point) => {
       if (point.x < xMin) { xMin = point.x; }
       if (point.y < yMin) { yMin = point.y; }
       if (point.x > xMax) { xMax = point.x; }
       if (point.y > yMax) { yMax = point.y; }
     });
 
-    const pos = new Vector2(Math.min(xMin, xMax), Math.min(yMin, yMax));
+    const pos = new Vector2(0, 0);
     const size = new Vector2(Math.abs(xMin - xMax), Math.abs(yMin - yMax));
 
     return new BoundingBox(pos, size);
   }
 
+  public setAngle(angle: number): Polygon {
+    this.angle = angle;
+    this.recalculate();
+    return this;
+  }
+
+  public rotate(angle: number, centrePoint: Vector2 = null): Polygon {
+    const points = this.points;
+    points.forEach((point) => {
+      point.rotate(angle, centrePoint);
+    });
+    this.recalculate();
+    return this;
+  }
+
   private recalculate() {
+    this.calcPoints = [];
+    this.edges = [];
+    this.normals = [];
+    this.zeroShiftedCalcPoints = [];
+
     this.points.forEach((point) => {
-      // Copy the point
-      // (here would would rotate or translate as required)
-      this.calcPoints.push(point.clone());
+      const calcPoint = point.clone();
+      if (this.angle) {
+        calcPoint.rotate(this.angle);
+      }
+      this.calcPoints.push(calcPoint);
       this.edges.push(new Vector2(0, 0));
       this.normals.push(new Vector2(0, 0));
     });
@@ -422,6 +447,20 @@ export class Polygon {
         .copy(edge)
         .perpendicular()
         .normalize();
+    });
+
+    const offset = new Vector2(0, 0);
+    this.calcPoints.forEach((calcPoint) => {
+      if (calcPoint.x < offset.x) {
+        offset.x = calcPoint.x;
+      }
+      if (calcPoint.y < offset.y) {
+        offset.y = calcPoint.y;
+      }
+    });
+
+    this.calcPoints.forEach((calcPoint) => {
+      this.zeroShiftedCalcPoints.push(calcPoint.clone().subtract(offset));
     });
   }
 }
