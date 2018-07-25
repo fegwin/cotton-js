@@ -40,7 +40,6 @@ export class Compositor {
     layers: Layer[] = [],
   ) {
     const newContainer = document.createElement("div");
-    newContainer.id = "cotton-el";
     newContainer.style.position = "relative";
 
     rootElement.parentNode.replaceChild(newContainer, rootElement);
