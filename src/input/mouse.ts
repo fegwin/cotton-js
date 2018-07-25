@@ -4,12 +4,19 @@ export const CLICK = "click";
 export const MOVE = "move";
 
 export interface IMouseInfo {
-  pointerPosition: Vector2;
+  pointerPositionPage: Vector2;
+  pointerPositionOffset: Vector2;
+  pointerPositionScreen: Vector2;
+  pointerPositionClient: Vector2;
   buttonCode: string;
 }
 
 export class Mouse {
-  private pointerPosition: Vector2;
+  private pointerPositionClient: Vector2;
+  private pointerPositionScreen: Vector2;
+  private pointerPositionOffset: Vector2;
+  private pointerPositionPage: Vector2;
+
   private mouseMap: { [key: string]: Array<(mouseInfo: IMouseInfo) => void> };
 
   constructor(htmlElement: HTMLElement) {
@@ -17,7 +24,10 @@ export class Mouse {
     this.mouseMap = {};
 
     // Current position of the pointer
-    this.pointerPosition = new Vector2(0, 0);
+    this.pointerPositionPage = new Vector2(0, 0);
+    this.pointerPositionOffset = new Vector2(0, 0);
+    this.pointerPositionScreen = new Vector2(0, 0);
+    this.pointerPositionClient = new Vector2(0, 0);
 
     htmlElement.addEventListener("mousemove", (e) => this.handleMoveEvent(e));
     htmlElement.addEventListener("click", (e) => this.handleClickEvent(e as MouseEvent));
@@ -42,13 +52,19 @@ export class Mouse {
     this.mouseMap[CLICK]
       .forEach((callback) => callback({
         buttonCode: CLICK,
-        pointerPosition: this.pointerPosition,
+        pointerPositionClient: this.pointerPositionClient,
+        pointerPositionOffset: this.pointerPositionOffset,
+        pointerPositionPage: this.pointerPositionPage,
+        pointerPositionScreen: this.pointerPositionScreen,
       }));
   }
 
   public handleMoveEvent(event: MouseEvent) {
     event.preventDefault();
-    this.pointerPosition.set(event.clientX, event.clientY);
+    this.pointerPositionClient.set(event.clientX, event.clientY);
+    this.pointerPositionPage.set(event.pageX, event.pageY);
+    this.pointerPositionOffset.set(event.offsetX, event.offsetY);
+    this.pointerPositionScreen.set(event.screenX, event.screenY);
 
     if (!this.mouseMap[MOVE]) {
       return;
@@ -57,7 +73,10 @@ export class Mouse {
     this.mouseMap[MOVE]
       .forEach((callback) => callback({
         buttonCode: null,
-        pointerPosition: this.pointerPosition,
+        pointerPositionClient: this.pointerPositionClient,
+        pointerPositionOffset: this.pointerPositionOffset,
+        pointerPositionPage: this.pointerPositionPage,
+        pointerPositionScreen: this.pointerPositionScreen,
       }));
   }
 }
